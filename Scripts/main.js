@@ -213,8 +213,11 @@
             this.pages[p] = page;
             $('body').append(page.el);
             page.render();
+
+
         }
         this.currentPageName = p;
+        this.setFooter();
         this.slidePage(page);
     },
     slidePage: function (page) {
@@ -245,13 +248,31 @@
         });
     },
     setHeader: function(){
-        //var login = Service.getState();
-        //$("#jpHeader")
-        //           .removeClass()
-        //           .addClass(Service.transporter.Status);
-        //$("#jpLogo")
-        //    .empty()
-        //    .html(login.name + " " + Service.transporter.SPZ + " [" + Service.getTransporterStatusText()+"]");
+        $('#jpInfo').val('MoVe');
+        $("#carStatusInfo").removeClass();
+        $("#roadStatusInfo").removeClass();
+        $("#travelStatusInfo").removeClass();
+        var jp = Service.currentJP();
+        if (jp && jp.Status == "Active") {
+            $("#carStatusInfo").addClass(jp.CarStatus);
+            $("#roadStatusInfo").addClass(jp.RoadStatus);
+            $("#travelStatusInfo").addClass(jp.TravelStatus);
+            $('#jpInfo').val('MoVe : '+jp.Car_Description+' '+jp.JP_Description);
+        }
+    },
+    setFooter: function () {
+        $("#footermenu").children().removeClass("selected");
+        $("#btn" + this.currentPageName).addClass("selected");
+        var jp = Service.currentJP();
+        if (jp) {
+            $("#btnjp").show();
+            if (jp.Status == "Active") $("#btnactions").show();
+            else $("#btnactions").hide();
+        }
+        else {
+            $("#btnactions").hide();
+            $("#btnjp").hide();
+        }
     },
     getPhoneGapPath: function () {
         if (app.isDevice) {
@@ -269,7 +290,7 @@
         this.registerEvents();
 
         Service.initialize(function () {
-            if (Service.state.Orders && Service.state.IdDriveOrder)
+            if (Service.state.Jps && Service.state.IdDriveOrder)
                 self.home();
             else
                 self.route("selectjp");

@@ -35,11 +35,11 @@ var SettingsView = function (messages) {
         data[data.length] = { isHeader: "Y", Title: "Media" };
 
         data[data.length] = { Group: "Main", Title: "RefreshSec", value: "7" };
-        data[data.length] = { Group: "Local", Title: "inRecall", value: Globals.GLOB_RecallMe.toString() };
-        data[data.length] = { Group: "Local", Title: "GUID_Transporter", value: s.transporterId };
-        data[data.length] = { Group: "Local", Title: "GUID_sysUser", value: s.userId };
-        data[data.length] = { Group: "Stand", Title: "GLOB_GUID_Stand", value: Globals.GLOB_GUID_Stand };
-        data[data.length] = { Group: "Stand", Title: "GLOB_StandPosition", value: Globals.GLOB_StandPosition };
+        //data[data.length] = { Group: "Local", Title: "inRecall", value: Globals.GLOB_RecallMe.toString() };
+        //data[data.length] = { Group: "Local", Title: "GUID_Transporter", value: s.transporterId };
+        //data[data.length] = { Group: "Local", Title: "GUID_sysUser", value: s.userId };
+        //data[data.length] = { Group: "Stand", Title: "GLOB_GUID_Stand", value: Globals.GLOB_GUID_Stand };
+        //data[data.length] = { Group: "Stand", Title: "GLOB_StandPosition", value: Globals.GLOB_StandPosition };
 
         data[data.length] = { Group: "Position", Title: "Position_LatPrev", value: Globals.Position_LatPrev };
         data[data.length] = { Group: "Position", Title: "Position_LngPrev", value: Globals.Position_LngPrev };
@@ -68,7 +68,7 @@ var SettingsView = function (messages) {
         if (self.iscroll)
             self.iscroll.refresh();
         else
-            self.iscroll = new iScroll($('.scrollBottom', self.el)[0], { hScrollbar: false, vScrollbar: false });
+            self.iscroll = new iScroll($('.scrollBottom2', self.el)[0], { hScrollbar: false, vScrollbar: false });
 
         
 

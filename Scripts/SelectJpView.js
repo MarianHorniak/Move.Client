@@ -1,4 +1,4 @@
-var SelectJpView = function (messages) {
+﻿var SelectJpView = function (messages) {
     this.index = 5;
     this.saveButton = null;
     this.initialize = function() {
@@ -24,42 +24,37 @@ var SelectJpView = function (messages) {
     this.loadForm = function () {
         app.waiting();
         var self = this;
-        self.showForm(Service.state.Orders);
+        self.showForm(Service.state.Jps);
     };
 
     this.showForm = function (data) {
-        
         var f = $("#selectJpData"), self = this;
-        f.html(SelectJpView.templateForm(data));
+        if (data.length > 0) {
+            
+            f.html(SelectJpView.templateForm(data));
 
-        if (self.iscroll)
-            self.iscroll.refresh();
+            if (self.iscroll)
+                self.iscroll.refresh();
+            else
+                self.iscroll = new iScroll($('.scrollBottom2', self.el)[0], { hScrollbar: false, vScrollbar: false });
+
+            f.on('click', '[data-value]', function (event) {
+                var val = $(this).attr("data-value");
+                if (Service.state.IdDriveOrder != val) {
+                    Service.state.IdDriveOrder = val;
+                    Bussiness.afterSelectJP();
+                }
+                app.home();
+            });
+        }
         else
-            self.iscroll = new iScroll($('.scrollBottom', self.el)[0], { hScrollbar: false, vScrollbar: false });
+        {
+            f.html("<div>Žiadne jazdy</div>");
+        }
 
-        f.on('click', '[data-value]', function (event) {
-            var val = $(this).attr("data-value");
-            if (Service.state.IdDriveOrder != val) {
-                Service.state.IdDriveOrder = val;
-                Service.saveState("JPActivate");
-            }
-            self.setButtons();
-            app.home();
-        });
-        
-        $("#selectJpData").show();
-        self.setButtons();
-           // $("#settingsallSave").removeClass("transparent");
+        f.show();
         app.waiting(false);
     };
-
-    this.setButtons = function () {
-        var f = $("#selectJpData");
-
-        f.find("[data-value]").removeClass("selected");
-        $("#selectJpData" + Service.state.IdDriveOrder).addClass("selected");
-    };
-
     this.initialize();
 }
 

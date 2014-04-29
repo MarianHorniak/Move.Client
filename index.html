@@ -11,10 +11,13 @@
 <!-- HEADER -->
 <div id="jpHeader">
     <div id="jpInfo">MoVe</div>
-</div>
-<!-- LOG -->
-<div id="jpLog"></div>
 
+    <div id="carStatusInfo"></div>
+    <div id="travelStatusInfo"></div>
+    <div id="roadStatusInfo"></div>
+    <!-- LOG -->
+    <div id="jpLog"></div>
+</div>
 
 <!-- NEWS -->
 <div id="newsWrapper">
@@ -29,85 +32,79 @@
 <!--menu--> 
 <div id="menu">
 <div class='footer' id="footermenu">
-    <button id="btnSelectJp"  data-route="selectjp" class="textnoicon">&nbsp;</button>
-    <button id="btnSetting"  data-route="state" class="icon ico_settings">&nbsp;</button>
-    <button title="login"  data-route="login" class="icon ico_end">&nbsp;</button>&nbsp;
+    <button id="btnactions" data-route="actions" class="icon ico_stop">&nbsp;</button>
+    <button id="btnjp" data-route="jp" class="icon textnoicon">&nbsp;JP&nbsp;</button>
+    <button id="btnselectjp" data-route="selectjp" class="icon ico_submenu">&nbsp;</button>
+    <button id="btnmap" data-route="map" class="icon ico_map">&nbsp;</button>
+    <button id="btnstate" data-route="state" class="icon ico_settings" style="display:none">&nbsp;</button>
+    <button id="btnlogin" data-route="login" class="icon ico_end">&nbsp;</button>&nbsp;
 </div>
 </div>
 
 <!-- JP -->
 <script id="jp-tpl" type="text/x-handlebars-template">
 
-<div class="tabs">
-    <button data-route="jp" class="selected">JP</button>
-    <button data-route="actions">Akcie</button>
-    <button data-route="map">Mapa</button>
+<div>
+  <div class='jp-header'></div>
+  <div class='jpk-list'></div>
 </div>
-
-<div class="scroll">
-  <div class='buttonlist jp-list'></div>
+</script>
+<script id="jp-header-tpl" type="text/x-handlebars-template">
+<div class="{{this.Status}}" data-id="{{this.PK}}">
+{{#if this.Active}}
+    <button id="JPPaused" data-value="Paused" class="textnoicon">Prerušiť</button>
+    <button id="JPFinish" data-value="Finish" class="textnoicon">Ukončiť</button>
+{{else}} 
+    {{#if this.NoFinish}} 
+        <button id="JPActive" data-value="Active" class="textnoicon">Aktivovať</button>
+    {{/if}}
+{{/if}}
+{{this.DateFromFormated}} {{this.JP_Description}} <br/> {{this.Car_Description}} {{this.Status}}
 </div>
 </script>
 
-<script id="jp-li-tpl" type="text/x-handlebars-template">
+<script id="jpk-li-tpl" type="text/x-handlebars-template">
+<div class='buttonlist'>
 {{#.}}
-<div id="{{this.GUID}}" class="{{this.Status}}" data_GUID_Offer="{{this.GUID_Offer}}" data_StatusOffer="{{this.StatusOffer}}" data_Id="{{this.GUID}}" data_Status="{{this.Status}}">
-
-    {{#if this.StatusCancel}}
-    {{else}}
-    <div class="icon cancel">&nbsp;</div>
-    {{/if}}
-
-    <div class="content">
-    {{#if this.StatusOfferGUI}}
-             <strong>{{this.FormatedDate}} {{this.StatusDescription}}</strong> <br/>
-             {{this.StartCity}} {{this.StartAddress}}<br/>
-             {{this.EndCity}} {{this.EndAddress}}<br/>
-            {{this.Persons}} / {{this.SpecialConditions}}  
-            {{#if Globals.Orders_List_ShowCustomerPhone}}
-            / {{this.CustomerPhone}} 
-            {{/if}}
-            / {{this.CustomerName}} 
-           
-                
-
-    {{else}}
-
-            <strong>{{this.FormatedDate}}</strong> {{this.StartCity}} {{this.StartAddress}}<br/>
-            {{this.EndCity}} {{this.EndAddress}}<br/>
-            {{this.Persons}} / {{this.SpecialConditions}}  
-            {{#if Globals.Orders_List_ShowCustomerPhone}}
-            / {{this.CustomerPhone}} 
-            {{/if}}
-            / {{this.CustomerName}} - <strong>{{this.StatusDescription}}</strong>
-
-     {{/if}}
-    </div>
-    {{#if this.StatusCancel}}
-        <div class="icon confirmCancel">&nbsp;</div>
-    {{else}}
-        <div class="icon up">&nbsp;</div>
-    {{/if}}
- </div>
+<div id="jpk{{this.PK}}" class="{{this.Status}}">
+    {{#if this.Active}}<button id="jpkFinish{{this.PK}}" data-value="Finish" class="textnoicon">Ukončiť</button>{{/if}}
+<strong>{{this.Sort}} {{this.DestDescription}}</strong> <br/>
+        {{this.DestCity}} {{this.DestAddress}}
+    
+</div>
 {{/.}}
+</div>
 </script>
 
 <!-- Actions -->
 <script id="actions-tpl" type="text/x-handlebars-template">
-<div class='tabs'>
-    <button data-route="jp">JP</button>
-    <button data-route="actions" class="selected">Akcie</button>
-    <button data-route="map">Mapa</button>
-</div>
 <div id="actionsForm" class="scrollBottom"></div>
 </script>
 
 <script id="actionsForm-template" type="text/x-handlebars-template">
- <div id="TravelStatus"><label>Typ jazdy</label> <button id="TravelStatusSukromna" data-value="Sukromna">Súkromná</button><button id="TravelStatusSluzobna" data-value="Sluzobna">Služobná</button></div>
- <div id="CarStatus"><label>Stav jazdy</label> <button id="CarStatusRun" data-value="Run">Jazda</button><button id="CarStatusStop" data-value="Stop">Stop</button></div>
- <div id="RoadStatus"><label>Typ cesty</label> <button id="RoadStatusTown" data-value="Town">Mesto</button><button id="RoadStatusOutofTown" data-value="OutofTown">Mimo mesta</button><button id="RoadStatusHighway" data-value="Highway">Dialnica</button><button id="RoadStatusTerrain1" data-value="Terrain1">Terén 1</button><button id="RoadStatusTerrain2" data-value="Terrain2">Terén 2</button></div>
-<!--<input  name="HistoryActionDescription" value="{{this.HistoryActionDescription}}" type="text" placeholder="Poznámka" />-->
-{{#if this.ErrorMessage}}<div class="error">{{this.ErrorMessage}}</div>{{/if}}
+ <div id="TravelStatus"><label>Typ jazdy</label><div id="TravelStatusButtons"></div></div>
+ <div id="CarStatus"><label>Stav jazdy</label> <div id="CarStatusButtons"></div></div>
+ <div id="RoadStatus"><label>Typ cesty</label> <div id="RoadStatusButtons"></div></div>
+  <div id="Tacho"><label>Stav km</label> 
+      <!--<input class="inputActionValue" type="number" id="TachoPrevious" value="0" disabled />-->
+      <!--<input class="inputActionValue" type="number" id="TachoCurrentCount" value="112" disabled />-->
+      <input class="inputActionValue" type="number" id="TachoCurrent" value="0"/>
+      <button class="icon ico_submitActions" id="btnsetTacho">&nbsp;</button>
+
+  </div>
+  <div id="Petrol"><label>Tankovanie</label> 
+      <!--<input class="inputActionValue" type="number" id="PetrolPrevious" value="0" disabled />-->
+      <!--<input class="inputActionValue" type="number" id="PetrolCurrentCount" value="112" disabled />-->
+      <input class="inputActionValue" type="number" id="PetrolCurrent" value="0"/>
+      <button class="icon ico_submitActions" id="btnsetPetrol">&nbsp;</button>
+  </div>
+
+</script>
+
+<script id="actionsForm-buttons-template" type="text/x-handlebars-template">
+{{#.}}
+    <button id="{{this.parameter}}{{this.value}}" data-parameter="{{this.parameter}}" data-value="{{this.value}}">{{this.title}}</button>
+{{/.}}
 </script>
 
 <!-- AutoAction -->
@@ -130,23 +127,18 @@
 
 <!-- Map -->
 <script id="map-tpl" type="text/x-handlebars-template">
-<div class='tabs'>
-    <button data-route="jp">JP</button>
-    <button data-route="actions">Akcie</button>
-    <button data-route="map" class="selected">Mapa</button>
-</div>
 <div id="map-canvas"></div>
 </script>
 
 <!-- Login -->
 <script id="login-tpl" type="text/x-handlebars-template">
 <div class="header">
-    <button data-route="jp" id="settingsOrders" class="icon ico_back">&nbsp;</button>
+    <!--<button data-route="jp" id="settingsOrders" class="icon ico_back">&nbsp;</button>-->
     <button id="settTitle" class="textHeaderTitle" disabled="disabled">Login</button>
     <button id="settingsSave" class="icon ico_submit transparent">&nbsp;</button>
     <button id="appExit" class="icon ico_end">&nbsp;</button>
 </div>
-<div id="loginForm" class="scrollBottom"></div>
+<div id="loginForm" class="scrollBottom2"></div>
 </script>
 
 <script id="loginForm-tpl" type="text/x-handlebars-template">
@@ -164,23 +156,23 @@
     <!--<button data-route="jp" id="selectJpBack" class="icon ico_back">&nbsp;</button>-->
     <button class="textHeaderTitle" disabled="disabled">Jazdné príkazy</button>
 </div>
-     <div id="selectJpData" class="scrollBottom"></div>
+     <div id="selectJpData" class="scrollBottom2"></div>
 </script>
      
  <script id="selectJpData-tpl" type="text/x-handlebars-template">
 {{#.}}
-    <button id="selectJpData{{this.PK}}" data-value="{{this.PK}}" class="content"><strong>{{this.JP_Description}} </strong> {{this.Car_Description}}</button>
+    <div id="selectJpData{{this.PK}}" data-value="{{this.PK}}" class="{{this.Status}}"><strong>{{this.JP_Description}} </strong><br/> {{this.Car_Description}} [{{this.Status}}]</div>
 {{/.}}
 </script>
 
 <!-- Settings -->
 <script id="settingsall-tpl" type="text/x-handlebars-template">
 <div class="header">
-    <button data-route="jp" id="settingsallOrders" class="icon ico_back">&nbsp;</button>
+    <!--<button data-route="jp" id="settingsallOrders" class="icon ico_back">&nbsp;</button>-->
     <button id="settAll" class="textHeaderTitle" disabled="disabled">Nastavenia</button>
     <!--<button id="settingsallSave" class="icon texticon ico_submit">&nbsp;</button>-->
 </div>
-     <div id="settingsallForm" class="scrollBottom"></div>
+     <div id="settingsallForm" class="scrollBottom2"></div>
 </script>
      
  <script id="settingsallForm-tpl" type="text/x-handlebars-template">
@@ -200,6 +192,8 @@
 <script src="lib/jquery-1.8.2.min.js"></script>
 <script src="lib/handlebars.js"></script>
 <script src="lib/iscroll.js"></script>
+<script src="lib/iso8601.js"></script>
+<script src="Scripts/Bussiness.js"></script>
 <script src="Scripts/PositionService.js"></script>
 <script src="Scripts/Service.js"></script>
 <script src="Scripts/JpView.js"></script>

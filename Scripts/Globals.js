@@ -1,11 +1,6 @@
 ﻿var Globals = 
     {
-        //prezvonenie
-        GLOB_RecallMe: false,
 
-        //pozicia na stanovisti 
-        GLOB_GUID_Stand: "",
-        GLOB_StandPosition: 0,
 
         //array of local lists
         GLOB_LocalLists: [], //new Array("Stand", "sysMessageTemplate"),
@@ -18,13 +13,13 @@
         Position_LngPrev: 0,
 
         language: "SK",
-        RoleName: "TaxiDriver",
+        RoleName: "Driver",
 
         //Messaging
         HasNewMessasges: false,
         MessageTimeToLiveMin: 30,
         MessageType: "Info",
-        ReceiverRole : "TaxiDispatcher",
+        ReceiverRole : "Dispatcher",
 
         //Media
         Media_Volume:0.5, 
@@ -36,15 +31,18 @@
         //LOG + tracer
         traceMessage : "",
         
+        ////rychlost 
+        //velocityCurrent: 0,
+        //velocityPrevious: 0,
+        ////stav nadrze
+        //petrolCurrent: 0,
+        //petrolPrevious: 0,
+        ////stav tacho
+        //tachoCurrent: 0,
+        //tachoCurrentCount: 0,
+        //tachoPrevious: 0,
 
-        //CONSTANTS
-        constants: {
-            Orders_List_ShowCustomerPhone: false,
-            OrderDetail_Defauls_timeToRealize: 5,
-            g_RefreshOrderSeconds: 60,
-            Stand_Distancekm: 0.200,
-            Stand_OfferSec:180, //180
-        },
+
     }
 
 

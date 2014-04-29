@@ -25,7 +25,7 @@ var Map = {
     marker: null,
     markers: [],
     map: null,
-    datatransporters:null,
+    datatransporters: null,
     mapOut: null,
     mapDiv: null,
     mess: null,
@@ -34,12 +34,12 @@ var Map = {
     apiIsOk: false,
     initialize: function (el) {
 
-        
+
         Map.mapDiv = $('<div class="scrollBottom" id="mapDiv"/>').appendTo(el);
         Map.mapOut = $('<div id="mapOut"/>').appendTo(el);
 
         //var header = $('<div class="header"></div>').appendTo(el); //<button data-route="jp" class="icon ico_back">&nbsp;</button>
-        
+
         if (Map.mess) {
             Map.message(Map.mess, Map.messError);
         }
@@ -91,25 +91,25 @@ var Map = {
         var self = this;
         Map.date = new Date().toTimeString();
         Map.message("Pozícia " + Map.date);
-        var d = Translator.Translate('Lat')+': ' + position.coords.latitude + '<br />' +
+        var d = Translator.Translate('Lat') + ': ' + position.coords.latitude + '<br />' +
         Translator.Translate('Lon') + ': ' + position.coords.longitude + '<br />' +
-        Translator.Translate('Rýchlosť') + ': ' + (position.coords.speed?position.coords.speed * 3.6:0) + " km/h" + '<br />' +
+        Translator.Translate('Rýchlosť') + ': ' + (position.coords.speed ? position.coords.speed * 3.6 : 0) + " km/h" + '<br />' +
         Translator.Translate('Presnosť') + ': ' + position.coords.accuracy + " m" + '<br />';
-        
+
         var ddop = "";
         Map.geocode({ 'latLng': new google.maps.LatLng(position.coords.latitude, position.coords.longitude) }, function (a) {
-            ddop = Translator.Translate('Addresa')+': ' + a.City + ' ' + a.Address;
+            ddop = Translator.Translate('Addresa') + ': ' + a.City + ' ' + a.Address;
             Map.mapOut.html(d + ddop);
             Map.setMap(position);
             PositionService.lat = position.coords.latitude;
             PositionService.lng = position.coords.longitude;
             PositionService.speed = position.coords.speed;
         });
-       //'Altitude: ' + position.coords.altitude + '<br />' +
-       //'Accuracy: ' + position.coords.accuracy + '<br />' +
-       //'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '<br />' +
-       //'Heading: ' + position.coords.heading + '<br />' +
-       //'Speed: ' + Math.ceil(position.coords.speed * 3.6) + ' km/h<br />';// +
+        //'Altitude: ' + position.coords.altitude + '<br />' +
+        //'Accuracy: ' + position.coords.accuracy + '<br />' +
+        //'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '<br />' +
+        //'Heading: ' + position.coords.heading + '<br />' +
+        //'Speed: ' + Math.ceil(position.coords.speed * 3.6) + ' km/h<br />';// +
         //'Timestamp: ' + new Date(position.timestamp) + '<br />';
         //Map.mapOut.html(d + ddop);
         //Map.setMap(position);
@@ -145,7 +145,7 @@ var Map = {
                 }
                 Map.map.setCenter(Map.point);
                 Map.marker.setPosition(Map.point);
-                
+
 
             }
             else {
@@ -223,4 +223,5 @@ var Map = {
     },
 };
 
+//MHP test
 MapView.template = Handlebars.compile($("#map-tpl").html());

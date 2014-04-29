@@ -20,6 +20,9 @@ var PositionService = {
                 PositionService.lng = position.coords.longitude;
                 PositionService.speed = position.coords.speed ? position.coords.speed * 3.6 : 0;
                 app.info(Translator.Translate("Presnosť pozície") + ": " + position.coords.accuracy + " m");
+
+                //TACHOMETER
+
             }, function (err) {
                 app.info(err.message);
             },
@@ -46,26 +49,6 @@ var PositionService = {
     pool: function () {
         this.poolID = undefined;
         PositionService.callService();
-            //try {
-            //    navigator.geolocation.getCurrentPosition(
-            //        function (position) {
-            //                PositionService.lat = position.coords.latitude;
-            //                PositionService.lng = position.coords.longitude;
-        //                PositionService.callService();
-            //        },
-            //        function (err) {
-        //            PositionService.callService();
-            //            app.info(err.message);
-            //        },
-            //        {
-            //            enableHighAccuracy: Service.getState().enableHighAccuracy ? true : false,
-            //            maximumAge: 1000
-            //        });
-            //}
-            //catch (err) {
-        //    PositionService.callService();
-            //    app.info(err.message);
-            //}
     },
     callService: function () {
         if (Service.isComplet()) {
@@ -77,24 +60,18 @@ var PositionService = {
                 Globals.Position_LatPrev = Globals.Position_Lat;
                 Globals.Position_LngPrev = Globals.Position_Lng;
 
-
                 var posChanged = PositionService._lat != PositionService.lat && PositionService._lng != PositionService.lng;
-
                 
                 if (posChanged) {
                     PositionService._lat = PositionService.lat;
                     PositionService._lng = PositionService.lng;
                     Globals.Position_Lat = PositionService.lat;
                     Globals.Position_Lng = PositionService.lng;
-                
-                    //stanoviste - zmena ! 
-                    //Stand.CheckStandAvailable();
-
+                                        
+                    Service.sendDataEvent("EventGEO",
+                    function (d) { PositionService.startPool(); app.info(""); PositionService.refreshVersionData(d); },
+                    function (d) { PositionService.startPool(); if (d && d.ErrorMessage) app.info(d.ErrorMessage); PositionService.refreshVersionData(d); });
                 }
-
-                Service.sendDataEvent(
-                function (d) { PositionService.startPool(); app.info(""); PositionService.refreshVersionData(d); },
-                function (d) { PositionService.startPool(); if (d && d.ErrorMessage) app.info(d.ErrorMessage); PositionService.refreshVersionData(d); });
             }
             catch (err) {
                 PositionService.startPool();
