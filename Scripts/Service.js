@@ -29,9 +29,9 @@
 
         enabledActions: [],
         Jps: undefined,
+        Events: [],
         sessionId: undefined,
         enableHighAccuracy: true
-        
     },
     initialize: function (callback) {
         app.log("Service.initialize");
@@ -39,7 +39,7 @@
         $.support.cors = true;
         $.ajaxSetup({
             cache: false,
-            timeout: 30000,
+            timeout: 60000,
             error: function (jqXHR, textStatus, errorThrown) {
                 var e = "ERROR";
                 switch (jqXHR.status) {
@@ -48,44 +48,71 @@
                 }
                 app.log(e);
                 app.error(e);
+                Service.online = false;
+                app.setHeader();
             }
         });
          
-        this.getState();
-        this.login(callback);
+        Service.getState();
+        Service.login(callback);
+    },
+    testOnline: function (callback) {
+        Service.getData("login?id=a", null, function () { Service.online = true; app.info("Aplikácia je online"); app.setHeader(); if (callback) callback(); }, function () { Service.online = false; app.info("Aplikácia pracuje offline"); app.setHeader(); if (callback) callback(); });
     },
     initializeBussiness: function (callback) {
-        PositionService.startWatch();
-        Service.refreshJps(callback);
+        if (Service.online) {
+            if (Service.state.Events && Service.state.Events.length > 0)
+                Service.sendEvents(callback);
+            else
+                Service.refreshJps(callback);
+        }
+        else if (callback) callback();
     },
     login: function (callback) {
+        Service.testOnline(function () { Service.callLogin(callback); });
+    },
+    callLogin: function (callback) {
         app.log("Service.login");
         $("#footermenu").hide();
         Service.isAuthenticated = false;
-        if (this.state.url && this.state.name && this.state.password)
-            this.postData("login", { UserName: this.state.name, Password: this.state.password, RememberMe: true, TransporterId: this.state.transporterId },
-            function (d) {
+        PositionService.stopWatch();
+        if (this.state.url && this.state.name && this.state.password) {
+            if (Service.online) {
+                this.postData("login", { UserName: this.state.name, Password: this.state.password, RememberMe: true, TransporterId: this.state.transporterId },
+                function (d) {
+                    Service.isAuthenticated = true;
+                    $("#footermenu").show();
+                    var s = Service.getState();
+                    s.userId = d.userId;
+                    s.sessionId = d.sessionId;
+
+                    if (Service.isComplet()) {
+                        Service.initializeBussiness(function () { Service.saveState("UserLogin"); PositionService.startWatch(); if (callback) callback(); });
+                    }
+                    else {
+                        if (callback) callback();
+                    }
+                    
+
+                }, function (d) {
+                    if (d && d.ErrorMessage)
+                        app.error(d.ErrorMessage);
+                    Service.isAuthenticated = false;
+                    if (callback)
+                        callback();
+                });
+            }
+            else {
                 Service.isAuthenticated = true;
                 $("#footermenu").show();
-                var s = Service.getState();
-                s.userId = d.userId; 
-                s.sessionId = d.sessionId;
-                
-                Service.saveState("UserLogin");
                 if (Service.isComplet()) {
                     Service.initializeBussiness(callback);
                 }
                 else {
                     if (callback) callback();
                 }
-
-            }, function (d) {
-                if (d && d.ErrorMessage)
-                    app.error(d.ErrorMessage);
-                Service.isAuthenticated = false;
-                if (callback)
-                    callback();
-            });
+            }
+        }
         else
             app.login();
     },
@@ -114,6 +141,24 @@
         else
             if (callback) callback();
     },
+    sendEvents: function (callback) {
+        if (Service.online) {
+            app.waiting(true);
+            Service.postData("DataEvents", { '': Service.state.Events },
+                function () {
+                    app.waiting(false);
+                    Service.state.Events = [];
+                    Service.refreshJps(callback);
+                },
+                function () {
+                    app.waiting(false);
+                    app.error("Nepodarilo sa poslať dáta");
+                });
+        }
+    },
+    //endSendEvents: function (callback) {
+
+    //},
     refreshJps: function (callback) {
         app.log("app.refreshJps");
         Service.getData("jp", {}, function (jps) {
@@ -174,11 +219,9 @@
             var dataEvent = {
                 PK: 0,
                 ActionName: actionName,
-
                 IdRequirement: jp.IdRequirement,
                 IdDriveOrder: jp.PK,
                 IdDestination: jpk ? jpk.PK : 0,
-
                 CarStatus: jp.CarStatus,
                 RoadStatus: jp.RoadStatus,
                 TravelStatus: jp.TravelStatus,
@@ -195,15 +238,22 @@
             //log
             app.info('data-event: ' + dataEvent.ActionName);
 
-            Service.postData("DataEvent", dataEvent,
-                function () {
-                    app.waiting(false);
-                    if (callback) callback();
-                },
-                function () {
-                    app.waiting(false);
-                    if (errorCallback) errorCallback();
-                });
+            if (Service.online) {
+                Service.postData("DataEvent", dataEvent,
+                    function () {
+                        app.waiting(false);
+                        if (callback) callback();
+                    },
+                    function () {
+                        app.waiting(false);
+                        if (errorCallback) errorCallback();
+                    });
+            }
+            else {
+                if (!Service.state.Events)
+                    Service.state.Events = [];
+                Service.state.Events.push(dataEvent);
+            }
         }
         else
             if (callback) callback();

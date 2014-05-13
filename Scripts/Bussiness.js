@@ -64,6 +64,7 @@
                 break;
             case "JPPause":
                 Service.disableAllActions(Service.currentJP());
+                app.setHeader();
                 break;
             case "JPFinish":
                 //zahodi sa jp
@@ -72,6 +73,7 @@
                 Service.initializeState();
                 //idem do vyberu jp
                 app.route("selectjp");
+                app.setHeader();
                 break;
             case "JPKActive": break;
             case "JPKFinish":
@@ -81,6 +83,7 @@
                     jpk.Status = "Active";
                     //ulozi stav a posle sa DataEvent
                     Service.saveState("JPKActive");
+                    app.setHeader();
                 }
                 break;
             case "EventGEO": break;

@@ -248,7 +248,7 @@
         });
     },
     setHeader: function(){
-        $('#jpInfo').val('MoVe');
+        $('#jpInfo').html("MoVe : " + (Service.online ? "[online]":"[offline]"));
         $("#carStatusInfo").removeClass();
         $("#roadStatusInfo").removeClass();
         $("#travelStatusInfo").removeClass();
@@ -257,7 +257,7 @@
             $("#carStatusInfo").addClass(jp.CarStatus);
             $("#roadStatusInfo").addClass(jp.RoadStatus);
             $("#travelStatusInfo").addClass(jp.TravelStatus);
-            $('#jpInfo').val('MoVe : '+jp.Car_Description+' '+jp.JP_Description);
+            $('#jpInfo').html('MoVe : ' + (Service.online ? "[online] " : "[offline] ")  + jp.Car_Description + ' ' + jp.JP_Description);
         }
     },
     setFooter: function () {
