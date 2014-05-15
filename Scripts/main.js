@@ -151,10 +151,10 @@
         $('body').on('click', '#btnNewsClose', function (event) { app.hideNews(); });
        
         try {
-            //document.addEventListener('pause', function () { app.info("Pause"); }, false);
-            //document.addEventListener('resume', function () { app.info("Resume"); }, false);
-            //document.addEventListener("offline", function () { app.info("Offline"); }, false);
-            //document.addEventListener("online", function () { app.info("Online"); }, false);
+            document.addEventListener('pause', function () { app.info("Pause"); }, false);
+            document.addEventListener('resume', function () { app.info("Resume"); }, false);
+            document.addEventListener("offline", function () { app.info("Offline"); }, false);
+            document.addEventListener("online", function () { app.info("Online"); }, false);
             document.addEventListener("unload", function () {
                 app.info("Unload");
                 cordova.require('cordova/plugin/powermanagement').release(
@@ -185,13 +185,7 @@
         }
     },
     home: function (refresh) {
-        if (!Service.isAuthenticated)
-            app.login();
-        if (Service.currentJP())
-            app.route("jp");
-        else
-            app.route("selectjp");
-        
+        app.route("jp");
         if (refresh && app.currentPage && app.currentPage.loadData)
             app.currentPage.loadData();
     },
@@ -201,9 +195,8 @@
     },
     route: function (p) {
         app.log("app.route: " + p);
-        if (!Service.isAuthenticated)
+        if (!Service.isComplet() && p != "login")
             p = "login";
-
         var self = this;
         var page = this.pages[p];
         if (!page) {
@@ -220,6 +213,8 @@
             this.pages[p] = page;
             $('body').append(page.el);
             page.render();
+
+
         }
         this.currentPageName = p;
         this.setFooter();
@@ -253,7 +248,7 @@
         });
     },
     setHeader: function(){
-        $('#jpInfo').val('MoVe');
+        $('#jpInfo').html("MoVe : " + (Service.online ? "[online]":"[offline]"));
         $("#carStatusInfo").removeClass();
         $("#roadStatusInfo").removeClass();
         $("#travelStatusInfo").removeClass();
@@ -262,7 +257,7 @@
             $("#carStatusInfo").addClass(jp.CarStatus);
             $("#roadStatusInfo").addClass(jp.RoadStatus);
             $("#travelStatusInfo").addClass(jp.TravelStatus);
-            $('#jpInfo').val('MoVe : '+jp.Car_Description+' '+jp.JP_Description);
+            $('#jpInfo').html('MoVe : ' + (Service.online ? "[online] " : "[offline] ")  + jp.Car_Description + ' ' + jp.JP_Description);
         }
     },
     setFooter: function () {
@@ -295,7 +290,10 @@
         this.registerEvents();
 
         Service.initialize(function () {
-            self.home();
+            if (Service.state.Jps && Service.state.IdDriveOrder)
+                self.home();
+            else
+                self.route("selectjp");
         });
     },
     radio: function (el, input)

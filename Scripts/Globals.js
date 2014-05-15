@@ -31,8 +31,16 @@
         //LOG + tracer
         traceMessage : "",
         
-        lastGEOSend: Date.now(),
-        GEOsendFreqSec : 60,
+        ////rychlost 
+        //velocityCurrent: 0,
+        //velocityPrevious: 0,
+        ////stav nadrze
+        //petrolCurrent: 0,
+        //petrolPrevious: 0,
+        ////stav tacho
+        //tachoCurrent: 0,
+        //tachoCurrentCount: 0,
+        //tachoPrevious: 0,
 
 
     }

@@ -7,8 +7,6 @@ var PositionService = {
     _lng: 0,
     _speed: 0,
     poolID: undefined,
-    city: undefined,
-    address:undefined,
     watchID: undefined,
     startWatch: function () {
         PositionService.startPool();
@@ -53,53 +51,26 @@ var PositionService = {
         PositionService.callService();
     },
     callService: function () {
-        if (Service.isAuthenticated) {
+        if (Service.isComplet()) {
             try {
                 //app.info("Posielam ...");
                 var s = Service.getState();
 
-
+                //store previous position
+                Globals.Position_LatPrev = Globals.Position_Lat;
+                Globals.Position_LngPrev = Globals.Position_Lng;
 
                 var posChanged = PositionService._lat != PositionService.lat && PositionService._lng != PositionService.lng;
                 
                 if (posChanged) {
                     PositionService._lat = PositionService.lat;
                     PositionService._lng = PositionService.lng;
-
-
-
                     Globals.Position_Lat = PositionService.lat;
                     Globals.Position_Lng = PositionService.lng;
-
-                    //neposielame vzdy, iba podla nastavenia 
-                    var differenceSec = (Date.now() - Globals.lastGEOSend) / 1000;
-                    if (differenceSec < Globals.GEOsendFreqSec) return;
-
-                    //zistime rozdiel ! 
-                    var Distancekm = Geo.getDistanceFromLatLonInKm(Globals.Position_LatPrev, Globals.Position_LngPrev, Globals.Position_Lat, Globals.Position_Lng);
-                    Service.state.TachometerCount = Service.state.TachometerCount + Distancekm;
-                    Service.state.Distance = Distancekm;
-
-                    //store previous position
-                    Globals.Position_LatPrev = Globals.Position_Lat;
-                    Globals.Position_LngPrev = Globals.Position_Lng;
-
-                    //zistime adresu !
-                    Map.geocode({ 'latLng': new google.maps.LatLng(PositionService.lat, PositionService.lng) }, function (a) {
-                        if (a) {
-                            PositionService.city = a.City;
-                            PositionService.address = a.Address;
-                        }
-                    });
-
-                    
                                         
                     Service.sendDataEvent("EventGEO",
                     function (d) { PositionService.startPool(); app.info(""); PositionService.refreshVersionData(d); },
                     function (d) { PositionService.startPool(); if (d && d.ErrorMessage) app.info(d.ErrorMessage); PositionService.refreshVersionData(d); });
-
-                    //nastavime konstantu, kde
-                    Globals.lastGEOSend = Date.now();
                 }
             }
             catch (err) {
