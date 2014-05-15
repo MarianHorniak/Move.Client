@@ -39,9 +39,14 @@ var ActionsView = function (store) {
             });
             self.setButtons(jp);
         }
-        
+
         app.waiting(false);
         f.show();
+
+        if (self.iscroll)
+            self.iscroll.refresh();
+        else
+            self.iscroll = new iScroll($('.actionsFormScroll')[0], { hScrollbar: true, vScrollbar: false });
     };
 
     this.setButtons = function (jp) 

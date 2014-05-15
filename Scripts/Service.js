@@ -1,5 +1,5 @@
 ﻿var Service = {
-    online: true,
+    online: false,
     isAuthenticated: false,
     state: {
         url: undefined,
@@ -30,7 +30,7 @@
         enableHighAccuracy: true
     },
     initialize: function (callback) {
-        this.getState();
+        Service.getState();
 
         app.log("Service.initialize");
         //Cross domain !!!
@@ -49,48 +49,59 @@
             }
         });
 
-        this.login(callback);
+        Service.login(callback);
+    },
+    testOnline: function (callback) {
+        Service.getData("login?id=a", null, function () { Service.online = true; app.info("Aplikácia je online"); app.setHeader(); if (callback) callback(); }, function () { Service.online = false; app.info("Aplikácia pracuje offline"); app.setHeader(); if (callback) callback(); });
     },
     initializeBussiness: function (callback) {
-        PositionService.startWatch();
-        Service.refreshJps(callback);
+        if (Service.online) {
+            if (Service.state.Events && Service.state.Events.length > 0)
+                Service.sendEvents(callback);
+            else
+                Service.refreshJps(callback);
+        }
+        else if (callback) callback();
     },
     login: function (callback) {
+        Service.testOnline(function () { Service.callLogin(callback); });
+    },
+    callLogin: function (callback) {
+
         app.log("Service.login");
         $("#footermenu").hide();
         Service.isAuthenticated = false;
-
-        if(!Service.online)
-            Service.loginOffline(callback);
-        else if (this.state.url && this.state.name && this.state.password)
-            this.postData("login", { UserName: this.state.name, Password: this.state.password, RememberMe: true, TransporterId: this.state.transporterId },
-            function (d) {
-                Service.state.isAuthenticated = true;
-                Service.state.IdDriver = d.PK;
-                Service.loginOffline(callback);
-            }, function (d) {
-                if (d && d.ErrorMessage)
-                    app.error(d.ErrorMessage);
-                Service.state.isAuthenticated = false;
-                Service.loginOffline(callback);
-            });
+        PositionService.stopWatch();
+        if (this.state.url && this.state.name && this.state.password) {
+            if (Service.online) {
+                this.postData("login", { UserName: this.state.name, Password: this.state.password, RememberMe: true, TransporterId: this.state.transporterId },
+                function (d) {
+                    Service.isAuthenticated = true;
+                    Service.state.IdDriver = d.PK;
+                    Service.authorize(callback);
+                }, function (d) {
+                    if (d && d.ErrorMessage)
+                        app.error(d.ErrorMessage);
+                    Service.isAuthenticated = false;
+                    if (callback)
+                        callback();
+                });
+            }
+            else {
+                Service.authorize(callback);
+            }
+        }
         else
             app.login();
     },
-    loginOffline: function (callback) {
-        app.log("Service.loginOffline");
-        $("#footermenu").hide();
-        if (Service.state.isAuthenticated) {
-            Service.isAuthenticated = true;
+    authorize: function(callback){
+        Service.isAuthenticated = true;
+        Service.initializeBussiness(function () {
             $("#footermenu").show();
             Service.saveState("UserLogin");
-            Service.initializeBussiness(callback);
-        }
-        else {
-            Service.isAuthenticated = false;
-            Service.saveState();
+            PositionService.startWatch();
             if (callback) callback();
-        }
+        });
     },
     logout: function (callback) {
         if (Service.isAuthenticated) {
@@ -116,6 +127,21 @@
         }
         else
             if (callback) callback();
+    },
+    sendEvents: function (callback) {
+        if (Service.online) {
+            app.waiting(true);
+            Service.postData("DataEvents", { '': Service.state.Events },
+                function () {
+                    app.waiting(false);
+                    Service.state.Events = [];
+                    Service.refreshJps(callback);
+                },
+                function () {
+                    app.waiting(false);
+                    app.error("Nepodarilo sa poslať dáta");
+                });
+        }
     },
     refreshJps: function (callback) {
         app.log("app.refreshJps");
@@ -183,8 +209,8 @@
                 IdDestination: jpk ? jpk.PK : 0,
                 IdDriver: Service.state.IdDriver ? Service.state.IdDriver:0,
                 IdVehicle: Service.state.IdVehicle ? Service.state.IdVehicle:0,
-                City: PositionService.city ? PositionService.city:'',
-                Address: PositionService.address ? PositionService.address:'',
+                City: PositionService.getCity(),
+                Address: PositionService.getaddress(),
 
                 CarStatus: jp.CarStatus,
                 RoadStatus: jp.RoadStatus,
@@ -205,15 +231,22 @@
             //log
             app.info('data-event: ' + dataEvent.ActionName);
 
-            Service.postData("DataEvent", dataEvent,
-                function () {
-                    app.waiting(false);
-                    if (callback) callback();
-                },
-                function () {
-                    app.waiting(false);
-                    if (errorCallback) errorCallback();
-                });
+            if (Service.online) {
+                Service.postData("DataEvent", dataEvent,
+                    function () {
+                        app.waiting(false);
+                        if (callback) callback();
+                    },
+                    function () {
+                        app.waiting(false);
+                        if (errorCallback) errorCallback();
+                    });
+            }
+            else {
+                if (!Service.state.Events)
+                    Service.state.Events = [];
+                Service.state.Events.push(dataEvent);
+            }
         }
         else
             if (callback) callback();
@@ -311,29 +344,29 @@
                 });
         }
     },
-    testConnection: function (successDelegate, errorDelegate) {
-        app.log("Service.testConnection");
-        if (!this.state.url) {
-            app.error("Chýba adresa servisu");
-            if (errorDelegate)
-                errorDelegate();
-        }
-        else {
-            $.get(this.state.url + "/echo/1")
-                .done(function (d) {
-                    app.waiting(false);
-                    Service.online = true;
-                    if (successDelegate)
-                        successDelegate();
-                })
-                .fail(function () {
-                    Service.online = false;
-                    app.waiting(false);
-                    if (errorDelegate)
-                        errorDelegate();
-                });
-        }
-    },
+    //testConnection: function (successDelegate, errorDelegate) {
+    //    app.log("Service.testConnection");
+    //    if (!this.state.url) {
+    //        app.error("Chýba adresa servisu");
+    //        if (errorDelegate)
+    //            errorDelegate();
+    //    }
+    //    else {
+    //        $.get(this.state.url + "/echo/1")
+    //            .done(function (d) {
+    //                app.waiting(false);
+    //                Service.online = true;
+    //                if (successDelegate)
+    //                    successDelegate();
+    //            })
+    //            .fail(function () {
+    //                Service.online = false;
+    //                app.waiting(false);
+    //                if (errorDelegate)
+    //                    errorDelegate();
+    //            });
+    //    }
+    //},
 
     parseJsonDate: function (jsonDate) {
 

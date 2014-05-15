@@ -105,14 +105,15 @@ var JpView = function () {
 
         }
 
-        if (self.iscroll)
-            self.iscroll.refresh();
-        else
-            self.iscroll = new iScroll($('.jpk-list')[0], { hScrollbar: true, vScrollbar: false });
         app.waiting(false);
 
         $('.jp-header').show();
         $('.jpk-list').show();
+
+        if (self.iscroll)
+            self.iscroll.refresh();
+        else
+            self.iscroll = new iScroll($('.jpklScroll')[0], { hScrollbar: true, vScrollbar: false });
 
     };
     

@@ -52,6 +52,26 @@ var PositionService = {
         this.poolID = undefined;
         PositionService.callService();
     },
+    getCity: function () {
+
+        if (!PositionService.city)
+            PositionService.refreshAddress();
+        return PositionService.city;
+    },
+    getaddress: function () {
+
+        if (!PositionService.address)
+            PositionService.refreshAddress();
+        return PositionService.address;
+    },
+    refreshAddress: function () {
+        Map.geocode({ 'latLng': new google.maps.LatLng(PositionService.lat, PositionService.lng) }, function (a) {
+            if (a) {
+                PositionService.city = a.City;
+                PositionService.address = a.Address;
+            }
+        });
+    },
     callService: function () {
         if (Service.isAuthenticated) {
             try {
@@ -62,6 +82,17 @@ var PositionService = {
 
                 var posChanged = PositionService._lat != PositionService.lat && PositionService._lng != PositionService.lng;
                 
+                //aj nemame adresu, tak si ju vypytame !
+                if (!PositionService.address)
+                {
+                    Map.geocode({ 'latLng': new google.maps.LatLng(PositionService.lat, PositionService.lng) }, function (a) {
+                        if (a) {
+                            PositionService.city = a.City;
+                            PositionService.address = a.Address;
+                        }
+                    });
+                }
+
                 if (posChanged) {
                     PositionService._lat = PositionService.lat;
                     PositionService._lng = PositionService.lng;

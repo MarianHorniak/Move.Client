@@ -114,7 +114,7 @@
             case "EventTank":
                 break;
             case "SetTacho":
-                Service.state.TachometerCount = Serv.state.Tachometer;
+                Service.state.TachometerCount = Service.state.Tachometer;
                 Service.state.Distance = 0;
                 break;
             case "JPRoadStart": //zaciatok kroku, ale mimo kroku !!!! 

@@ -33,11 +33,6 @@
             
             f.html(SelectJpView.templateForm(data));
 
-            if (self.iscroll)
-                self.iscroll.refresh();
-            else
-                self.iscroll = new iScroll($('.scrollBottom2', self.el)[0], { hScrollbar: false, vScrollbar: false });
-
             f.on('click', '[data-value]', function (event) {
                 var val = $(this).attr("data-value");
                 if (Service.state.IdDriveOrder != val) {
@@ -54,6 +49,12 @@
 
         f.show();
         app.waiting(false);
+
+        if (self.iscroll)
+            self.iscroll.refresh();
+        else
+            self.iscroll = new iScroll($('.selectJpDataScroll')[0], { hScrollbar: true, vScrollbar: false });
+
     };
     this.initialize();
 }

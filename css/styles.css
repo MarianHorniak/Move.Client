@@ -288,14 +288,17 @@ button
 .jp-header div > button{
     float:right;
 }
-.jpk-list {
-     -webkit-overflow-scrolling: touch;
+.jpklScroll{
+    -webkit-overflow-scrolling: touch;
 	position: absolute;
 	top: 140px;
 	right: 0px;
 	bottom: 135px;
 	left: 0px;
 	overflow: hidden;
+}
+.jpk-list {
+    
 }
 .jpk-special {
 	position: absolute;
@@ -420,40 +423,16 @@ h2
 	font-size: 18px;
 }
 
-.scroll
+.selectJpDataScroll
 {
 	-webkit-overflow-scrolling: touch;
 	position: absolute;
-	top: 67px;
-	right: 0px;
-	bottom: 69px;
-	left: 0px;
-	overflow: hidden;
-    text-align:center;
-}
-
-.scrollBottom
-{
-	-webkit-overflow-scrolling: touch;
-	position: absolute;
-	top: 50px;
+	top: 125px;
 	right: 0px;
 	bottom: 65px;
 	left: 0px;
 	overflow: hidden;
 }
-
-.scrollBottom2
-{
-	-webkit-overflow-scrolling: touch;
-	position: absolute;
-	top: 115px;
-	right: 0px;
-	bottom: 65px;
-	left: 0px;
-	overflow: hidden;
-}
-
 
 .input.Mess {
 
@@ -743,9 +722,19 @@ div.tabs {
         text-overflow: ellipsis;
     }
 
+.actionsFormScroll {
+    -webkit-overflow-scrolling: touch;
+	position: absolute;
+	top: 61px;
+	right: 0px;
+	bottom: 65px;
+	left: 0px;
+	overflow: hidden;
+}
 #actionsForm > div {
     padding-left:115px;
     margin-top:10px;
+    margin-bottom:10px;
 }
 #actionsForm div > button {
     display:inline-block;

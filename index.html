@@ -53,7 +53,9 @@
 <script id="jp-tpl" type="text/x-handlebars-template">
 <div>
   <div class='jp-header'></div>
+    <div class='jpklScroll'>
   <div class='jpk-list'></div>
+        </div>
   <div class='jpk-special'> 
       <button id="JPRoadStart" data-value="Start" class="icon ico_activate">&nbsp;</button>
       <button id="JPRoadEnd" data-value="End" class="icon ico_finish">&nbsp;</button>
@@ -78,7 +80,7 @@
 </script>
 
 <script id="jpk-li-tpl" type="text/x-handlebars-template">
-<div class='buttonlist scrollBottom'>
+<div class='buttonlist'>
 {{#.}}
 <div id="jpk{{this.PK}}" class="{{this.Status}}">
     {{#if this.Active}}
@@ -101,7 +103,9 @@
 
 <!-- Actions -->
 <script id="actions-tpl" type="text/x-handlebars-template">
-<div id="actionsForm" class="scrollBottom"></div>
+<div class="actionsFormScroll">
+    <div id="actionsForm"></div>
+</div>
 </script>
 
 <script id="actionsForm-template" type="text/x-handlebars-template">
@@ -128,6 +132,7 @@
       <input class="" name="radiopc" type="radio" id="pc100" value="100" checked/>1.00
       <button class="icon ico_submitActions" id="btnsetPetrolCount">&nbsp;</button>
   </div>
+    &nbsp;
 </script>
 
 <script id="actionsForm-buttons-template" type="text/x-handlebars-template">
@@ -185,7 +190,9 @@
     <!--<button data-route="jp" id="selectJpBack" class="icon ico_back">&nbsp;</button>-->
     <button class="textHeaderTitle" disabled="disabled">Jazdné príkazy</button>
 </div>
-     <div id="selectJpData" class="scrollBottom2"></div>
+<div class="selectJpDataScroll">
+     <div id="selectJpData"></div>
+</div>
 </script>
      
  <script id="selectJpData-tpl" type="text/x-handlebars-template">
