@@ -10,14 +10,15 @@
 
 <!-- HEADER -->
 <div id="jpHeader">
-    <div id="jpInfo">MoVe</div>
+    <div id="jpInfo"></div>
 
     <div id="carStatusInfo"></div>
     <div id="travelStatusInfo"></div>
     <div id="roadStatusInfo"></div>
-    <!-- LOG -->
-    <div id="jpLog"></div>
+
 </div>
+        <!-- LOG -->
+    <div id="jpLog"></div>
 
 <!-- NEWS -->
 <div id="newsWrapper">
@@ -32,8 +33,8 @@
 <!--menu--> 
 <div id="menu">
 <div class='footer' id="footermenu">
-    <button id="btnactions" data-route="actions" class="icon ico_stop">&nbsp;</button>
-    <button id="btnjp" data-route="jp" class="icon textnoicon">&nbsp;JP&nbsp;</button>
+    <button id="btnactions" data-route="actions" class="icon ico_tools">&nbsp;</button>
+    <button id="btnjp" data-route="jp" class="icon ico_jp">&nbsp;</button>
     <button id="btnselectjp" data-route="selectjp" class="icon ico_submenu">&nbsp;</button>
     <button id="btnmap" data-route="map" class="icon ico_map">&nbsp;</button>
     <button id="btnstate" data-route="state" class="icon ico_settings" style="display:none">&nbsp;</button>
@@ -41,22 +42,35 @@
 </div>
 </div>
 
+<!-- Tacho - Tank -->
+<script id="tachotank-tpl" type="text/x-handlebars-template">
+<div>
+   nastavenie tankovania a tachometra !!! vynutene z inej akcie, napr JPActivate/JPDeactivate
+</div>
+</script>
+
 <!-- JP -->
 <script id="jp-tpl" type="text/x-handlebars-template">
-
 <div>
   <div class='jp-header'></div>
   <div class='jpk-list'></div>
+  <div class='jpk-special'> 
+      <button id="JPRoadStart" data-value="Start" class="icon ico_activate">&nbsp;</button>
+      <button id="JPRoadEnd" data-value="End" class="icon ico_finish">&nbsp;</button>
+  </div>
 </div>
 </script>
+
+
 <script id="jp-header-tpl" type="text/x-handlebars-template">
 <div class="{{this.Status}}" data-id="{{this.PK}}">
 {{#if this.Active}}
-    <button id="JPPaused" data-value="Paused" class="textnoicon">Prerušiť</button>
-    <button id="JPFinish" data-value="Finish" class="textnoicon">Ukončiť</button>
+    <button id="JPPaused" data-value="Paused"  class="icon ico_pause">&nbsp;</button>
+    <button id="JPFinish" data-value="Finish"  class="icon ico_finish">&nbsp;</button>
 {{else}} 
     {{#if this.NoFinish}} 
-        <button id="JPActive" data-value="Active" class="textnoicon">Aktivovať</button>
+        <!--<button id="JPActive" data-value="Active" class="textnoicon">Aktivovať</button>-->
+      <button id="JPActive" data-value="Active" class="icon ico_activate">&nbsp;</button>
     {{/if}}
 {{/if}}
 {{this.DateFromFormated}} {{this.JP_Description}} <br/> {{this.Car_Description}} {{this.Status}}
@@ -64,13 +78,22 @@
 </script>
 
 <script id="jpk-li-tpl" type="text/x-handlebars-template">
-<div class='buttonlist'>
+<div class='buttonlist scrollBottom'>
 {{#.}}
 <div id="jpk{{this.PK}}" class="{{this.Status}}">
-    {{#if this.Active}}<button id="jpkFinish{{this.PK}}" data-value="Finish" class="textnoicon">Ukončiť</button>{{/if}}
+    {{#if this.Active}}
+       <button id="jpkPause{{this.PK}}" data-value="Paused"  class="icon ico_pause">&nbsp;</button>
+       <button id="jpkFinish{{this.PK}}" data-value="Finish" class="icon ico_finish">&nbsp;</button>
+    {{/if}}
+    {{#if this.Paused}}
+        <button id="jpkActivate{{this.PK}}" data-value="Active" class="textnoicon">Aktivovať</button>
+    {{/if}}
+    {{#if this.Activable}}
+        <button id="jpkActivate{{this.PK}}" data-value="Active" class="icon ico_activate">&nbsp;</button>
+    {{/if}}
+
 <strong>{{this.Sort}} {{this.DestDescription}}</strong> <br/>
         {{this.DestCity}} {{this.DestAddress}}
-    
 </div>
 {{/.}}
 </div>
@@ -98,7 +121,13 @@
       <input class="inputActionValue" type="number" id="PetrolCurrent" value="0"/>
       <button class="icon ico_submitActions" id="btnsetPetrol">&nbsp;</button>
   </div>
-
+      <div id="PetrolCount"><label>Stav paliva</label> 
+      <input class="" name="radiopc" type="radio" id="pc025" value="25" />0.25
+      <input class="" name="radiopc" type="radio" id="pc0500" value="50"/>0.50
+      <input class="" name="radiopc" type="radio" id="pc075" value="75"/>0.75
+      <input class="" name="radiopc" type="radio" id="pc100" value="100" checked/>1.00
+      <button class="icon ico_submitActions" id="btnsetPetrolCount">&nbsp;</button>
+  </div>
 </script>
 
 <script id="actionsForm-buttons-template" type="text/x-handlebars-template">

@@ -1,39 +1,37 @@
 ﻿var Service = {
-    online: false,
+    online: true,
     isAuthenticated: false,
-    isComplet: function () {
-        return this.isAuthenticated
-            && this.state;
-    },
     state: {
         url: undefined,
         name: undefined,
         password: undefined,
-        userId: undefined,
-        IdDriveOrder: undefined,
-        CarStatus: undefined,
-        RoadStatus: undefined,
-        TravelStatus: undefined,
+        IdDriver : undefined,
+        IdVehicle: undefined,
+        isAuthenticated: false,
+        IdDriveOrder: undefined, // vybrany jp
+        
 
         TachometerPrevious: undefined,
         Tachometer: undefined,
+        TachometerDateStored : undefined, //kedy bol nastaveny tachometer 
         TachometerCount: undefined,
+        Distance:undefined, //vzdialenost medzi gps
 
-        PetrolPrevius: undefined,
+        PetrolPrevious: undefined,
         Petrol: undefined,
+        PetrolDateStored : undefined, //kedy bolo posledne cerapanie 
         PetrolCount: undefined,
-
-        //
+        
+        //rychlost ? 
         velocity: 0,
         velocityPrevious: 0,
 
-        enabledActions: [],
-        Jps: undefined,
-        sessionId: undefined,
+        Jps: undefined, //zoznam jazdnych prikazov 
         enableHighAccuracy: true
-        
     },
     initialize: function (callback) {
+        this.getState();
+
         app.log("Service.initialize");
         //Cross domain !!!
         $.support.cors = true;
@@ -43,15 +41,14 @@
             error: function (jqXHR, textStatus, errorThrown) {
                 var e = "ERROR";
                 switch (jqXHR.status) {
-                    case 403: e = "Chybné prihlásenie"; break;
+                    case 403: e = "Chybné prihlásenie"; Service.isAuthenticated = false; break;
                     default: e = "Služba sa nenašla (" + jqXHR.status + "): " + this.url; break;
                 }
                 app.log(e);
                 app.error(e);
             }
         });
-         
-        this.getState();
+
         this.login(callback);
     },
     initializeBussiness: function (callback) {
@@ -62,32 +59,38 @@
         app.log("Service.login");
         $("#footermenu").hide();
         Service.isAuthenticated = false;
-        if (this.state.url && this.state.name && this.state.password)
+
+        if(!Service.online)
+            Service.loginOffline(callback);
+        else if (this.state.url && this.state.name && this.state.password)
             this.postData("login", { UserName: this.state.name, Password: this.state.password, RememberMe: true, TransporterId: this.state.transporterId },
             function (d) {
-                Service.isAuthenticated = true;
-                $("#footermenu").show();
-                var s = Service.getState();
-                s.userId = d.userId; 
-                s.sessionId = d.sessionId;
-                
-                Service.saveState("UserLogin");
-                if (Service.isComplet()) {
-                    Service.initializeBussiness(callback);
-                }
-                else {
-                    if (callback) callback();
-                }
-
+                Service.state.isAuthenticated = true;
+                Service.state.IdDriver = d.PK;
+                Service.loginOffline(callback);
             }, function (d) {
                 if (d && d.ErrorMessage)
                     app.error(d.ErrorMessage);
-                Service.isAuthenticated = false;
-                if (callback)
-                    callback();
+                Service.state.isAuthenticated = false;
+                Service.loginOffline(callback);
             });
         else
             app.login();
+    },
+    loginOffline: function (callback) {
+        app.log("Service.loginOffline");
+        $("#footermenu").hide();
+        if (Service.state.isAuthenticated) {
+            Service.isAuthenticated = true;
+            $("#footermenu").show();
+            Service.saveState("UserLogin");
+            Service.initializeBussiness(callback);
+        }
+        else {
+            Service.isAuthenticated = false;
+            Service.saveState();
+            if (callback) callback();
+        }
     },
     logout: function (callback) {
         if (Service.isAuthenticated) {
@@ -154,7 +157,7 @@
     currentJPK: function (jp) {
         if (!jp || !jp.jpkSteps || jp.jpkSteps.length == 0)
             return undefined;
-        var r = $.grep(jp.jpkSteps, function (o) { return o.Status == "Active"; });
+        var r = $.grep(jp.jpkSteps, function (o) { return o.Status == "Active" || o.Status == "Paused"; });
         if (r.length > 0)
             return r[0];
         return undefined;
@@ -178,14 +181,21 @@
                 IdRequirement: jp.IdRequirement,
                 IdDriveOrder: jp.PK,
                 IdDestination: jpk ? jpk.PK : 0,
+                IdDriver: Service.state.IdDriver ? Service.state.IdDriver:0,
+                IdVehicle: Service.state.IdVehicle ? Service.state.IdVehicle:0,
+                City: PositionService.city ? PositionService.city:'',
+                Address: PositionService.address ? PositionService.address:'',
 
                 CarStatus: jp.CarStatus,
                 RoadStatus: jp.RoadStatus,
                 TravelStatus: jp.TravelStatus,
                 NumValue1: jp.NumValue1,
                 NumValue2: jp.NumValue2,
+                TextValue1: jp.TextValue1,
+                TextValue2: jp.TextValue2,
                 Tachometer: Service.state.Tachometer ? Service.state.Tachometer : 0,
                 TachometerCount: Service.state.TachometerCount ? Service.state.TachometerCount : 0,
+                Distance: Service.state.Distance ? Service.state.Distance : 0,
                 ClientTimeStamp: new Date().toISOString(),
                 Latitude: PositionService.lat,
                 Longitude: PositionService.lng,
@@ -237,9 +247,6 @@
                 errorDelegate(d);
         }
         else {
-            if (data) {
-                data.UserTicket = Service.state.sessionId;
-            }
             $.post(this.state.url + "/api/" + method, data)
                 .done(function (d) {
                     if (d) {
@@ -275,9 +282,6 @@
                 errorDelegate(d);
         }
         else {
-            if (data) {
-                data.UserTicket = this.state.sessionId;
-            }
             $.get(this.state.url + "/api/" + method, data)
                 .done(function (d) {
                     if (d) {
@@ -307,6 +311,30 @@
                 });
         }
     },
+    testConnection: function (successDelegate, errorDelegate) {
+        app.log("Service.testConnection");
+        if (!this.state.url) {
+            app.error("Chýba adresa servisu");
+            if (errorDelegate)
+                errorDelegate();
+        }
+        else {
+            $.get(this.state.url + "/echo/1")
+                .done(function (d) {
+                    app.waiting(false);
+                    Service.online = true;
+                    if (successDelegate)
+                        successDelegate();
+                })
+                .fail(function () {
+                    Service.online = false;
+                    app.waiting(false);
+                    if (errorDelegate)
+                        errorDelegate();
+                });
+        }
+    },
+
     parseJsonDate: function (jsonDate) {
 
         if (!jsonDate)

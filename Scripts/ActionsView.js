@@ -79,6 +79,8 @@ var ActionsView = function (store) {
         //tacho / petrol button
         $("#btnsetTacho").click(function () { self.setTacho() })
         $("#btnsetPetrol").click(function () { self.setPetrol() })
+        $("#btnsetPetrolCount").click(function () { self.setPetrolCount() })
+
 
     };
       
@@ -94,6 +96,12 @@ var ActionsView = function (store) {
         Service.state.PetrolPrevius = Service.state.Petrol;
         Service.state.Petrol = petrolnew;
         Service.saveState("EventTank");
+    };
+
+    this.setPetrolCount = function () {
+        var petrolcount = $('input[name=radiopc]:checked', '#PetrolCount').val()
+        Service.state.PetrolCount = petrolcount;
+        Service.saveState("SetPetrol");
     };
 
     this.clear = function () {

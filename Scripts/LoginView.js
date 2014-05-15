@@ -26,13 +26,8 @@ var LoginView = function (messages) {
 
         $.each(d, function (i, v) { Service.state[v.name] = v.value; });
 
-        //TEST
-        //Service.isAuthenticated = true;
-        //$("#footermenu").show();
-        //app.home();
-        
         Service.login(function () {
-            if (Service.isComplet()) {
+            if (Service.isAuthenticated) {
                $("#footermenu").show();
                app.home();
                }
@@ -44,7 +39,7 @@ var LoginView = function (messages) {
         app.waiting();
         var self = this, data = Service.getState();
         data.ErrorMessage = undefined;
-        if(!Service.isComplet())
+        if (!Service.isAuthenticated)
             $("#footermenu").hide();
         else
             $("#footermenu").show();
@@ -54,12 +49,6 @@ var LoginView = function (messages) {
     this.showForm = function (data) {
             app.waiting(false);
             $("#loginForm").html(LoginView.templateForm(data));
-
-            if(Service.isComplet())
-                $("#settingsOrders").removeClass("transparent");
-            else
-                $("#settingsOrders").addClass("transparent");
-
             $("#loginForm").show();
             $("#settingsSave").removeClass("transparent");
     };
