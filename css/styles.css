@@ -105,11 +105,12 @@ button.disabled {
     height: 50px;
 }
     #roadStatusInfo.Town {
-    background-color:  #ff6a00;
-    background-image: url(/img/ico_roadstatus_town.png);
-    background-position: center center;
-    background-repeat: no-repeat;
-}
+        background-color: #ff6a00;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACbSURBVGhD7dbBCoAgEEVR7f//2RBcSIucsUledg9Em1o8uEa5lJJ2cLT75zFEDUPUMEQNQ9QwRM3Mv5bnhdzuryMtNU/SusvG8kwozoga0jIiLS/SMiItL86I0TUty7tTOZKWmtVDajb9FWb1kHpG+isMaU0irRHSmkRaI6SlZpshnr/f0KaNzB8E0lLzyzMijbTUMEQNQ7SkdAIl7jo5mHCsxAAAAABJRU5ErkJggg==') /*/img/ico_roadstatus_town.png*/;
+        *background-image: url(/img/ico_roadstatus_town.png); /* For IE 6 and 7 */
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
     #roadStatusInfo.OutofTown {
         background-color:#9c7b46;
       background-image: url(/img/ico_roadstatus_road.png);
@@ -117,23 +118,25 @@ button.disabled {
     background-repeat: no-repeat;
     }
     #roadStatusInfo.Highway {
-        background-color:#4286f5;
-         background-image: url(/img/ico_roadstatus_highway.png);
-    background-position: center center;
-    background-repeat: no-repeat;
+        background-color: #4286f5;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE0SURBVGhD7ZpNSsRAFISjKKgrcafX0Gt4CL2HP6DX0EN4D72IbhwFRcFY1W8W8WfUfulFGeqDIpVkaiYFHQIvs9T3fTcFlufbf4+LqOEiariIGjXPkbW5armH+CPMrvNAJcy/hf0BFvmjTqAM2xDzp2Wvnh3o87V8ke8RNVxkwAt0HTbFKzQmX2hR5A7aC5viFhqTL3hpqeEiarjIgA3oIGwK5g/D5mlRZBO6DJuC+Yuweby01HCRATPoKGyKB+g4bJ4WRR6h87ApWOQsbB4vLTVcRA0XGbAFXYVNMTZfaFGEg7f9sCnG5gteWmq0KMIpyG7YFDJTFM6lbsKmkJlrSeAiakymSM0bqxVoNewH+AXP0KK3UTzHzzC7KP8EcZryHTz360X6LxxquIgaLqLGRIp03Tv8Qd6jIleESQAAAABJRU5ErkJggg==') /*/img/ico_roadstatus_highway.png*/;
+        *background-image: url(/img/ico_roadstatus_highway.png); /* For IE 6 and 7 */
+        background-position: center center;
+        background-repeat: no-repeat;
     }
     #roadStatusInfo.Terrain1 {
-        background-color:Gray;
-            background-image: url(/img/ico_roadstatus_terrain1.png);
-    background-position: center center;
-    background-repeat: no-repeat;
+        background-color: Gray;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAYAAADHl1ErAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAOtSURBVHhe7ZpbiA1xHMd3WfdFck8pSnlwffGAeFKKXIqSS24hlLuU8uJVYWldkqSIFzwhKQlP3kl5U5Tkvrm01vp8j3N09uycM/M7OzNn1v4+9dlzZvbMmf9+z8zv/5s5W+c4Tpao14/29vbcQjH19blfOSWUDayAB9eRXvlHJyIemJHQU7KUnn6KmgP7X4l6IHR6VU8NL2pgXsOMeGBGPDAjXsNKCKtlfoQZ8cCMZDEwnRMaV7R5PmWyVMM0lv44DH/je2zFVOlONawPTsaFOAkbMHNkJTB9rENwOq7CRTgGM1cy0hxQpWN9EM7CDTgX1+ImHI7ZRjUsIesD1skGnI0PsRXFb2zBZhyIQdslopmgN0lQhTUNb2I5TuIE7I1B7xGrYdRyluyLU/EAqm6V4ztewov4HH9gYoTNkrUKTDOiCvw+XIlhM+JHfIwX8AF+w0TIYmAKZwruxhXYiFFQT/YUT+Nd/IKxk7U+TPubgNtwKWp2jIqOSs2kB3ExRg06VtIOTF38ZtyYf1754+yMQpuJh3E5WgJPhsJsEbNqKUbgEYyLl7gOB2O5lsVsGGnVsLG4FTUjxnUqaaAv8CzewDfYZbJS9OegZsQRuaWOlI5hXP7xdf4xaEDF6/S6q3gnt9RFshKYgtJRVg7V0vE4D9egBqHe6za2YBCFgepv+ICFgLtEWGCdKJzLKTsR9+A7LPAWd2MfDNomEc0EvUmCqliPxZ3YhqXomrIJU7kskmGkdUoG0RtH4RI8pxUVOIUq7i+xTSuSIoudvlBYqmmr8Sj2w0qoy7+GTfgMf2IiZDEw7XM0bsG9qAY2Crp+fILX8SZ+xtgxBZZCWJoNdVNwO+7KP7ei2fA4XkbNjrEOOnJgKR1ZQ3EHHkLdkq6WT3gCm1FflsRGpLZCYaXgEDyAcXIMB2DQ/qoyEkEbxmwj7sMkuIK6a6u7t0H7NhmJoA1jUn3WIDyESXIf52OXj7Ywkq5hI1H1an9uKTnUmz1C9Wr3sOqbi7VuK87jetRd1uJ9BY2qdF3pQMKWf+ErPIlntKIaah2Y7jzoy45iKo1oAZZ2/TPw69+noS2E3lv9WdUzZ60Ds7IMb/19+g81tmojUiEssLRvUXd7PDAjHpgRD8yIB2bEAzPigRnxwIx4YEay1unrYl3/M1aMLqp1nZgK3e3SqOb4pVHMeGBGPDAjHpgRD8yIB2bEAzPigRnxwIx4p58nrMMv4EeYEQ/MiAdmxAMz4oE5juP0GOrq/gBy2SdSz+YwagAAAABJRU5ErkJggg==') /*/img/ico_roadstatus_terrain1.png*/;
+        *background-image: url(/img/ico_roadstatus_terrain1.png); /* For IE 6 and 7 */
+        background-position: center center;
+        background-repeat: no-repeat;
     }
     #roadStatusInfo.Terrain2 {
-        background-color:#000000;
-                    background-image: url(/img/ico_roadstatus_terrain2.png);
-    background-position: center center;
-    background-repeat: no-repeat;
-
+        background-color: #000000;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAYAAADHl1ErAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAPgSURBVHhe7ZlbiE1RHIdn3Aa5jPsLIZFCIne55fZAcg01NB5ckgeKUkTkiQfxhKSUEkIURXlRHsktPKhRRhpP8kKK8f32mTOdmTlnzlr77Fvm/9U3s9eaM2f2/Fpr7f9Zq8owjCxRrS/Nzc1Bo5Dq6uBHRjtKBpbHgmtLt5bvhiMWmCdlp2R7uvoU9Q7sf8V1IHR4VVcNzzUwW8M8scA8scA8sTWsHeXWMhthnlhgnmQxsB4tZpIsBdYdB+EYrFVHFslSYH1wBq5EBZdJshKY7mMwzsNtuAT7YuZIMrDOnteagstxM07HQ7gBNU2zjeqwmKwu0id74mp8iX9Q/MUmrMdSvxeL3hR7kxhVWNPwERajAeuwFhMJrhxprmG9cAoewRXqKMIo3I+rcYg60iatwFRnTUSFobWqFFrDJuNB3I5a69z2YWIijcD0N8fiTlyrjjLU4FQ8gHtxOKYWWhqBDcM63Ij91OHISFRou3CoOtIg6cC0bq3CfTgCfUeKgtqDu1EjLXE63LDLkyIkWo9UmD4NWpXxDc/gZfyujqjIyvaOqnY9Ce8GrcrR6NJ6tgM1UhMjqRE2AU+hnniFaPHvnbssyxf8kbts5TNewRtBKwLKjbCkAtNCr7A0LfU3B6JG3Bbsjy68wia8hl/VAXov9b0OWhHgenrUSr7ijdEBuAsbMQyXcTTGUvl7U+xNIrQGN2HYsMRPvIrjMPLQypHUlBSq7ufjPdSUrITfeAsPY6M6oiIra5jWLlXrz4NWdNzBo/gBI7nxLJQVGlmz8EnQipb1eB61h6aiOHbaBBbD6NLnwMWoR39c+/TL8CQuQm1zx0rr+ItpKmpkXUBNR1E43jsf+6X52/I9j278D77A01hRcey0hsW40OsEaE7usjWgAbgOddgRBn0sOoefsDA8vf97fBm0QuJUhymwhFRZsRW1/RyWX3gdx2M6ZYXLCyNAi/9CfICuH4dKoSl4G7WxqI9HkeFcVsQcmsqK2fgsaEXHfTyGb1EhVoxzWaEXOs1ff3riAnwYtKJlDZ7FmagncuzEXYfpn9B54yWstLovhQ59T+BSjP3wt8OQinhqzsWLOClo5Sg2jDsb2vkbKnZj+T5NxzeosuKmOsLivIbliTgw7cNPy112GorQz+ux8GBEJcLx3GUbit2kfv8jvgtaIUk7MF+07awnX57HGLZeC4Xzom+4YYF5YoF5YoF5YoF5YoF5YoF5YoF5krXAdECrQ9m8DZgpslbpp45V+hFjgXligXligXligXligXligXligXlihWsLrkeMNsI8scA8scA8scA8scAMwzC6DFVV/wCP35ba0BpREgAAAABJRU5ErkJgggpVmgAAAABJRU5ErkJggkSuQmCC') /*/img/ico_roadstatus_terrain2.png*/;
+        *background-image: url(/img/ico_roadstatus_terrain2.png); /* For IE 6 and 7 */
+        background-position: center center;
+        background-repeat: no-repeat;
     }
 
 #jpLog {
@@ -539,31 +542,7 @@ h2
     font-weight: bold;
 }
 
-/*.stage-center
-{
-	top: 0;
-	left: 0;
-}
 
-
-.stage-left
-{
-	top: 0;
-	left: -100%;
-}
-
-.stage-right
-{
-	top: 0;
-	left: 100%;
-}
-
-.transition
-{
-	-moz-transition-duration: .375s;
-	-o-transition-duration: .375s;
-	-webkit-transition-duration: .375s;
-}*/
 
 .icon
 {
@@ -639,34 +618,28 @@ button.ico_tools
 	/* For IE 6 and 7 */
 }
 
-button.ico_stop
-{
-	background-image: url(/img/ico_stop.png);
+button.ico_stop {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAYAAADHl1ErAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKISURBVHhe7Zq9ahVBGIbPihFRRO3SKYKdhZ13kDqNBAsbL8JbsBHvwCCkEEvvQSSlhYV2ESwtEsR4UGF9vrODjeG4bzLfzjF5HxjmB85833l29o+dmTHGGGOMaUJX6j/0fV9aZ4uu+0vFkZwrtRmJhYlYmIiFiViYiIWJWJiIhYlYmIiFiUwp7C6vXU8oe7T3KfEOdpKyH3OVOe/Qn4Qp3iXPM+cz6keUNd7ZLixGK8HcP6h+UraZ+zH1PMZVxr5LpgorR/41ZZ2ELi0GkyDWN6ovxNmkfrcYFGgurMh6SyJXhpFpIO5Xqg3i7g4j42gtLE7DjyRxq/QnhdifiX2b5ujTc6ywlIs+Ccc1a33oNeE6OTwt7apkrLC4G77hiF0u/SaQwyHVPfJ4P4wsp9kKI9EtqrWh15S4Gz8cmvWovsL4/R5H60bpNoVcPpHLzdJdSrMVRuBrpdmcjFwyrmF1nkvqMWrpNFthpx0LE7EwEQsTsTARCxOxMBELE7EwEQsTsTARCxOxMBELE7EwkQxhB6VeBarnUl1Y3/exDWAlyMglY4W9JNH4fN8UcvhF9Wro1aO6sK7rIsnY69CayGFnaNYjY4XFvoZtjnDsdWgCseOLd2xOGfVNUiHjI0hwkXk+kHCTz23E/r+2CsCcBDZJPDaGTEqJeZ9yrG1P/yJLWBCn5kYcbUr66UmMecSiKe/cUcgUFst8t5waL/gzh5S4c1Ul5qR8p/k8YmXKCrKuYUcRm1QeUG/xp+KL9NXF6PE5YL54zoq78g5znugCz+9LazlTCltpxgpLPSVPIxYmYmEiFiZiYSIWJmJhIhYmYmEiFiZiYSIWJmJhIhYmYmEiFmaMMWeG2ew3u9jtz2WST3AAAAAASUVORK5CYII=') /*/img/ico_stop.png*/;
+    *background-image: url(/img/ico_stop.png); /* For IE 6 and 7 */
 }
 
-button.ico_finish
-{
-	background-image: url(/img/appbar.check.png);
+button.ico_finish {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAYAAADHl1ErAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAI6SURBVHhe7dg/SBthGMfxIKUgpSCCk0uHUuji6Ojm0snFzbVTly4d2ilbcXN2cHNxF8dQR3GTgJtTIW2GEgohmH9+37vnIKnvXXImFd57fx843ph77vXeH7k77qmJiIiIiIiIiIiIiIiIVMt4PN4YDoeH9Xp9xb6SPM1m8yWB/WAbE9qJQpuBkI5cWBmFVoB89tOYpik0D3LZYusmCXm40Kx0KYJOv91uv2Y4Y1tNvvD7ZWPc3KU2Go0u7IeU57zRaLywQ+JGGN/STPwI84ZhzcrjRhAfCGSQJOP3u9frvbXyuBHGG7Y/SSweBHnPsGvlcWu1Wq8I5CqNxo+n4icrD487eS6Nd/bnwpjv1HLJc2yl4eHkv7gV8Iv4uYzQmOqjmy8P/+fSvR5ZeVg4/ySszKKh9fv9Hbs35bnrdDrrVh4WTn4qrMxTQ+PQDXdsOstj7PvL8N7Kw8KJe8PKlA1tsgPhw3yjwWCwZ+XhYQ2FgTllQuMmP9WB+Bf7v1ppuFjHUkKjzNuBmODeIauBxSwUGrsLOxAce81Q9MIdHhb0pNBcB4Jdt2nFY+6Ybre7aeXVwvpKhTarA8G+e2wnk1cV65w7ND4WdiBwYNNWGwudGRpaBJfbgeCJ+N2miwNrnie0PHE2All46dD41cXdCGTxZUJTI9AhiHkeBGoETiKMwtBcL81KJUMueaGF2wj83whnKjQuxXAbgc+FnLLQwm0EPjfuWZ8JLMxGoIiIiIiIiIiIiIiIiESlVnsAVoe0Wymm6WkAAAAASUVORK5CYII=') /*/img/appbar.check.png*/;
+    *background-image: url(/img/appbar.check.png); /* For IE 6 and 7 */
 }
 
-button.ico_pause
-{
-	background-image: url(/img/ico_pause.png);
+button.ico_pause {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAYAAADHl1ErAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADkSURBVHhe7dw7DoJAAEBB8CyewPvfDdFQ+IvyItowk2y2ouBll0CxDADs3DRN18GzwzKz0rjMd96trnF8ecluPN39Xrfi2oVgS0aCRYJFgkUe+g8+PfytsEiwSLBIsEiwSLBIsOgfwY7zuLzcrR2nedz69vpNWWGRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJGDDQ8cbNiYYJFgkWCRYJFgkWCRYJFgkWCRYJFvyYU/o/yIYJFgkWCRYAC7MQxnPugsEC4QpPMAAAAASUVORK5CYII=') /*/img/ico_pause.png*/;
+    *background-image: url(/img/ico_pause.png); /* For IE 6 and 7 */
 }
 
-button.ico_jp
-{
-	background-image: url(/img/ico_jp.png);
+button.ico_jp {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAYAAADHl1ErAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEtSURBVHhe7dvBCoMwEABR0///Z0tEQSuajNDu0swD8dCehjVqaCdJ0uDmeV4OnZX1vLiKVMrha0PrCrY3ejwc7F/1DsJrPavTIZhrVZsTBhkMOl2Doz9/tZYlJww6BPPpvs0JgwwGGQwyGGQw6Bsv35lutfhdDz2H+S7Z5iUJGQwyGGQwyGBQtmD1Nv15pJIl2F2cVOEyBOuNkSJadDAaITyaiz4UGezptIROmRMGGQwyGGQwKDLY043G0A1KJwyKDkanJXz7O8OE9UYIj1VluSRrjKsgd5/9XLY1bIuzP1Jx0YcMBhkMMhhkMMhg0Gkzzh8F3+9POmGQwSCDQQaDDAYZDDIYZDDIYJDBIINBBoMMBhkMMhjkftiq939WThhkMMhgkMEgg0nSMKbpDWkpLntMG4fyAAAAAElFTkSuQmCC') /*/img/ico_jp.png*/;
+    *background-image: url(/img/ico_jp.png); /* For IE 6 and 7 */
 }
 
-button.standMenuFree {
-    background-image: url('../img/parktest.png');
-}
 
-button.standMenuOn
-{
-	background-image: url('../img/parktest2.png');
-}
+
 
 button.ico_order
 {
@@ -729,7 +702,8 @@ button.ico_submenu {
 }
 
 button.ico_activate {
-    background-image: url(/img/ico_activate.png);
+    background-image: url('data:image/png;base64,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') /*/img/ico_activate.png*/;
+    *background-image: url(/img/ico_activate.png); /* For IE 6 and 7 */
 }
 
 button.ico_phone {
