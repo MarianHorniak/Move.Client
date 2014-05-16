@@ -66,16 +66,16 @@
                 jp.CarStatus = "Stop"; //napr.
                 jp.RoadStatus = "Town";
 
-                //nastavit aktivny jpk ak nieje
-                var jpk = Service.currentJPK(jp);
-                if (!jpk)
-                    jpk = Service.nextJPK(jp);
-                if (jpk && (jpk.Status == "NonActive" || jpk.Status == "Paused"))
-                {
-                    jpk.StatusEnable = "Activable";
-                    //ulozi stav a posle sa DataEvent
-                    //Service.saveState("JPKActive");
-                }
+                //nastavit aktivny jpk ak nieje --- nerobime
+                //var jpk = Service.currentJPK(jp);
+                //if (!jpk)
+                //    jpk = Service.nextJPK(jp);
+                //if (jpk && (jpk.Status == "NonActive" || jpk.Status == "Paused"))
+                //{
+                //    jpk.StatusEnable = "Activable";
+                //    //ulozi stav a posle sa DataEvent
+                //    //Service.saveState("JPKActive");
+                //}
                 break;
             case "JPPause":
                 Service.disableAllActions(Service.currentJP());

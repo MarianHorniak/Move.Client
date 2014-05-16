@@ -67,12 +67,12 @@
 <script id="jp-header-tpl" type="text/x-handlebars-template">
 <div class="{{this.Status}}" data-id="{{this.PK}}">
 {{#if this.Active}}
-    <button id="JPPaused" data-value="Paused"  class="icon ico_pause">&nbsp;</button>
-    <button id="JPFinish" data-value="Finish"  class="icon ico_finish">&nbsp;</button>
+    <button data-action="JPPaused" data-value="Paused"  class="icon ico_pause">&nbsp;</button>
+    <button data-action="JPFinish" data-value="Finish"  class="icon ico_finish">&nbsp;</button>
 {{else}} 
     {{#if this.NoFinish}} 
         <!--<button id="JPActive" data-value="Active" class="textnoicon">Aktivovať</button>-->
-      <button id="JPActive" data-value="Active" class="icon ico_activate">&nbsp;</button>
+      <button data-action="JPActive" data-value="Active" class="icon ico_activate">&nbsp;</button>
     {{/if}}
 {{/if}}
 {{this.DateFromFormated}} {{this.JP_Description}} <br/> {{this.Car_Description}} {{this.Status}}
@@ -84,15 +84,12 @@
 {{#.}}
 <div id="jpk{{this.PK}}" class="{{this.Status}}">
     {{#if this.Active}}
-       <button id="jpkPause{{this.PK}}" data-value="Paused"  class="icon ico_pause">&nbsp;</button>
-       <button id="jpkFinish{{this.PK}}" data-value="Finish" class="icon ico_finish">&nbsp;</button>
+       <button data-action="JPKPaused" data-value="Paused" data-pk="{{this.PK}}" class="icon ico_pause">&nbsp;</button>
+       <button data-action="JPKFinish" data-value="Finish" data-pk="{{this.PK}}" class="icon ico_finish">&nbsp;</button>
     {{/if}}
-    {{#if this.Paused}}
-        <button id="jpkActivate{{this.PK}}" data-value="Active" class="icon ico_activate">&nbsp;</button>
+    {{#if this.Activable}}
+        <button data-action="JPKActive" data-value="Active" data-pk="{{this.PK}}" class="icon ico_activate">&nbsp;</button>
     {{/if}}
-<!--    {{#if this.Activable}}
-        <button id="jpkActivate{{this.PK}}" data-value="Active" class="icon ico_activate">&nbsp;</button>
-    {{/if}}-->
 
 <strong>{{this.Sort}} {{this.DestDescription}}</strong> <br/>
         {{this.DestCity}} {{this.DestAddress}}

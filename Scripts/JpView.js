@@ -39,38 +39,30 @@ var JpView = function () {
                 
         $('.jp-header').html(JpView.jpTemplate(jp));
         
-        var activeJPK = undefined;
-        var activableJPK = undefined;
 
-        var istep = 1000;
-        var adeptActivable;
+        var currentJpk = Service.currentJPK(jp);
+        if (!currentJpk)
+            currentJpk = Service.nextJPK(jp);
+
         $.each(jp.jpkSteps, function () {
             
-            this.Active = jp.Status == "Active" && this.Status == "Active";
-            this.Paused = jp.Status == "Active" && this.Status == "Paused";
-            //this.Activable = jp.Status == "Active" && (this.Status == "Paused" || this.Status == "NonActive");
-            this.DestDateFormated = Service.formatJsonDate(this.DestDate);
-            if (this.Active)
-                activeJPK = this;
-            if (this.Status == "NonActive" && this.Sort < istep)
-            {
-                adeptActivable = this;
+            if (jp.Status == "Active" && currentJpk && this.PK == currentJpk.PK) {
+                this.Active = this.Status == "Active";
+                this.Activable = this.Status == "Paused" || this.Status == "NonActive";
             }
-            istep = this.Sort;
+            else {
+                this.Active = false;
+                this.Activable = false;
+            }
+            this.DestDateFormated = Service.formatJsonDate(this.DestDate);
         });
-
-        if (adeptActivable)
-        {
-            adeptActivable.Activable = true;
-            activableJPK = adeptActivable;
-        }
 
         $('.jp-header').off("click", "button");
         $('.jp-header').on("click", "button", function (event) {
             app.waiting(true);
             var status = $(this).attr("data-value");
             if(jp.Status != status){
-                var action = $(this).attr("id");
+                var action = $(this).attr("data-action");
                 jp.Status = status;
                 Service.saveState(action);
             }
@@ -78,39 +70,20 @@ var JpView = function () {
         })
 
         $('.jpk-list').html(JpView.liTemplate(jp.jpkSteps));
-        if (activeJPK) {
-            $("#jpkFinish" + activeJPK.PK).click(function () {
-                app.waiting(true);
-                var status = $(this).attr("data-value");
-                if (activeJPK.Status != status) {
-                    activeJPK.Status = status;
-                    Service.saveState("JPK" + status);
-                }
-                self.loadData();
-            });
-            $("#jpkPause" + activeJPK.PK).click(function () {
-                app.waiting(true);
-                var status = $(this).attr("data-value");
-                if (activeJPK.Status != status) {
-                    activeJPK.Status = status;
-                    Service.saveState("JPK" + status);
-                }
-                self.loadData();
-            });
-        }
-        if (activableJPK) {
-            $("#jpkActivate" + activableJPK.PK).click(function () {
-                app.waiting(true);
-                var status = $(this).attr("data-value");
-                if (activableJPK.Status != status) {
-                    activableJPK.Status = status;
-                    activeJPK = activableJPK;
-                    Service.saveState("JPK" + status);
-                }
-                self.loadData();
-            });
 
-        }
+        $('.jpk-list').off("click", "button");
+        $('.jpk-list').on("click", "button", function (event) {
+            app.waiting(true);
+            var status = $(this).attr("data-value");
+            var pk = $(this).attr("data-pk");
+            var jpk = Service.findJPK(jp, pk);
+            if (jpk.Status != status) {
+                jpk.Status = status;
+                var action = $(this).attr("data-action");
+                Service.saveState(action);
+            }
+            self.loadData();
+        });
 
         app.waiting(false);
 

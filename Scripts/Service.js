@@ -173,6 +173,14 @@
             return;
         Service.state.Jps = $.grep(Service.state.Jps, function (o) { return o.PK != Service.state.IdDriveOrder; });
     },
+    findJPK: function (jp, jpkPk) {
+        if (!jp || !jp.jpkSteps || jp.jpkSteps.length == 0)
+            return undefined;
+        var r = $.grep(jp.jpkSteps, function (o) { return o.PK == jpkPk; });
+        if (r.length > 0)
+            return r[0];
+        return undefined;
+    },
     currentJPK: function (jp) {
         if (!jp || !jp.jpkSteps || jp.jpkSteps.length == 0)
             return undefined;
