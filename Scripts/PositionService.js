@@ -122,13 +122,10 @@ var PositionService = {
                             PositionService.address = a.Address;
                         }
                     });
-
                     
+                    Service.saveState("EventGEO");
+                    PositionService.startPool();
                                         
-                    Service.sendDataEvent("EventGEO",
-                    function (d) { PositionService.startPool(); app.info(""); PositionService.refreshVersionData(d); },
-                    function (d) { PositionService.startPool(); if (d && d.ErrorMessage) app.info(d.ErrorMessage); PositionService.refreshVersionData(d); });
-
                     //nastavime konstantu, kde
                     Globals.lastGEOSend = Date.now();
                 }
@@ -140,17 +137,5 @@ var PositionService = {
         }
         else
             PositionService.startPool();
-    },
-    refreshVersionData: function (d) {
-        
-        //if ((d.DataCheckSum && d.DataCheckSum != Service.ordersVer)) {
-        //    Service.ordersVer = d.DataCheckSum;
-        //    app.playNew();
-        //    app.refreshData(["jp", "transporters"]);
-        //}
-        //if (d.tVer && d.tVer != Service.transporterVer) {
-        //    Service.transporterVer = d.tVer;
-            
-        //}
     }
 }

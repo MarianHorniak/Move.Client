@@ -88,11 +88,11 @@
        <button id="jpkFinish{{this.PK}}" data-value="Finish" class="icon ico_finish">&nbsp;</button>
     {{/if}}
     {{#if this.Paused}}
-        <button id="jpkActivate{{this.PK}}" data-value="Active" class="textnoicon">Aktivovať</button>
-    {{/if}}
-    {{#if this.Activable}}
         <button id="jpkActivate{{this.PK}}" data-value="Active" class="icon ico_activate">&nbsp;</button>
     {{/if}}
+<!--    {{#if this.Activable}}
+        <button id="jpkActivate{{this.PK}}" data-value="Active" class="icon ico_activate">&nbsp;</button>
+    {{/if}}-->
 
 <strong>{{this.Sort}} {{this.DestDescription}}</strong> <br/>
         {{this.DestCity}} {{this.DestAddress}}
@@ -126,11 +126,16 @@
       <button class="icon ico_submitActions" id="btnsetPetrol">&nbsp;</button>
   </div>
       <div id="PetrolCount"><label>Stav paliva</label> 
-      <input class="" name="radiopc" type="radio" id="pc025" value="25" />0.25
+      <button class="icon textnoicon" id="btnsetPetrolCount025">1/4</button>
+       <button class="icon textnoicon" id="btnsetPetrolCount050">1/2</button>
+       <button class="icon textnoicon" id="btnsetPetrolCount075">3/4</button>
+      <button class="icon textnoicon" id="btnsetPetrolCount100">Plná</button>
+
+<!--      <input class="" name="radiopc" type="radio" id="pc025" value="25" />0.25
       <input class="" name="radiopc" type="radio" id="pc0500" value="50"/>0.50
       <input class="" name="radiopc" type="radio" id="pc075" value="75"/>0.75
       <input class="" name="radiopc" type="radio" id="pc100" value="100" checked/>1.00
-      <button class="icon ico_submitActions" id="btnsetPetrolCount">&nbsp;</button>
+      <button class="icon ico_submitActions" id="btnsetPetrolCount">&nbsp;</button>-->
   </div>
     &nbsp;
 </script>

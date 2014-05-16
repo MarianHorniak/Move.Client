@@ -29,7 +29,7 @@
 
     this.showForm = function (data) {
         var f = $("#selectJpData"), self = this;
-        if (data.length > 0) {
+        if (data && data.length > 0) {
             
             f.html(SelectJpView.templateForm(data));
 

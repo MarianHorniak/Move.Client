@@ -50,7 +50,7 @@ button.disabled {
 #jpInfo {
     font-size: 24px;
     text-align: left;
-    padding-left:60px;
+    padding-left:80px;
 }
 
 #travelStatusInfo {
@@ -214,11 +214,9 @@ input
 
 .inputActionValue
 {
-	/*margin-bottom: 2px;*/
-	/*padding: 4px 10px;*/
-	width: 160px;
-	height: 60px;
-	/*border: 1px solid #666;*/
+
+	width: 110px;
+	height: 40px;
 	font-size: 25px;
 }
 

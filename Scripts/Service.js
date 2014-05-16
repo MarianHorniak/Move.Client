@@ -1,6 +1,8 @@
 ﻿var Service = {
     online: false,
+    Device: undefined, //device identification
     isAuthenticated: false,
+    dataEventWatchID: undefined,
     state: {
         url: undefined,
         name: undefined,
@@ -9,6 +11,7 @@
         IdVehicle: undefined,
         isAuthenticated: false,
         IdDriveOrder: undefined, // vybrany jp
+        
         
 
         TachometerPrevious: undefined,
@@ -26,6 +29,7 @@
         velocity: 0,
         velocityPrevious: 0,
 
+        Events: [], //offline eventy
         Jps: undefined, //zoznam jazdnych prikazov 
         enableHighAccuracy: true
     },
@@ -44,6 +48,7 @@
                     case 403: e = "Chybné prihlásenie"; Service.isAuthenticated = false; break;
                     default: e = "Služba sa nenašla (" + jqXHR.status + "): " + this.url; break;
                 }
+                Service.online = false;
                 app.log(e);
                 app.error(e);
             }
@@ -56,12 +61,13 @@
     },
     initializeBussiness: function (callback) {
         if (Service.online) {
-            if (Service.state.Events && Service.state.Events.length > 0)
-                Service.sendEvents(callback);
-            else
-                Service.refreshJps(callback);
+            Service.trySendDataEvents();
+            Service.refreshJps(callback);
         }
-        else if (callback) callback();
+        else {
+            Service.startSendDataEvents();
+            if (callback) callback();
+        };
     },
     login: function (callback) {
         Service.testOnline(function () { Service.callLogin(callback); });
@@ -128,28 +134,15 @@
         else
             if (callback) callback();
     },
-    sendEvents: function (callback) {
-        if (Service.online) {
-            app.waiting(true);
-            Service.postData("DataEvents", { '': Service.state.Events },
-                function () {
-                    app.waiting(false);
-                    Service.state.Events = [];
-                    Service.refreshJps(callback);
-                },
-                function () {
-                    app.waiting(false);
-                    app.error("Nepodarilo sa poslať dáta");
-                });
-        }
-    },
     refreshJps: function (callback) {
         app.log("app.refreshJps");
         Service.getData("jp", {}, function (jps) {
             Service.state.Jps = jps;
             Service.initializeState();
             if (callback) callback();
-        }, callback);
+        }, function () {
+            if (callback) callback();
+        });
     },
     initializeState: function () {
         Service.state.IdDriveOrder = undefined;
@@ -196,7 +189,7 @@
             return r[0];
         return undefined;
     },
-    sendDataEvent: function (actionName, callback, errorCallback) {
+    saveDataEvent: function (actionName) {
         var jp = Service.currentJP();
         if (jp) {
             var jpk = Service.currentJPK(jp);
@@ -211,7 +204,7 @@
                 IdVehicle: Service.state.IdVehicle ? Service.state.IdVehicle:0,
                 City: PositionService.getCity(),
                 Address: PositionService.getaddress(),
-
+                Device : Globals.getDevice(),
                 CarStatus: jp.CarStatus,
                 RoadStatus: jp.RoadStatus,
                 TravelStatus: jp.TravelStatus,
@@ -231,27 +224,41 @@
             //log
             app.info('data-event: ' + dataEvent.ActionName);
 
-            if (Service.online) {
-                Service.postData("DataEvent", dataEvent,
-                    function () {
-                        app.waiting(false);
-                        if (callback) callback();
-                    },
-                    function () {
-                        app.waiting(false);
-                        if (errorCallback) errorCallback();
-                    });
-            }
-            else {
-                if (!Service.state.Events)
-                    Service.state.Events = [];
-                Service.state.Events.push(dataEvent);
-            }
+            if (!Service.state.Events)
+                Service.state.Events = [];
+
+            Service.state.Events.push(dataEvent);
+        }
+    },
+    startSendDataEvents: function () {
+        if (Service.dataEventWatchID)
+            window.clearTimeout(Service.dataEventWatchID);
+        Service.dataEventWatchID = window.setTimeout(function () { Service.trySendDataEvents(); }, Globals.SendDataEventsTimeout);
+    },
+    trySendDataEvents: function () {
+        if (Service.state.Events && Service.state.Events.length > 0) {
+            Service.postData("DataEvent", Service.state.Events[0],
+                function () {
+                    try{
+                        Service.state.Events.splice(0, 1);
+                        Service.online = true;
+                        Service.saveState();
+                        app.setOnline();
+                    }
+                    catch (err) {
+                        app.log("Service.trySendDataEvents: " + err);
+                    }
+                    Service.trySendDataEvents();
+                },
+                function () {
+                    Service.online = false;
+                    app.setOnline();
+                    Service.startSendDataEvents();
+                });
         }
         else
-            if (callback) callback();
+            Service.startSendDataEvents();
     },
-
     getState: function () {
         if (!Service.state || !Service.state.url) {
             app.log("Service.getState");
@@ -265,12 +272,18 @@
         return Service.state;
     },
     saveState: function (action) {
-        Bussiness.beforeChangeState(action);
-        window.localStorage.setItem("state", JSON.stringify(Service.state));
         if (action) {
-            Service.sendDataEvent(action);
+            Bussiness.beforeChangeState(action);
+            Service.saveDataEvent(action);
         }
-        Bussiness.afterChangeState(action);
+
+        window.localStorage.setItem("state", JSON.stringify(Service.state));
+
+        if (action) {
+            Bussiness.afterChangeState(action);
+            app.setHeader();
+            app.setFooter();
+        }
     },
     postData: function (method, data, successDelegate, errorDelegate) {
         app.log("Service.postData: " + method);
@@ -312,7 +325,7 @@
         if (!this.state.url) {
             app.error("Chýba adresa servisu");
             if (errorDelegate)
-                errorDelegate(d);
+                errorDelegate();
         }
         else {
             $.get(this.state.url + "/api/" + method, data)
@@ -344,32 +357,7 @@
                 });
         }
     },
-    //testConnection: function (successDelegate, errorDelegate) {
-    //    app.log("Service.testConnection");
-    //    if (!this.state.url) {
-    //        app.error("Chýba adresa servisu");
-    //        if (errorDelegate)
-    //            errorDelegate();
-    //    }
-    //    else {
-    //        $.get(this.state.url + "/echo/1")
-    //            .done(function (d) {
-    //                app.waiting(false);
-    //                Service.online = true;
-    //                if (successDelegate)
-    //                    successDelegate();
-    //            })
-    //            .fail(function () {
-    //                Service.online = false;
-    //                app.waiting(false);
-    //                if (errorDelegate)
-    //                    errorDelegate();
-    //            });
-    //    }
-    //},
-
     parseJsonDate: function (jsonDate) {
-
         if (!jsonDate)
             return undefined;
 

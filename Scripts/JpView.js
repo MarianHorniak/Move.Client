@@ -43,20 +43,27 @@ var JpView = function () {
         var activableJPK = undefined;
 
         var istep = 1000;
+        var adeptActivable;
         $.each(jp.jpkSteps, function () {
             
             this.Active = jp.Status == "Active" && this.Status == "Active";
             this.Paused = jp.Status == "Active" && this.Status == "Paused";
-            this.Activable = jp.Status == "Active" && (this.Status == "Paused" || this.Status == "NonActive");
+            //this.Activable = jp.Status == "Active" && (this.Status == "Paused" || this.Status == "NonActive");
             this.DestDateFormated = Service.formatJsonDate(this.DestDate);
             if (this.Active)
                 activeJPK = this;
-            if (this.Activable && this.Sort<istep)
+            if (this.Status == "NonActive" && this.Sort < istep)
             {
-                activableJPK = this;
+                adeptActivable = this;
             }
             istep = this.Sort;
         });
+
+        if (adeptActivable)
+        {
+            adeptActivable.Activable = true;
+            activableJPK = adeptActivable;
+        }
 
         $('.jp-header').off("click", "button");
         $('.jp-header').on("click", "button", function (event) {

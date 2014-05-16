@@ -76,8 +76,6 @@
                     //ulozi stav a posle sa DataEvent
                     //Service.saveState("JPKActive");
                 }
-                app.setHeader();
-                app.setFooter();
                 break;
             case "JPPause":
                 Service.disableAllActions(Service.currentJP());
@@ -107,10 +105,10 @@
                 }
                 break;
             case "EventGEO": break;
-            case "EventBreak": app.setHeader(); break;
-            case "EventChangeCarStatus": app.setHeader(); break;
-            case "EventChangeRoadStatus": app.setHeader(); break;
-            case "EventChangeTravelStatus": app.setHeader(); break;
+            case "EventBreak": break;
+            case "EventChangeCarStatus": break;
+            case "EventChangeRoadStatus": break;
+            case "EventChangeTravelStatus": break;
             case "EventTank":
                 break;
             case "SetTacho":

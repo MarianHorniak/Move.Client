@@ -84,7 +84,12 @@ var ActionsView = function (store) {
         //tacho / petrol button
         $("#btnsetTacho").click(function () { self.setTacho() })
         $("#btnsetPetrol").click(function () { self.setPetrol() })
-        $("#btnsetPetrolCount").click(function () { self.setPetrolCount() })
+        //$("#btnsetPetrolCount").click(function () { self.setPetrolCount() })
+        $("#btnsetPetrolCount025").click(function () { self.setPetrolCountDirect(25) })
+        $("#btnsetPetrolCount050").click(function () { self.setPetrolCountDirect(50) })
+        $("#btnsetPetrolCount075").click(function () { self.setPetrolCountDirect(75) })
+        $("#btnsetPetrolCount100").click(function () { self.setPetrolCountDirect(100) })
+
 
 
     };
@@ -104,7 +109,13 @@ var ActionsView = function (store) {
     };
 
     this.setPetrolCount = function () {
-        var petrolcount = $('input[name=radiopc]:checked', '#PetrolCount').val()
+        var petrolcount = $('input[name=radiopc]:checked', '#PetrolCount').val();
+        Service.state.PetrolCount = petrolcount;
+        Service.saveState("SetPetrol");
+    };
+
+    this.setPetrolCountDirect = function (pcnt) {
+        var petrolcount = pcnt;
         Service.state.PetrolCount = petrolcount;
         Service.saveState("SetPetrol");
     };

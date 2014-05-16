@@ -24,6 +24,9 @@
         //Media
         Media_Volume:0.5, 
 
+        //DataEvent
+        SendDataEventsTimeout: 10000,
+
         //Me
         myGUID : "",
         myTicket : "",
@@ -34,6 +37,33 @@
         lastGEOSend: Date.now(),
         GEOsendFreqSec : 60,
 
+        getDevice: function () {
+
+            if (Service.Device) return Service.Device;
+            //nie je este zadefinovane 
+
+            var dev = '';
+            try {
+
+                var devname = device.name;
+                var devphonegap = device.phonegap;
+                var devplatform = device.platform;
+                var devuuid = device.uuid;
+                var devver = device.version;
+                if (devname) dev += devname + "||";
+                if (devphonegap) dev += devphonegap + "||";
+                if (devplatform) dev += devplatform + "||";
+                if (devuuid) dev += devuuid + "||";
+                if (devver) dev += devver + "||";
+            }
+            catch (err) {
+                dev = 'error detected';
+            }
+
+            Service.Device = dev;
+            return dev;
+
+        },
 
     }
 

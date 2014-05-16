@@ -252,8 +252,8 @@
                 self.waiting(true);
         });
     },
-    setHeader: function(){
-        $('#jpInfo').val('MoVe');
+    setHeader: function () {
+        app.setOnline();
         $("#carStatusInfo").removeClass();
         $("#roadStatusInfo").removeClass();
         $("#travelStatusInfo").removeClass();
@@ -262,8 +262,11 @@
             $("#carStatusInfo").addClass(jp.CarStatus);
             $("#roadStatusInfo").addClass(jp.RoadStatus);
             $("#travelStatusInfo").addClass(jp.TravelStatus);
-            $('#jpInfo').val('MoVe : '+jp.Car_Description+' '+jp.JP_Description);
+            //$('#jpInfo').html(Service.online ? 'on' : 'off');//.val('MoVe : '+jp.Car_Description+' '+jp.JP_Description);
         }
+    },
+    setOnline: function () {
+        $('#jpInfo').html((Service.online ? 'on' : 'off') + " " + (Service.state && Service.state.Events ? Service.state.Events.length : ""));
     },
     setFooter: function () {
         $("#footermenu").children().removeClass("selected");
