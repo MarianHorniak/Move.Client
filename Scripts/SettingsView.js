@@ -8,8 +8,6 @@ var SettingsView = function (messages) {
     this.render = function () {
         var self = this;
         this.el.html(SettingsView.template());
-        //$("#settingsallForm").hide();
-        //$("#settingsallSave").click(function () { if(!$(this).hasClass("transparent")) self.save(); });
         return this;
     };
 

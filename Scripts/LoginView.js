@@ -8,8 +8,9 @@ var LoginView = function (messages) {
     this.render = function () {
         var self = this;
         this.el.html(LoginView.template());
-        $("#settingsSave").click(function () { if (!$(this).hasClass("transparent")) self.save(); });
-        $("#appExit").click(function () { app.end(function () { self.loadForm(); }); })
+        this.el.off(app.clickEvent, "button");
+        this.el.on(app.clickEvent, "#settingsSave", function () { if (!$(this).hasClass("transparent")) self.save(); });
+        this.el.on(app.clickEvent, "#appExit", function () { app.end(function () { self.loadForm(); }); });
         return this;
     };
 

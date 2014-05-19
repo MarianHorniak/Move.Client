@@ -25,8 +25,9 @@ var JpView = function () {
         }
 
         //buttons na JP - ine JPK mimo zoznamu JPK 
-        $("#JPRoadStart").click(function () { self.JPRoadStart() })
-        $("#JPRoadEnd").click(function () { self.JPRoadEnd() })
+        $('.jpk-special').off(app.clickEvent, "button");
+        $('.jpk-special').on(app.clickEvent, "#JPRoadStart", function () { self.JPRoadStart() });
+        $('.jpk-special').on(app.clickEvent, "#JPRoadEnd", function () { self.JPRoadEnd() });
 
         jp.Active = jp.Status == "Active";
         jp.NoFinish = jp.Status != "Finish";
@@ -57,8 +58,8 @@ var JpView = function () {
             this.DestDateFormated = Service.formatJsonDate(this.DestDate);
         });
 
-        $('.jp-header').off("click", "button");
-        $('.jp-header').on("click", "button", function (event) {
+        $('.jp-header').off(app.clickEvent, "button");
+        $('.jp-header').on(app.clickEvent, "button", function (event) {
             app.waiting(true);
             var status = $(this).attr("data-value");
             if(jp.Status != status){
@@ -71,8 +72,8 @@ var JpView = function () {
 
         $('.jpk-list').html(JpView.liTemplate(jp.jpkSteps));
 
-        $('.jpk-list').off("click", "button");
-        $('.jpk-list').on("click", "button", function (event) {
+        $('.jpk-list').off(app.clickEvent, "button");
+        $('.jpk-list').on(app.clickEvent, "button", function (event) {
             app.waiting(true);
             var status = $(this).attr("data-value");
             var pk = $(this).attr("data-pk");

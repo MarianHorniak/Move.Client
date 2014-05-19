@@ -3,7 +3,8 @@
     currentPageName: null,
     isDevice: false,
     mediaNew : null,
-    mediaAlert : null,
+    mediaAlert: null,
+    clickEvent: "click",
     pages: {},
     showAlert: function (message, title) {
 
@@ -147,8 +148,8 @@
         app.log("app.registerEvents");
         var self = this;
         $('body').on('touchmove', function (event) { event.preventDefault(); });
-        $('body').on('click', '[data-route]', function (event) { app.route($(this).attr("data-route")); });
-        $('body').on('click', '#btnNewsClose', function (event) { app.hideNews(); });
+        $('body').on(app.clickEvent, '[data-route]', function (event) { app.route($(this).attr("data-route")); });
+        $('body').on(app.clickEvent, '#btnNewsClose', function (event) { app.hideNews(); });
        
         try {
             //document.addEventListener('pause', function () { app.info("Pause"); }, false);
@@ -310,7 +311,8 @@
                 $this.addClass("selected");
             else
                 $this.removeClass("selected");
-            $this.click(function () {
+            $this.off(app.clickEvent);
+            $this.on(app.clickEvent ,function () {
                 $this.siblings().removeClass("selected");
                 $this.addClass("selected");
                 input.val($this.attr("data_value"));
@@ -322,8 +324,10 @@
 function onLoad() {
     app.isDevice = navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/);
     if (app.isDevice) {
+        app.clickEvent = 'tap';
         document.addEventListener("deviceready", function () { app.initialize(); }, false);
     } else {
+        app.clickEvent = 'click';
         app.initialize();
     }
     

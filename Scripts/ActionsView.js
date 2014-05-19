@@ -26,7 +26,7 @@ var ActionsView = function (store) {
             $("#CarStatusButtons").html(ActionsView.formButtonsTemplate(Bussiness.carStatusActions));
             $("#RoadStatusButtons").html(ActionsView.formButtonsTemplate(Bussiness.roadStatusActions));
 
-            f.on('click', '[data-value]', function (event) {
+            f.on(app.clickEvent, '[data-value]', function (event) {
                 if ($(this).hasClass("disabled"))
                     return;
                 var val = $(this).attr("data-value");
@@ -82,13 +82,13 @@ var ActionsView = function (store) {
         
 
         //tacho / petrol button
-        $("#btnsetTacho").click(function () { self.setTacho() })
-        $("#btnsetPetrol").click(function () { self.setPetrol() })
-        //$("#btnsetPetrolCount").click(function () { self.setPetrolCount() })
-        $("#btnsetPetrolCount025").click(function () { self.setPetrolCountDirect(25) })
-        $("#btnsetPetrolCount050").click(function () { self.setPetrolCountDirect(50) })
-        $("#btnsetPetrolCount075").click(function () { self.setPetrolCountDirect(75) })
-        $("#btnsetPetrolCount100").click(function () { self.setPetrolCountDirect(100) })
+        f.on(app.clickEvent, "#btnsetTacho", function () { self.setTacho() })
+        f.on(app.clickEvent, "#btnsetPetrol", function () { self.setPetrol() })
+        //f.on(app.clickEvent, "#btnsetPetrolCount", function () { self.setPetrolCount() })
+        f.on(app.clickEvent, "#btnsetPetrolCount025", function () { self.setPetrolCountDirect(25) })
+        f.on(app.clickEvent, "#btnsetPetrolCount050", function () { self.setPetrolCountDirect(50) })
+        f.on(app.clickEvent, "#btnsetPetrolCount075", function () { self.setPetrolCountDirect(75) })
+        f.on(app.clickEvent, "#btnsetPetrolCount100", function () { self.setPetrolCountDirect(100) })
 
 
 
