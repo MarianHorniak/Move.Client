@@ -5,10 +5,11 @@
     roadStatusActions: [{ value: "Town", title: "Mesto" }, { value: "OutofTown", title: "Mimo mesta" }, { value: "Highway", title: "Dialnica" }, { value: "Terrain1", title: "Terén 1" }, { value: "Terrain2", title: "Terén 2" }],
  
     beforeChangeState: function (action) {
+        var jp = Service.currentJP();
+        var jpk = Service.currentJPK(jp);
         switch (action) {
             case "UserLogin": break;
             case "JPActive":
-                var jp = Service.currentJP();
                 if (jp)
                 {
                     Service.state.IdVehicle = jp.IdVehicle;
@@ -17,7 +18,20 @@
             case "JPPause": break;
             case "JPFinish": break;
             case "JPKActive": break;
-            case "JPKFinish": break;
+            case "JPKFinish":
+                if (jpk) {
+                    //console.log("have jpk for Finish: " + jpk.PK);
+                    Service.state.IdDestination = jpk.PK;
+                }
+                else {
+                    var jpklast = Service.lastJPK(jp);
+                    if (jpklast)
+                    {
+                        Service.state.IdDestination = jpklast.PK;
+                    }
+                }
+
+                break;
             case "JPKPause": break;
             case "EventGEO": break;
             case "EventBreak": break;
@@ -25,16 +39,15 @@
             case "EventChangeRoadStatus": break;
             case "EventChangeTravelStatus": break;
             case "EventTank":
-                var jp = Service.currentJP();
-                jp.NumValue1 = Service.state.Petrol;
+                if(jp)
+                    jp.NumValue1 = Service.state.Petrol;
                 break;
             case "SetTacho": break;
             case "SetPetrol":
-                var jp = Service.currentJP();
-                jp.NumValue1 = Service.state.PetrolCount;
+                if(jp)
+                    jp.NumValue1 = Service.state.PetrolCount;
                 break;
 
-                break;
         }
     },
     afterSelectJP: function () {
@@ -97,6 +110,7 @@
 
             case "JPKFinish":
                 //vyberiem dalsi krok ak existuje
+                Service.state.IdDestination = undefined;
                 var jpk = Service.nextJPK(jp);
                 if (jpk) {
                     jpk.StatusEnable = "Activable";

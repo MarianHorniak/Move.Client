@@ -11,8 +11,9 @@
         IdVehicle: undefined,
         isAuthenticated: false,
         IdDriveOrder: undefined, // vybrany jp
-        
-        
+        IdDestination: undefined, //vybrany JPK 
+
+        isOtherStepActivated:undefined, //ci sa nerobi krok mimo oficialnych JPK - destinations
 
         TachometerPrevious: undefined,
         Tachometer: undefined,
@@ -187,6 +188,20 @@
         var r = $.grep(jp.jpkSteps, function (o) { return o.Status == "Active" || o.Status == "Paused"; });
         if (r.length > 0)
             return r[0];
+
+        ////pozor, este moze byt aj posledny Finish a dalsi NotDefined 
+        //var lastOne = Service.lastJPK(jp);
+        //if (lastOne)
+        //    return lastOne;
+
+        return undefined;
+    },
+    lastJPK: function (jp) {
+        if (!jp || !jp.jpkSteps || jp.jpkSteps.length == 0)
+            return undefined;
+        var r = $.grep(jp.jpkSteps, function (o) { return o.Status == "Finish"; });
+        if (r.length > 0)
+            return r[r.length-1];
         return undefined;
     },
     nextJPK: function (jp) {
@@ -201,13 +216,17 @@
         var jp = Service.currentJP();
         if (jp) {
             var jpk = Service.currentJPK(jp);
+            var jpkStepID = Service.state.IdDestination;
+            if (!jpkStepID)
+                jpkStepID = jpk ? jpk.PK : 0;
+
             var dataEvent = {
                 PK: 0,
                 ActionName: actionName,
 
                 IdRequirement: jp.IdRequirement,
                 IdDriveOrder: jp.PK,
-                IdDestination: jpk ? jpk.PK : 0,
+                IdDestination: jpkStepID,
                 IdDriver: Service.state.IdDriver ? Service.state.IdDriver:0,
                 IdVehicle: Service.state.IdVehicle ? Service.state.IdVehicle:0,
                 City: PositionService.getCity(),

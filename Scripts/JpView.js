@@ -7,6 +7,11 @@ var JpView = function () {
 
     this.render = function () {
         this.el.html(JpView.template());
+
+        //buttons na JP - ine JPK mimo zoznamu JPK 
+        $('.jpk-special').off(app.clickEvent, "button");
+        $('.jpk-special').on(app.clickEvent, "#JPRoadStart", function () { JPKOther.JPRoadStart() });
+        $('.jpk-special').on(app.clickEvent, "#JPRoadEnd", function () { JPKOther.JPRoadEnd() });
         return this;
     };
 
@@ -24,10 +29,7 @@ var JpView = function () {
             return;
         }
 
-        //buttons na JP - ine JPK mimo zoznamu JPK 
-        $('.jpk-special').off(app.clickEvent, "button");
-        $('.jpk-special').on(app.clickEvent, "#JPRoadStart", function () { self.JPRoadStart() });
-        $('.jpk-special').on(app.clickEvent, "#JPRoadEnd", function () { self.JPRoadEnd() });
+
 
         jp.Active = jp.Status == "Active";
         jp.NoFinish = jp.Status != "Finish";
@@ -99,17 +101,23 @@ var JpView = function () {
     };
     
 
-    this.JPRoadStart = function () {
-        Service.saveState("JPRoadStart");
-    };
 
-    this.JPRoadEnd = function () {
-        Service.saveState("JPRoadEnd");
-    };
 
 
     this.initialize();
 }
+
+var JPKOther =
+    {
+
+        JPRoadStart : function () {
+            Service.saveState("JPRoadStart");
+        },
+
+        JPRoadEnd : function () {
+            Service.saveState("JPRoadEnd");
+        }
+    }
 
 JpView.template = Handlebars.compile($("#jp-tpl").html());
 JpView.liTemplate = Handlebars.compile($("#jpk-li-tpl").html());
