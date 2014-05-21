@@ -108,8 +108,9 @@ var PositionService = {
 
                     //zistime rozdiel ! 
                     var Distancekm = Geo.getDistanceFromLatLonInKm(Globals.Position_LatPrev, Globals.Position_LngPrev, Globals.Position_Lat, Globals.Position_Lng);
-                    Service.state.TachometerCount = Service.state.TachometerCount + Distancekm;
-                    Service.state.Distance = Distancekm;
+                    var DistancekmCalculated = Bussiness.distanceCalculate(Distancekm);
+                    Service.state.TachometerCount = Service.state.TachometerCount + DistancekmCalculated;
+                    Service.state.Distance = DistancekmCalculated;
 
                     //store previous position
                     Globals.Position_LatPrev = Globals.Position_Lat;
@@ -128,6 +129,10 @@ var PositionService = {
                                         
                     //nastavime konstantu, kde
                     Globals.lastGEOSend = Date.now();
+
+                    //vyvolame alerty, ak nejake treab
+                    Bussiness.checkPosition();
+
                 }
             }
             catch (err) {

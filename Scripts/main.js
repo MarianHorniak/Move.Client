@@ -90,6 +90,18 @@
         }
     },
 
+    buttonClickEffect: function (selector)
+    {
+        var el = $(selector);
+        if (!el) return;
+        if (el.length < 1) return;
+
+        el.addClass("clicked");
+        setTimeout(function () {
+            el.removeClass("clicked");
+        }, 1000);
+    },
+
     playSound: function (soundFile) {
         window.setTimeout(function () {
             if (soundFile) {
@@ -150,7 +162,7 @@
         $('body').on('touchmove', function (event) { event.preventDefault(); });
         $('body').on(app.clickEvent, '[data-route]', function (event) { app.route($(this).attr("data-route")); });
         $('body').on(app.clickEvent, '#btnNewsClose', function (event) { app.hideNews(); });
-       
+        $('body').on(app.clickEvent, '#btnSubmenu', function (event) { app.submenu(); });
         try {
             //document.addEventListener('pause', function () { app.info("Pause"); }, false);
             //document.addEventListener('resume', function () { app.info("Resume"); }, false);
@@ -185,6 +197,20 @@
             app.log("Media: " + err);
         }
     },
+    submenu: function () {
+        var el = $('#divsubmenu');
+        el.toggle(100);
+        var elvis = $(el).is(":visible")
+        if(elvis)
+            window.setTimeout(function () {
+                app.submenuHide();
+            }, 5000);
+    },
+    submenuHide: function () {
+        $('#btnactionsadd').removeClass("selected");
+        $('#btnactions').removeClass("selected");
+        $('#divsubmenu').hide(100);
+    },
     home: function (refresh) {
         if (!Service.isAuthenticated)
             app.login();
@@ -211,6 +237,7 @@
             switch (p) {
                 case "jp": page = new JpView(); this.homePage = page; break;
                 case "actions": page = new ActionsView(); break;
+                case "actionsadd": page = new ActionsAddView(); break;
                 case "selectjp": page = new SelectJpView(); break;
                 case "map": page = new MapView(); break;
                 case "state": page = new SettingsView(); break;
@@ -253,6 +280,79 @@
                 self.waiting(true);
         });
     },
+    setJPKSpecialDetail: function () {
+        var elrs = $("#JPRoadStart");
+        var elre = $("#JPRoadEnd");
+        elrs.show();
+        elre.hide();
+        if (Service.state.isOtherStepActivated==1) {
+            elre.show();
+            elrs.hide();
+        }
+    },
+
+    createGuid : function ()
+{
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
+    });
+},
+
+    setJPKSpecial: function () {
+        var eljpk = $(".jpk-special");
+        var elrs = $("#JPRoadStart");
+        var elre = $("#JPRoadEnd");
+        var eljpklist = $(".jpk-list");
+        //current 
+        var jp = Service.currentJP();
+        var jpk = Service.currentJPK(jp);
+
+        //zoznam krokov v plane ukazeme:
+        eljpklist.show();
+
+        //ak mame zacaty JPK mimo plan ?
+        if (Service.state.isOtherStepActivated==1) {
+            eljpklist.hide();
+            eljpk.show();
+            app.setJPKSpecialDetail();
+            return;
+        }
+
+        //nie je JP
+        if (!jp)
+        {
+            eljpk.hide();
+            return;
+        }
+        
+        if (jp && (jp.Status == "NonActive" || jp.Status == "Paused"))
+        {
+            eljpk.hide();
+            return;
+        }
+
+        //mame aktivny krok ! musim schopvat kroky mimo
+        if (!jpk)
+        {
+            eljpk.show();
+            app.setJPKSpecialDetail();
+            return;
+        }
+
+        if (jpk && jpk.Status == "Active")
+        {
+            eljpklist.show();
+            eljpk.hide();
+ 
+        }
+
+
+        
+
+
+
+    },
     setHeader: function () {
         app.setOnline();
         $("#carStatusInfo").removeClass();
@@ -265,6 +365,12 @@
             $("#travelStatusInfo").addClass(jp.TravelStatus);
             //$('#jpInfo').html(Service.online ? 'on' : 'off');//.val('MoVe : '+jp.Car_Description+' '+jp.JP_Description);
         }
+        var addinfo = $('#jpInfoAdd');
+        if (!addinfo) return;
+        if (addinfo.length != 1) return;
+        var contentaddinfo = PositionService.speed ? PositionService.speed : 0 + " " + Globals.velocityUnit+"  ";
+        contentaddinfo += Service.state.TachometerCount ? Service.state.TachometerCount + " " + Globals.distanceUnit : " ? " + " " + Globals.distanceUnit
+        addinfo.html(contentaddinfo);
     },
     setOnline: function () {
         $('#jpInfo').html((Service.online ? 'on' : 'off') + " " + (Service.state && Service.state.Events ? Service.state.Events.length : ""));
@@ -275,11 +381,11 @@
         var jp = Service.currentJP();
         if (jp) {
             $("#btnjp").show();
-            if (jp.Status == "Active") $("#btnactions").show();
-            else $("#btnactions").hide();
+            if (jp.Status == "Active") $("#btnSubmenu").show();
+            else $("#btnSubmenu").hide();
         }
         else {
-            $("#btnactions").hide();
+            $("#btnSubmenu").hide();
             $("#btnjp").hide();
         }
     },

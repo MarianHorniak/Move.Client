@@ -53,10 +53,16 @@ button.disabled {
     padding-left:80px;
 }
 
+#jpInfoAdd {
+    font-size: 16px;
+    text-align: left;
+    padding-left:80px;
+}
+
 #travelStatusInfo {
     position:absolute;
     top:0;
-    right:50px;
+    right:100px;
     width: 50px;
     height: 50px;
 }
@@ -79,7 +85,7 @@ button.disabled {
 #carStatusInfo {
     position:absolute;
     top:0;
-    right:100px;
+    right:50px;
     width: 50px;
     height: 50px;
 }
@@ -304,6 +310,7 @@ button
 	right: 0px;
 	left: 0px;
 	overflow: hidden;
+    background-color: #993300;
 }
 
 .buttonlist > div
@@ -406,6 +413,11 @@ button.selected
 	color: #fff;
 }
 
+button.clicked {
+    background-color: #333;
+    color: #ff6a00;
+}
+
 h1
 {
 	margin: 0px;
@@ -449,13 +461,14 @@ h2
 }
 .submenu {
     height: auto;
+    /*width:50%;*/
     position: absolute;
     right: 0px;
     bottom: 68px;
     left: 0px;
     z-index: auto;
     overflow: hidden;
-    background-color: #333;
+    background-color: #993300;
 }
 
 .footer
@@ -504,18 +517,15 @@ h2
 }
 
 #news {
-    /*display:  none;*/
     position:absolute;
-    top: 50px;
-    bottom: 50px;
-    left: 50px;
-    right: 50px;
+    top: 70px;
+    bottom: 70px;
+    left: 70px;
+    right: 70px;
     z-index:10000;
     padding:10px;
     background-color: #f00;
 	color: #fff;
-    /*background-position:right;
-    background-repeat:no-repeat;*/
 }
 
 #newsTitle {
@@ -755,7 +765,30 @@ div.tabs {
     width:100px;
     text-align:right;
 }
+#actionsaddForm > div {
+    padding-left:115px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+#actionsaddForm div > button {
+    display:inline-block;
+    width:160px;
+    height:60px;
+}
+#actionsaddForm div > button.ico_submitActions
+{
+    background-color:Green;
+	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAYAAADHl1ErAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAI6SURBVHhe7dg/SBthGMfxIKUgpSCCk0uHUuji6Ojm0snFzbVTly4d2ilbcXN2cHNxF8dQR3GTgJtTIW2GEgohmH9+37vnIKnvXXImFd57fx843ph77vXeH7k77qmJiIiIiIiIiIiIiIiIVMt4PN4YDoeH9Xp9xb6SPM1m8yWB/WAbE9qJQpuBkI5cWBmFVoB89tOYpik0D3LZYusmCXm40Kx0KYJOv91uv2Y4Y1tNvvD7ZWPc3KU2Go0u7IeU57zRaLywQ+JGGN/STPwI84ZhzcrjRhAfCGSQJOP3u9frvbXyuBHGG7Y/SSweBHnPsGvlcWu1Wq8I5CqNxo+n4icrD487eS6Nd/bnwpjv1HLJc2yl4eHkv7gV8Iv4uYzQmOqjmy8P/+fSvR5ZeVg4/ySszKKh9fv9Hbs35bnrdDrrVh4WTn4qrMxTQ+PQDXdsOstj7PvL8N7Kw8KJe8PKlA1tsgPhw3yjwWCwZ+XhYQ2FgTllQuMmP9WB+Bf7v1ppuFjHUkKjzNuBmODeIauBxSwUGrsLOxAce81Q9MIdHhb0pNBcB4Jdt2nFY+6Ybre7aeXVwvpKhTarA8G+e2wnk1cV65w7ND4WdiBwYNNWGwudGRpaBJfbgeCJ+N2miwNrnie0PHE2All46dD41cXdCGTxZUJTI9AhiHkeBGoETiKMwtBcL81KJUMueaGF2wj83whnKjQuxXAbgc+FnLLQwm0EPjfuWZ8JLMxGoIiIiIiIiIiIiIiIiESlVnsAVoe0Wymm6WkAAAAASUVORK5CYII=');
+    width:80px;
 
+}
+#actionsaddForm div > label {
+    display:inline-block;
+    position:absolute;
+    left:0;
+    width:100px;
+    text-align:right;
+}
 #selectJpData {
     border-top: 1px solid #fff;
 }

@@ -11,9 +11,10 @@
 <!-- HEADER -->
 <div id="jpHeader">
     <div id="jpInfo"></div>
+    <div id="jpInfoAdd">...</div>
 
-    <div id="carStatusInfo"></div>
     <div id="travelStatusInfo"></div>
+    <div id="carStatusInfo"></div>
     <div id="roadStatusInfo"></div>
 
 </div>
@@ -33,21 +34,21 @@
 <!--menu--> 
 <div id="menu">
 <div class='footer' id="footermenu">
-    <button id="btnactions" data-route="actions" class="icon ico_tools">&nbsp;</button>
+    <button title="Submenu" id="btnSubmenu"  class="icon ico_tools">&nbsp;</button>&nbsp;
     <button id="btnjp" data-route="jp" class="icon ico_jp">&nbsp;</button>
     <button id="btnselectjp" data-route="selectjp" class="icon ico_submenu">&nbsp;</button>
     <button id="btnmap" data-route="map" class="icon ico_map">&nbsp;</button>
     <button id="btnstate" data-route="state" class="icon ico_settings" style="display:none">&nbsp;</button>
     <button id="btnlogin" data-route="login" class="icon ico_end">&nbsp;</button>&nbsp;
 </div>
+<div class='submenu' id="divsubmenu" style="display:none;z-index:10000;">
+    <button id="btnactionsadd" data-route="actionsadd" class="icon textnoicon">Nastavenia</button>
+    <button id="btnactions" data-route="actions" class="icon textnoicon">Jazda</button>
+</div>
 </div>
 
-<!-- Tacho - Tank -->
-<script id="tachotank-tpl" type="text/x-handlebars-template">
-<div>
-   nastavenie tankovania a tachometra !!! vynutene z inej akcie, napr JPActivate/JPDeactivate
-</div>
-</script>
+<!--submenu--> 
+
 
 <!-- JP -->
 <script id="jp-tpl" type="text/x-handlebars-template">
@@ -56,7 +57,8 @@
     <div class='jpklScroll'>
   <div class='jpk-list'></div>
         </div>
-  <div class='jpk-special'> 
+  <div class='jpk-special' style="display:none"> 
+      <label>Mimo plán</label>
       <button id="JPRoadStart" data-value="Start" class="icon ico_activate">&nbsp;</button>
       <button id="JPRoadEnd" data-value="End" class="icon ico_finish">&nbsp;</button>
   </div>
@@ -109,38 +111,40 @@
  <div id="TravelStatus"><label>Typ jazdy</label><div id="TravelStatusButtons"></div></div>
  <div id="CarStatus"><label>Stav jazdy</label> <div id="CarStatusButtons"></div></div>
  <div id="RoadStatus"><label>Typ cesty</label> <div id="RoadStatusButtons"></div></div>
-  <div id="Tacho"><label>Stav km</label> 
-      <!--<input class="inputActionValue" type="number" id="TachoPrevious" value="0" disabled />-->
-      <!--<input class="inputActionValue" type="number" id="TachoCurrentCount" value="112" disabled />-->
-      <input class="inputActionValue" type="number" id="TachoCurrent" value="0"/>
-      <button class="icon ico_submitActions" id="btnsetTacho">&nbsp;</button>
-
-  </div>
-  <div id="Petrol"><label>Tankovanie</label> 
-      <!--<input class="inputActionValue" type="number" id="PetrolPrevious" value="0" disabled />-->
-      <!--<input class="inputActionValue" type="number" id="PetrolCurrentCount" value="112" disabled />-->
-      <input class="inputActionValue" type="number" id="PetrolCurrent" value="0"/>
-      <button class="icon ico_submitActions" id="btnsetPetrol">&nbsp;</button>
-  </div>
-      <div id="PetrolCount"><label>Stav paliva</label> 
-      <button class="icon textnoicon" id="btnsetPetrolCount025">1/4</button>
-       <button class="icon textnoicon" id="btnsetPetrolCount050">1/2</button>
-       <button class="icon textnoicon" id="btnsetPetrolCount075">3/4</button>
-      <button class="icon textnoicon" id="btnsetPetrolCount100">Plná</button>
-
-<!--      <input class="" name="radiopc" type="radio" id="pc025" value="25" />0.25
-      <input class="" name="radiopc" type="radio" id="pc0500" value="50"/>0.50
-      <input class="" name="radiopc" type="radio" id="pc075" value="75"/>0.75
-      <input class="" name="radiopc" type="radio" id="pc100" value="100" checked/>1.00
-      <button class="icon ico_submitActions" id="btnsetPetrolCount">&nbsp;</button>-->
-  </div>
-    &nbsp;
 </script>
+
 
 <script id="actionsForm-buttons-template" type="text/x-handlebars-template">
 {{#.}}
     <button id="{{this.parameter}}{{this.value}}" data-parameter="{{this.parameter}}" data-value="{{this.value}}">{{this.title}}</button>
 {{/.}}
+</script>
+
+<!-- ActionsAdd -->
+<script id="actionsadd-tpl" type="text/x-handlebars-template">
+    <div id="actionsaddForm"></div>
+</script>
+
+<script id="actionsaddForm-template" type="text/x-handlebars-template">
+<div id="Tacho"><label>Stav tacho</label> 
+      <!--<input class="inputActionValue" type="number" id="TachoPrevious" value="0" disabled />-->
+      <!--<input class="inputActionValue" type="number" id="TachoCurrentCount" value="112" disabled />-->
+      <input class="inputActionValue" type="number"  id="TachoCurrent" value="0"/> km
+      <button class="icon ico_submitActions" id="btnsetTacho">&nbsp;</button>
+  </div>
+  <div id="Petrol"><label>Tankovanie</label> 
+      <!--<input class="inputActionValue" type="number" id="PetrolPrevious" value="0" disabled />-->
+      <!--<input class="inputActionValue" type="number" id="PetrolCurrentCount" value="112" disabled />-->
+      <input class="inputActionValue" type="number" id="PetrolCurrent" value="0"/> l 
+      <input class="inputActionValue" type="number" id="PetrolMoney" value="0"/> €
+      <button class="icon ico_submitActions" id="btnsetPetrol">&nbsp;</button>
+  </div>
+  <div id="PetrolCount"><label>Stav paliva</label> 
+      <button class="icon textnoicon" id="btnsetPetrolCount025">1/4</button>
+       <button class="icon textnoicon" id="btnsetPetrolCount050">1/2</button>
+       <button class="icon textnoicon" id="btnsetPetrolCount075">3/4</button>
+      <button class="icon textnoicon" id="btnsetPetrolCount100">Plná</button>
+  </div>
 </script>
 
 <!-- AutoAction -->
@@ -236,6 +240,7 @@
 <script src="Scripts/Service.js"></script>
 <script src="Scripts/JpView.js"></script>
 <script src="Scripts/ActionsView.js"></script>
+<script src="Scripts/ActionsAddView.js"></script>
 <script src="Scripts/SelectJpView.js"></script>
 <script src="Scripts/AutoActionView.js"></script>
 <script src="Scripts/MapView.js"></script>

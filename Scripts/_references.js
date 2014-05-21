@@ -20,6 +20,7 @@
 /// <reference path="SelectJpView.js" />
 /// <reference path="../lib/iso8601.js" />
 /// <reference path="Bussiness.js" />
+/// <reference path="ActionsAddView.js" />
 
 
 

@@ -15,6 +15,21 @@
         language: "SK",
         RoleName: "Driver",
 
+        //Units
+        velocityUnit: "km/h",
+        distanceUnit: "km",
+
+        //distance constants; roadStatusActions: Town OutofTown Highway Terrain1  "Terrain2
+        distanceCoef_Default: 1.5,
+        distanceCoef_Town: 1.7,
+        distanceCoef_OutofTown: 1.3,
+        distanceCoef_Highway: 1.1,
+        distanceCoef_Terrain1: 1.9,
+        distanceCoef_Terrain2: 2.1,
+
+
+
+
         //Messaging
         HasNewMessasges: false,
         MessageTimeToLiveMin: 30,
@@ -36,6 +51,9 @@
         
         lastGEOSend: Date.now(),
         GEOsendFreqSec : 60,
+
+        //tachometer - aky musi byt stary, aby sme ho neziadali pri povinnych akciahc ? 
+        TachoValidSeconds : 300, 
 
         getDevice: function () {
 

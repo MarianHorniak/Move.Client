@@ -6,18 +6,42 @@ var ActionsView = function (store) {
 
     this.render = function () {
        
+
+
+        //$('#btnsetTacho').off(app.clickEvent, function () { ActionsViewMethods.setTacho() });
+        //$('#btnsetPetrol').off(app.clickEvent, function () { ActionsViewMethods.setPetrol() });
+        //$('#btnsetPetrolCount025').off(app.clickEvent, function () { ActionsViewMethods.setPetrolCountDirect(25) });
+        //$('#btnsetPetrolCount050').off(app.clickEvent, function () { ActionsViewMethods.setPetrolCountDirect(50) });
+        //$('#btnsetPetrolCount075').off(app.clickEvent, function () { ActionsViewMethods.setPetrolCountDirect(75) });
+        //$('#btnsetPetrolCount100').off(app.clickEvent, function () { ActionsViewMethods.setPetrolCountDirect(100) });
+
+        this.el.html(ActionsView.template());
+        var f = $("#actionsForm");
+        f.html(ActionsView.formTemplate({}));
+
+        //$('#btnsetTacho').on(app.clickEvent, function () { ActionsViewMethods.setTacho() });
+        //$('#btnsetPetrol').on(app.clickEvent, function () { ActionsViewMethods.setPetrol() });
+        //$('#btnsetPetrolCount025').on(app.clickEvent, function () { ActionsViewMethods.setPetrolCountDirect(25) });
+        //$('#btnsetPetrolCount050').on(app.clickEvent, function () { ActionsViewMethods.setPetrolCountDirect(50) });
+        //$('#btnsetPetrolCount075').on(app.clickEvent, function () { ActionsViewMethods.setPetrolCountDirect(75) });
+        //$('#btnsetPetrolCount100').on(app.clickEvent, function () { ActionsViewMethods.setPetrolCountDirect(100) });
+
         return this;
     };
 
     this.onShow = function () {
+
+        //schovame alert
+        app.hideNews();
+        app.submenuHide();
+
         var self = this, data = {}, jp = Service.currentJP();
-        this.el.html(ActionsView.template());
         var f = $("#actionsForm");
         if (jp) {
 
             Bussiness.beforeShowActions(jp);
 
-            f.html(ActionsView.formTemplate(data));
+            //f.html(ActionsView.formTemplate(data));
             $.each(Bussiness.travelStatusActions, function () { this.parameter = "TravelStatus"; });
             $.each(Bussiness.carStatusActions, function () { this.parameter = "CarStatus"; });
             $.each(Bussiness.roadStatusActions, function () { this.parameter = "RoadStatus"; });
@@ -55,6 +79,7 @@ var ActionsView = function (store) {
 
         var f = $("#actionsForm");
 
+
         f.find("[data-value]").removeClass("selected").addClass("disabled");
 
         if (jp.CarStatus)
@@ -75,50 +100,39 @@ var ActionsView = function (store) {
         if (!Service.state.Petrol)
             Service.state.Petrol = Service.state.PetrolPrevius;
         $('#PetrolCurrent').val(Service.state.Petrol);
-        $('#TachoPrevios').val(Service.state.TachometerPrevious);
+        $('#TachoPrevious').val(Service.state.TachometerPrevious);
         if (!Service.state.Tachometer)
             Service.state.Tachometer = Service.state.TachometerPrevious;
         $('#TachoCurrent').val(Service.state.Tachometer);
-        
-
-        //tacho / petrol button
-        f.on(app.clickEvent, "#btnsetTacho", function () { self.setTacho() })
-        f.on(app.clickEvent, "#btnsetPetrol", function () { self.setPetrol() })
-        //f.on(app.clickEvent, "#btnsetPetrolCount", function () { self.setPetrolCount() })
-        f.on(app.clickEvent, "#btnsetPetrolCount025", function () { self.setPetrolCountDirect(25) })
-        f.on(app.clickEvent, "#btnsetPetrolCount050", function () { self.setPetrolCountDirect(50) })
-        f.on(app.clickEvent, "#btnsetPetrolCount075", function () { self.setPetrolCountDirect(75) })
-        f.on(app.clickEvent, "#btnsetPetrolCount100", function () { self.setPetrolCountDirect(100) })
-
 
 
     };
       
-    this.setTacho = function () {
-        var tachonew = $("#TachoCurrent").val();
-        Service.state.TachometerPrevious = Service.state.Tachometer;
-        Service.state.Tachometer = tachonew;
-        Service.saveState("SetTacho");
-    };
+    //this.setTacho = function () {
+    //    var tachonew = $("#TachoCurrent").val();
+    //    Service.state.TachometerPrevious = Service.state.Tachometer;
+    //    Service.state.Tachometer = tachonew;
+    //    Service.saveState("SetTacho");
+    //};
 
-    this.setPetrol = function () {
-        var petrolnew = $("#PetrolCurrent").val();
-        Service.state.PetrolPrevius = Service.state.Petrol;
-        Service.state.Petrol = petrolnew;
-        Service.saveState("EventTank");
-    };
+    //this.setPetrol = function () {
+    //    var petrolnew = $("#PetrolCurrent").val();
+    //    Service.state.PetrolPrevius = Service.state.Petrol;
+    //    Service.state.Petrol = petrolnew;
+    //    Service.saveState("EventTank");
+    //};
 
-    this.setPetrolCount = function () {
-        var petrolcount = $('input[name=radiopc]:checked', '#PetrolCount').val();
-        Service.state.PetrolCount = petrolcount;
-        Service.saveState("SetPetrol");
-    };
+    //this.setPetrolCount = function () {
+    //    var petrolcount = $('input[name=radiopc]:checked', '#PetrolCount').val();
+    //    Service.state.PetrolCount = petrolcount;
+    //    Service.saveState("SetPetrol");
+    //};
 
-    this.setPetrolCountDirect = function (pcnt) {
-        var petrolcount = pcnt;
-        Service.state.PetrolCount = petrolcount;
-        Service.saveState("SetPetrol");
-    };
+    //this.setPetrolCountDirect = function (pcnt) {
+    //    var petrolcount = pcnt;
+    //    Service.state.PetrolCount = petrolcount;
+    //    Service.saveState("SetPetrol");
+    //};
 
     this.clear = function () {
 
@@ -126,6 +140,49 @@ var ActionsView = function (store) {
 
     this.initialize();
 }
+
+//var ActionsViewMethods =
+//    {
+
+//        setTacho: function () {
+//            var tachonew = $("#TachoCurrent").val();
+//            Service.state.TachometerPrevious = Service.state.Tachometer;
+//            Service.state.Tachometer = tachonew;
+//            Service.saveState("SetTacho");
+//            app.buttonClickEffect("#btnsetTacho");
+//            Service.state.TachometerDateStored = Date.now();
+//        },
+
+//        setPetrol: function () {
+//            var petrolnew = $("#PetrolCurrent").val();
+//            Service.state.PetrolPrevius = Service.state.Petrol;
+//            Service.state.Petrol = petrolnew;
+//            Service.saveState("EventTank");
+//            app.buttonClickEffect("#btnsetPetrol");
+//        },
+
+//        setPetrolCount: function () {
+//            var petrolcount = $('input[name=radiopc]:checked', '#PetrolCount').val();
+//            Service.state.PetrolCount = petrolcount;
+//            Service.saveState("SetPetrol");
+            
+//        },
+
+//        setPetrolCountDirect: function (pcnt) {
+//            //remove all 
+//            $('button[id^="btnsetPetrolCount"]').removeClass("selected");
+//            //selected
+//            var typ = pcnt.toString();;
+//            if (typ.length == 2) typ = "0" + typ;
+//            $("#btnsetPetrolCount" + typ).addClass("selected");
+
+//            var petrolcount = pcnt;
+//            Service.state.PetrolCount = petrolcount;
+//            Service.saveState("SetPetrol");
+//            app.buttonClickEffect("#btnsetPetrolCount" + typ);
+//            Service.state.PetrolDateStored = Date.now();
+//        }
+//    }
 
 ActionsView.template = Handlebars.compile($("#actions-tpl").html());
 ActionsView.formTemplate = Handlebars.compile($("#actionsForm-template").html());

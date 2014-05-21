@@ -110,11 +110,13 @@ var JpView = function () {
 var JPKOther =
     {
 
-        JPRoadStart : function () {
+        JPRoadStart: function () {
+            app.buttonClickEffect("#JPRoadStart");
             Service.saveState("JPRoadStart");
         },
 
-        JPRoadEnd : function () {
+        JPRoadEnd: function () {
+            app.buttonClickEffect("#JPRoadEnd");
             Service.saveState("JPRoadEnd");
         }
     }

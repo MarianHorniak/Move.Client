@@ -13,7 +13,7 @@
         IdDriveOrder: undefined, // vybrany jp
         IdDestination: undefined, //vybrany JPK 
 
-        isOtherStepActivated:undefined, //ci sa nerobi krok mimo oficialnych JPK - destinations
+        isOtherStepActivated:0, //ci sa nerobi krok mimo oficialnych JPK - destinations
 
         TachometerPrevious: undefined,
         Tachometer: undefined,
@@ -25,6 +25,7 @@
         Petrol: undefined,
         PetrolDateStored : undefined, //kedy bolo posledne cerapanie 
         PetrolCount: undefined,
+        PetrolMoney: undefined,
         
         //rychlost ? 
         velocity: 0,
@@ -243,6 +244,7 @@
                 TachometerCount: Service.state.TachometerCount ? Service.state.TachometerCount : 0,
                 Distance: Service.state.Distance ? Service.state.Distance : 0,
                 ClientTimeStamp: new Date().toISOString(),
+                ClientRequestId : app.createGuid(),
                 Latitude: PositionService.lat,
                 Longitude: PositionService.lng,
                 Velocity: PositionService.speed ? PositionService.speed : 0
