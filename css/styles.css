@@ -772,14 +772,14 @@ div.tabs {
 }
 #actionsaddForm div > button {
     display:inline-block;
-    width:160px;
+    width:80px;
     height:60px;
 }
 #actionsaddForm div > button.ico_submitActions
 {
     background-color:Green;
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAYAAADHl1ErAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAI6SURBVHhe7dg/SBthGMfxIKUgpSCCk0uHUuji6Ojm0snFzbVTly4d2ilbcXN2cHNxF8dQR3GTgJtTIW2GEgohmH9+37vnIKnvXXImFd57fx843ph77vXeH7k77qmJiIiIiIiIiIiIiIiIVMt4PN4YDoeH9Xp9xb6SPM1m8yWB/WAbE9qJQpuBkI5cWBmFVoB89tOYpik0D3LZYusmCXm40Kx0KYJOv91uv2Y4Y1tNvvD7ZWPc3KU2Go0u7IeU57zRaLywQ+JGGN/STPwI84ZhzcrjRhAfCGSQJOP3u9frvbXyuBHGG7Y/SSweBHnPsGvlcWu1Wq8I5CqNxo+n4icrD487eS6Nd/bnwpjv1HLJc2yl4eHkv7gV8Iv4uYzQmOqjmy8P/+fSvR5ZeVg4/ySszKKh9fv9Hbs35bnrdDrrVh4WTn4qrMxTQ+PQDXdsOstj7PvL8N7Kw8KJe8PKlA1tsgPhw3yjwWCwZ+XhYQ2FgTllQuMmP9WB+Bf7v1ppuFjHUkKjzNuBmODeIauBxSwUGrsLOxAce81Q9MIdHhb0pNBcB4Jdt2nFY+6Ybre7aeXVwvpKhTarA8G+e2wnk1cV65w7ND4WdiBwYNNWGwudGRpaBJfbgeCJ+N2miwNrnie0PHE2All46dD41cXdCGTxZUJTI9AhiHkeBGoETiKMwtBcL81KJUMueaGF2wj83whnKjQuxXAbgc+FnLLQwm0EPjfuWZ8JLMxGoIiIiIiIiIiIiIiIiESlVnsAVoe0Wymm6WkAAAAASUVORK5CYII=');
-    width:80px;
+    width:60px;
 
 }
 #actionsaddForm div > label {

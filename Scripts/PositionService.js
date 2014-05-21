@@ -93,6 +93,7 @@ var PositionService = {
                     });
                 }
 
+
                 if (posChanged) {
                     PositionService._lat = PositionService.lat;
                     PositionService._lng = PositionService.lng;

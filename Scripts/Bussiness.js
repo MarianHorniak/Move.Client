@@ -77,7 +77,9 @@
 
     distanceCalculate: function(DistanceOriginal)
     {
+        if (!DistanceOriginal) return 0;
         var retDist = DistanceOriginal * Globals.distanceCoef_Default;
+        
         var jp = Service.currentJP();
         var roadStatus = "";
         if (jp && jp.RoadStatus) roadStatus = jp.RoadStatus
@@ -100,6 +102,7 @@
                 break;
             }
         
+        retDist = retDist.toFixed(2);
         return retDist;
 
     },
