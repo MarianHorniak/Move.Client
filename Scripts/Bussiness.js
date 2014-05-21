@@ -78,32 +78,33 @@
     distanceCalculate: function(DistanceOriginal)
     {
         if (!DistanceOriginal) return 0;
-        var retDist = DistanceOriginal * Globals.distanceCoef_Default;
+        return DistanceOriginal;
+        //var retDist = DistanceOriginal * Globals.distanceCoef_Default;
         
-        var jp = Service.currentJP();
-        var roadStatus = "";
-        if (jp && jp.RoadStatus) roadStatus = jp.RoadStatus
-        //Town OutofTown Highway Terrain1  "Terrain2
-        switch (roadStatus) {
-            case "Town":
-                retDist = DistanceOriginal * Globals.distanceCoef_Town;
-                break;
-            case "OutofTown":
-                retDist = DistanceOriginal * Globals.distanceCoef_OutofTown;
-                break;
-            case "Highway":
-                retDist = DistanceOriginal * Globals.distanceCoef_Highway;
-                break;
-            case "Terrain1":
-                retDist = DistanceOriginal * Globals.distanceCoef_Terrain1;
-                break;
-            case "Terrain2":
-                retDist = DistanceOriginal * Globals.distanceCoef_Terrain2;
-                break;
-            }
+        //var jp = Service.currentJP();
+        //var roadStatus = "";
+        //if (jp && jp.RoadStatus) roadStatus = jp.RoadStatus
+        ////Town OutofTown Highway Terrain1  "Terrain2
+        //switch (roadStatus) {
+        //    case "Town":
+        //        retDist = DistanceOriginal * Globals.distanceCoef_Town;
+        //        break;
+        //    case "OutofTown":
+        //        retDist = DistanceOriginal * Globals.distanceCoef_OutofTown;
+        //        break;
+        //    case "Highway":
+        //        retDist = DistanceOriginal * Globals.distanceCoef_Highway;
+        //        break;
+        //    case "Terrain1":
+        //        retDist = DistanceOriginal * Globals.distanceCoef_Terrain1;
+        //        break;
+        //    case "Terrain2":
+        //        retDist = DistanceOriginal * Globals.distanceCoef_Terrain2;
+        //        break;
+        //    }
         
-        retDist = retDist.toFixed(2);
-        return retDist;
+        //retDist = retDist.toFixed(2);
+        //return retDist;
 
     },
 

@@ -108,13 +108,13 @@ var PositionService = {
                     if (differenceSec < Globals.GEOsendFreqSec) return;
 
                     //zistime rozdiel ! 
-                    var Distancekm = Geo.getDistanceFromLatLonInKm(Globals.Position_LatPrev, Globals.Position_LngPrev, Globals.Position_Lat, Globals.Position_Lng);
-                    var DistancekmCalculated = Bussiness.distanceCalculate(Distancekm);
-                    var newdist = 0;
-                    if (DistancekmCalculated) newdist = DistancekmCalculated;
-                    if (Service.state.TachometerCount)
-                        Service.state.TachometerCount = Service.state.TachometerCount + newdist;
-                    Service.state.Distance = newdist;
+                    //var Distancekm = Geo.getDistanceFromLatLonInKm(Globals.Position_LatPrev, Globals.Position_LngPrev, Globals.Position_Lat, Globals.Position_Lng);
+                    //var DistancekmCalculated = Bussiness.distanceCalculate(Distancekm);
+                    //var newdist = 0;
+                    //if (DistancekmCalculated) newdist = DistancekmCalculated;
+                    //if (Service.state.TachometerCount)
+                    //    Service.state.TachometerCount = Service.state.TachometerCount + newdist;
+                    //Service.state.Distance = newdist;
 
                     //store previous position
                     Globals.Position_LatPrev = Globals.Position_Lat;
