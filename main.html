@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Move Client</title>
+    <meta charset="utf-8"/>
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body onload="onLoad()">
+<div class='waitingDiv'>&nbsp;</div>
+
+<!-- HEADER -->
+<div id="jpHeader">
+    <div id="jpInfo"></div>
+    <div id="jpInfoAdd">...</div>
+
+    <div id="travelStatusInfo"></div>
+    <div id="carStatusInfo"></div>
+    <div id="roadStatusInfo"></div>
+
+</div>
+        <!-- LOG -->
+    <div id="jpLog"></div>
+
+<!-- NEWS -->
+<div id="newsWrapper">
+<div id="news">
+    <button id="btnNewsClose" style="background-color:black;" class="icon ico_back">&nbsp;</button>
+    <label id="newsTitle"></label><br />
+    <hr />
+    <p id="newsContent"></p>
+</div>
+</div>
+    
+<!--menu--> 
+<div id="menu">
+<div class='footer' id="footermenu">
+    <button title="Submenu" id="btnSubmenu"  class="icon ico_tools">&nbsp;</button>&nbsp;
+    <button id="btnjp" data-route="jp" class="icon ico_jp">&nbsp;</button>
+    <button id="btnselectjp" data-route="selectjp" class="icon ico_submenu">&nbsp;</button>
+    <button id="btnmap" data-route="map" class="icon ico_map">&nbsp;</button>
+    <button id="btnstate" data-route="state" class="icon ico_settings" style="display:none">&nbsp;</button>
+    <button id="btnlogin" data-route="login" class="icon ico_end">&nbsp;</button>&nbsp;
+</div>
+<div class='submenu' id="divsubmenu" style="display:none;z-index:10000;">
+    <button id="btnactionsadd" data-route="actionsadd" class="icon textnoicon">Nastavenia</button>
+    <button id="btnactions" data-route="actions" class="icon textnoicon">Jazda</button>
+</div>
+</div>
+
+<!--submenu--> 
+
+
+<!-- JP -->
+<script id="jp-tpl" type="text/x-handlebars-template">
+<div>
+  <div class='jp-header'></div>
+    <div class='jpklScroll'>
+  <div class='jpk-list'></div>
+        </div>
+  <div class='jpk-special' style="display:none"> 
+      <label>Mimo plán</label>
+      <button id="JPRoadStart" data-value="Start" class="icon ico_activate">&nbsp;</button>
+      <button id="JPRoadEnd" data-value="End" class="icon ico_finish">&nbsp;</button>
+  </div>
+</div>
+</script>
+
+
+<script id="jp-header-tpl" type="text/x-handlebars-template">
+<div class="{{this.Status}}" data-id="{{this.PK}}">
+{{#if this.Active}}
+    <button data-action="JPPaused" data-value="Paused"  class="icon ico_pause">&nbsp;</button>
+    <button data-action="JPFinish" data-value="Finish"  class="icon ico_finish">&nbsp;</button>
+{{else}} 
+    {{#if this.NoFinish}} 
+        <!--<button id="JPActive" data-value="Active" class="textnoicon">Aktivovať</button>-->
+      <button data-action="JPActive" data-value="Active" class="icon ico_activate">&nbsp;</button>
+    {{/if}}
+{{/if}}
+{{this.DateFromFormated}} {{this.JP_Description}} <br/> {{this.Car_Description}} {{this.Status}}
+</div>
+</script>
+
+<script id="jpk-li-tpl" type="text/x-handlebars-template">
+<div class='buttonlist'>
+{{#.}}
+<div id="jpk{{this.PK}}" class="{{this.Status}}">
+    {{#if this.Active}}
+       <button data-action="JPKPaused" data-value="Paused" data-pk="{{this.PK}}" class="icon ico_pause">&nbsp;</button>
+       <button data-action="JPKFinish" data-value="Finish" data-pk="{{this.PK}}" class="icon ico_finish">&nbsp;</button>
+    {{/if}}
+    {{#if this.Activable}}
+        <button data-action="JPKActive" data-value="Active" data-pk="{{this.PK}}" class="icon ico_activate">&nbsp;</button>
+    {{/if}}
+
+<strong>{{this.Sort}} {{this.DestDescription}}</strong> <br/>
+        {{this.DestCity}} {{this.DestAddress}}
+</div>
+{{/.}}
+</div>
+</script>
+
+<!-- Actions -->
+<script id="actions-tpl" type="text/x-handlebars-template">
+<div class="actionsFormScroll">
+    <div id="actionsForm"></div>
+</div>
+</script>
+
+<script id="actionsForm-template" type="text/x-handlebars-template">
+ <div id="TravelStatus"><label>Typ jazdy</label><div id="TravelStatusButtons"></div></div>
+ <div id="CarStatus"><label>Stav jazdy</label> <div id="CarStatusButtons"></div></div>
+ <div id="RoadStatus"><label>Typ cesty</label> <div id="RoadStatusButtons"></div></div>
+</script>
+
+
+<script id="actionsForm-buttons-template" type="text/x-handlebars-template">
+{{#.}}
+    <button id="{{this.parameter}}{{this.value}}" data-parameter="{{this.parameter}}" data-value="{{this.value}}">{{this.title}}</button>
+{{/.}}
+</script>
+
+<!-- ActionsAdd -->
+<script id="actionsadd-tpl" type="text/x-handlebars-template">
+    <div id="actionsaddForm"></div>
+</script>
+
+<script id="actionsaddForm-template" type="text/x-handlebars-template">
+<div id="Tacho"><label>Stav tacho</label> 
+      <!--<input class="inputActionValue" type="number" id="TachoPrevious" value="0" disabled />-->
+      <!--<input class="inputActionValue" type="number" id="TachoCurrentCount" value="112" disabled />-->
+      <input class="inputActionValue" type="number"  id="TachoCurrent" value="0"/> km
+      <button class="icon ico_submitActions" id="btnsetTacho">&nbsp;</button>
+  </div>
+  <div id="Petrol"><label>Tankovanie</label> 
+      <!--<input class="inputActionValue" type="number" id="PetrolPrevious" value="0" disabled />-->
+      <!--<input class="inputActionValue" type="number" id="PetrolCurrentCount" value="112" disabled />-->
+      <input class="inputActionValue" type="number" id="PetrolCurrent" value="0"/> l 
+      <input class="inputActionValue" type="number" id="PetrolMoney" value="0"/> €
+      <button class="icon ico_submitActions" id="btnsetPetrol">&nbsp;</button>
+  </div>
+  <div id="PetrolCount"><label>Stav paliva</label> 
+      <button class="icon textnoicon" id="btnsetPetrolCount025">1/4</button>
+       <button class="icon textnoicon" id="btnsetPetrolCount050">1/2</button>
+       <button class="icon textnoicon" id="btnsetPetrolCount075">3/4</button>
+      <button class="icon textnoicon" id="btnsetPetrolCount100">Plná</button>
+  </div>
+</script>
+
+<!-- AutoAction -->
+<script id="autoaction-tpl" type="text/x-handlebars-template">
+<div class="header"><button data-route="jp" class="icon ico_back">&nbsp;</button>
+    <button id="autoorderTitle" class="textHeaderTitle" disabled="disabled">Auto. obj.</button>
+    <!--<button id="autoorderSave" title="Prevziať objednávku po ceste" class="icon texticon ico_submit">Potvrdiť</button>-->
+    <button id="autoorderSave" title="Prevziať objednávku po ceste" class="icon texticon ico_submit">&nbsp;</button>
+
+</div>
+<div class="scrollBottom"><form id="autoactionForm"></form></div>
+</script>
+
+<script id="autoactionForm-template" type="text/x-handlebars-template">
+<input id="AutoOrderEndCity"  name="EndCity" value="{{this.EndCity}}" type="text" placeholder="Kam mesto" />
+<input id="AutoOrderEndAddress" name="EndAddress" value="{{this.EndAddress}}" type="text" placeholder="Kam adresa"  />
+ <input id="AutoOrderTimeToRealize" name="TimeToRealize" value="{{this.TimeToRealize}}" type="number" placeholder="min." />
+{{#if this.ErrorMessage}}<div class="error">{{this.ErrorMessage}}</div>{{/if}}
+</script>
+
+<!-- Map -->
+<script id="map-tpl" type="text/x-handlebars-template">
+<div id="map-canvas"></div>
+</script>
+
+<!-- Login -->
+<script id="login-tpl" type="text/x-handlebars-template">
+<div class="header">
+    <!--<button data-route="jp" id="settingsOrders" class="icon ico_back">&nbsp;</button>-->
+    <button id="settTitle" class="textHeaderTitle" disabled="disabled">Login</button>
+    <button id="settingsSave" class="icon ico_submit transparent">&nbsp;</button>
+    <button id="appExit" class="icon ico_end">&nbsp;</button>
+</div>
+<div id="loginForm" class="scrollBottom2"></div>
+</script>
+
+<script id="loginForm-tpl" type="text/x-handlebars-template">
+<form id="loginForm-form">
+    <input type="url" placeholder="Adresa služby" name="url" id="url" value="{{this.url}}"/>  
+    <input type="text" placeholder="Meno" name="name" id="name" value="{{this.name}}"/>
+    <input type="password" placeholder="Heslo" name="password" id="password" value="{{this.password}}"/>
+    {{#if this.ErrorMessage}}<div class="error">{{this.ErrorMessage}}</div>{{/if}}
+</form>
+</script>
+
+<!-- SelectJp -->
+<script id="selectJp-tpl" type="text/x-handlebars-template">
+<div class="header">
+    <!--<button data-route="jp" id="selectJpBack" class="icon ico_back">&nbsp;</button>-->
+    <button class="textHeaderTitle" disabled="disabled">Jazdné príkazy</button>
+</div>
+<div class="selectJpDataScroll">
+     <div id="selectJpData"></div>
+</div>
+</script>
+     
+ <script id="selectJpData-tpl" type="text/x-handlebars-template">
+{{#.}}
+    <div id="selectJpData{{this.PK}}" data-value="{{this.PK}}" class="{{this.Status}}"><strong>{{this.JP_Description}} </strong><br/> {{this.Car_Description}} [{{this.Status}}]</div>
+{{/.}}
+</script>
+
+<!-- Settings -->
+<script id="settingsall-tpl" type="text/x-handlebars-template">
+<div class="header">
+    <!--<button data-route="jp" id="settingsallOrders" class="icon ico_back">&nbsp;</button>-->
+    <button id="settAll" class="textHeaderTitle" disabled="disabled">Nastavenia</button>
+    <!--<button id="settingsallSave" class="icon texticon ico_submit">&nbsp;</button>-->
+</div>
+     <div id="settingsallForm" class="scrollBottom2"></div>
+</script>
+     
+ <script id="settingsallForm-tpl" type="text/x-handlebars-template">
+<form id="settingsallForm-form">
+            {{#.}}
+               {{#if this.isHeader}}  
+                   <div><strong>{{this.Title}}</strong></div>
+               {{else}}  
+                    <div class="content"><strong>{{this.Group}}  {{this.Title}} {{this.value}} </strong></div>
+               {{/if}} 
+            {{/.}}
+</form>
+</script>
+
+<script src="phonegap.js"></script>
+<script src="lib/json2.js"></script>    
+<script src="lib/jquery-1.8.2.min.js"></script>
+<script src="lib/handlebars.js"></script>
+<script src="lib/iscroll.js"></script>
+<script src="lib/iso8601.js"></script>
+<script src="Scripts/Bussiness.js"></script>
+<script src="Scripts/PositionService.js"></script>
+<script src="Scripts/Service.js"></script>
+<script src="Scripts/JpView.js"></script>
+<script src="Scripts/ActionsView.js"></script>
+<script src="Scripts/ActionsAddView.js"></script>
+<script src="Scripts/SelectJpView.js"></script>
+<script src="Scripts/AutoActionView.js"></script>
+<script src="Scripts/MapView.js"></script>
+<script src="Scripts/LoginView.js"></script>
+<script src="Scripts/SettingsView.js"></script>
+<script src="Scripts/Globals.js"></script>
+<script src="Scripts/Errors.js"></script>
+<script src="Scripts/Lists.js"></script>
+<script src="Scripts/main.js"></script>
+<script src="Scripts/Translator.js"></script>
+<script src="Scripts/NotificationLocal.js"></script>
+<script src="Scripts/MediaInternal.js"></script>
+<script src="Scripts/Geo.js"></script>
+<script src="Scripts/Diagnostic.js"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=false&callback=Map.apiOK"></script>
+</body>
+</html>
