@@ -25,7 +25,7 @@
 <div id="newsWrapper">
 <div id="news">
     <button id="btnNewsClose" style="background-color:black;" class="icon ico_back">&nbsp;</button>
-    <label id="newsTitle"></label><br />
+    <label id="newsTitle"></label>
     <hr />
     <p id="newsContent"></p>
 </div>
@@ -37,13 +37,15 @@
     <button title="Submenu" id="btnSubmenu"  class="icon ico_tools">&nbsp;</button>&nbsp;
     <button id="btnjp" data-route="jp" class="icon ico_jp">&nbsp;</button>
     <button id="btnselectjp" data-route="selectjp" class="icon ico_submenu">&nbsp;</button>
-    <button id="btnmap" data-route="map" class="icon ico_map">&nbsp;</button>
     <button id="btnstate" data-route="state" class="icon ico_settings" style="display:none">&nbsp;</button>
     <button id="btnlogin" data-route="login" class="icon ico_end">&nbsp;</button>&nbsp;
 </div>
 <div class='submenu' id="divsubmenu" style="display:none;z-index:10000;">
     <button id="btnactionsadd" data-route="actionsadd" class="icon textnoicon">Nastavenia</button>
+    <button id="btntank" data-route="tank" class="icon textnoicon">Tankovanie</button>
     <button id="btnactions" data-route="actions" class="icon textnoicon">Jazda</button>
+    <button id="btnpurchase" data-route="purchase" class="icon textnoicon">Nákup</button>
+    <button id="btnmap" data-route="map" class="icon ico_map">&nbsp;</button>
 </div>
 </div>
 
@@ -103,7 +105,7 @@
 <!-- Actions -->
 <script id="actions-tpl" type="text/x-handlebars-template">
 <div class="actionsFormScroll">
-    <div id="actionsForm"></div>
+    <div class="actionsForm" id="actionsForm"></div>
 </div>
 </script>
 
@@ -122,28 +124,51 @@
 
 <!-- ActionsAdd -->
 <script id="actionsadd-tpl" type="text/x-handlebars-template">
-    <div id="actionsaddForm"></div>
+    <div class="actionsForm" id="actionsaddForm"></div>
 </script>
 
 <script id="actionsaddForm-template" type="text/x-handlebars-template">
 <div id="Tacho"><label>Stav tacho</label> 
       <!--<input class="inputActionValue" type="number" id="TachoPrevious" value="0" disabled />-->
       <!--<input class="inputActionValue" type="number" id="TachoCurrentCount" value="112" disabled />-->
-      <input class="inputActionValue" type="number"  id="TachoCurrent" value="0"/> km
+      <!--<input class="inputActionValue" type="number"  id="TachoCurrent" value="0"/> km-->
+      <input placeholder="Stav tacho [km]" type="number"  id="TachoCurrent" value="0"/>
       <button class="icon ico_submitActions" id="btnsetTacho">&nbsp;</button>
-  </div>
-  <div id="Petrol"><label>Tankovanie</label> 
-      <!--<input class="inputActionValue" type="number" id="PetrolPrevious" value="0" disabled />-->
-      <!--<input class="inputActionValue" type="number" id="PetrolCurrentCount" value="112" disabled />-->
-      <input class="inputActionValue" type="number" id="PetrolCurrent" value="0"/> l 
-      <input class="inputActionValue" type="number" id="PetrolMoney" value="0"/> €
-      <button class="icon ico_submitActions" id="btnsetPetrol">&nbsp;</button>
   </div>
   <div id="PetrolCount"><label>Stav paliva</label> 
       <button class="icon textnoicon" id="btnsetPetrolCount025">1/4</button>
        <button class="icon textnoicon" id="btnsetPetrolCount050">1/2</button>
        <button class="icon textnoicon" id="btnsetPetrolCount075">3/4</button>
       <button class="icon textnoicon" id="btnsetPetrolCount100">Plná</button>
+  </div>
+</script>
+
+<!-- Tank -->
+<script id="tank-tpl" type="text/x-handlebars-template">
+    <div class="actionsForm" id="tankForm"></div>
+</script>
+
+<script id="tankForm-template" type="text/x-handlebars-template">
+  <div id="Petrol">
+      <div><label>Litrov</label> <input  placeholder="Litrov" type="number" id="PetrolCurrent" /></div>
+      <div><label>Cena</label>  <input  placeholder="Cena" type="number" id="PetrolMoney" /> </div>
+      <button class="icon ico_submitActions" id="btnsetPetrol">&nbsp;</button>
+  </div>
+</script>
+
+<!-- Purchase Nakup -->
+<script id="purchase-tpl" type="text/x-handlebars-template">
+    <div class="actionsForm" id="purchaseForm"></div>
+</script>
+<script id="purchaseForm-template" type="text/x-handlebars-template">
+<div id="Purchase"> 
+
+    <div> <label>Tovar</label>   <input type="text" placeholder="Tovar" name="description" id="PurchaseType" />  </div>
+    <div> <label>Cena</label>    <input type="number" placeholder="Cena" name="price" id="PurchaseMoney" /> </div>
+
+      <!--<span style="white-space:nowrap">Popis <input class="inputActionValue"  id="PurchaseType" /> </span>-->
+      <!--<span style="white-space:nowrap">€      <input class="inputActionValue" type="number"  id="PurchaseMoney" value="0"/> </span>-->
+      <button class="icon ico_submitActions" id="btnPurchase">&nbsp;</button>
   </div>
 </script>
 
@@ -233,6 +258,7 @@
 <script src="lib/json2.js"></script>    
 <script src="lib/jquery-1.8.2.min.js"></script>
 <script src="lib/handlebars.js"></script>
+<script src="lib/google_jsapi.js"></script>
 <script src="lib/iscroll.js"></script>
 <script src="lib/iso8601.js"></script>
 <script src="Scripts/Bussiness.js"></script>
@@ -255,6 +281,7 @@
 <script src="Scripts/MediaInternal.js"></script>
 <script src="Scripts/Geo.js"></script>
 <script src="Scripts/Diagnostic.js"></script>
-<script src="http://maps.google.com/maps/api/js?sensor=false&callback=Map.apiOK"></script>
+<script src="Scripts/PurchaseView.js"></script>
+<script src="Scripts/TankView.js"></script>
 </body>
 </html>

@@ -15,11 +15,11 @@
 
         isOtherStepActivated:0, //ci sa nerobi krok mimo oficialnych JPK - destinations
 
-        TachometerPrevious: undefined,
-        Tachometer: undefined,
+        TachometerPrevious: 0,
+        Tachometer: 0,
         TachometerDateStored : undefined, //kedy bol nastaveny tachometer 
-        TachometerCount: undefined,
-        Distance:undefined, //vzdialenost medzi gps
+        TachometerCount: 0,
+        Distance:0, //vzdialenost medzi gps
 
         PetrolPrevious: undefined,
         Petrol: undefined,
@@ -230,8 +230,8 @@
                 IdDestination: jpkStepID,
                 IdDriver: Service.state.IdDriver ? Service.state.IdDriver:0,
                 IdVehicle: Service.state.IdVehicle ? Service.state.IdVehicle:0,
-                City: PositionService.getCity(),
-                Address: PositionService.getaddress(),
+                City: PositionService.city,
+                Address: PositionService.address,
                 Device : Globals.getDevice(),
                 CarStatus: jp.CarStatus,
                 RoadStatus: jp.RoadStatus,
@@ -266,7 +266,30 @@
     },
     trySendDataEvents: function () {
         if (Service.state.Events && Service.state.Events.length > 0) {
-            Service.postData("DataEvent", Service.state.Events[0],
+            var dataEvent = Service.state.Events[0];
+            //aj nemame adresu, tak si ju vypytame !
+            if (!dataEvent.Address) {
+                try {
+                    Map.geocode(dataEvent.Latitude, dataEvent.Longitude, function (a) {
+                        if (a) {
+                            dataEvent.City = a.City;
+                            dataEvent.Address = a.Address;
+                        }
+                        Service.sendDataEvent(dataEvent);
+                    });
+                }
+                catch (err) {
+                    Service.sendDataEvent(dataEvent);
+                }
+            }
+            else
+                Service.sendDataEvent(dataEvent);
+        }
+        else
+            Service.startSendDataEvents();
+    },
+    sendDataEvent: function(dataEvent){
+        Service.postData("DataEvent", dataEvent,
                 function () {
                     try{
                         Service.state.Events.splice(0, 1);
@@ -284,9 +307,6 @@
                     app.setOnline();
                     Service.startSendDataEvents();
                 });
-        }
-        else
-            Service.startSendDataEvents();
     },
     getState: function () {
         if (!Service.state || !Service.state.url) {
@@ -301,11 +321,18 @@
         return Service.state;
     },
     saveState: function (action) {
+        var Saved = true;
+
         if (action) {
-            Bussiness.beforeChangeState(action);
+            Saved = Bussiness.beforeChangeState(action);
+            if (!Saved) {
+                app.log("Service.postData canceled: " + action);
+                return Saved;
+            }
             Service.saveDataEvent(action);
         }
 
+        
         window.localStorage.setItem("state", JSON.stringify(Service.state));
 
         if (action) {
@@ -313,6 +340,8 @@
             app.setHeader();
             app.setFooter();
         }
+
+        return Saved;
     },
     postData: function (method, data, successDelegate, errorDelegate) {
         app.log("Service.postData: " + method);

@@ -55,7 +55,12 @@ var ActionsView = function (store) {
                     return;
                 var val = $(this).attr("data-value");
                 switch ($(this).attr("data-parameter")) {
-                    case "TravelStatus": if (jp.TravelStatus != val) { jp.TravelStatus = val; Service.saveState("EventChangeTravelStatus"); } break;
+                    case "TravelStatus":
+                    if (jp.TravelStatus != val)
+                    {
+                        jp.TravelStatus = val; Service.saveState("EventChangeTravelStatus");
+                    }
+                        break;
                     case "CarStatus": if (jp.CarStatus != val) { jp.CarStatus = val; Service.saveState("EventChangeCarStatus"); } break;
                     case "RoadStatus": if (jp.RoadStatus != val) { jp.RoadStatus = val; Service.saveState("EventChangeRoadStatus"); } break;
                 }
@@ -95,44 +100,21 @@ var ActionsView = function (store) {
             });
         }
 
-        //tacho a petrol values : 
-        $('#PetrolPrevios').val(Service.state.PetrolPrevius);
-        if (!Service.state.Petrol)
-            Service.state.Petrol = Service.state.PetrolPrevius;
-        $('#PetrolCurrent').val(Service.state.Petrol);
-        $('#TachoPrevious').val(Service.state.TachometerPrevious);
-        if (!Service.state.Tachometer)
-            Service.state.Tachometer = Service.state.TachometerPrevious;
-        $('#TachoCurrent').val(Service.state.Tachometer);
+        ////tacho a petrol values : 
+        //$('#PetrolPrevios').val(Service.state.PetrolPrevius);
+        //if (!Service.state.Petrol)
+        //    Service.state.Petrol = Service.state.PetrolPrevius;
+        //$('#PetrolCurrent').val(Service.state.Petrol);
+        //$('#TachoPrevious').val(Service.state.TachometerPrevious);
+        //if (!Service.state.Tachometer)
+        //    Service.state.Tachometer = Service.state.TachometerPrevious;
+        //$('#TachoCurrent').val(Service.state.Tachometer);
 
 
     };
       
-    //this.setTacho = function () {
-    //    var tachonew = $("#TachoCurrent").val();
-    //    Service.state.TachometerPrevious = Service.state.Tachometer;
-    //    Service.state.Tachometer = tachonew;
-    //    Service.saveState("SetTacho");
-    //};
 
-    //this.setPetrol = function () {
-    //    var petrolnew = $("#PetrolCurrent").val();
-    //    Service.state.PetrolPrevius = Service.state.Petrol;
-    //    Service.state.Petrol = petrolnew;
-    //    Service.saveState("EventTank");
-    //};
 
-    //this.setPetrolCount = function () {
-    //    var petrolcount = $('input[name=radiopc]:checked', '#PetrolCount').val();
-    //    Service.state.PetrolCount = petrolcount;
-    //    Service.saveState("SetPetrol");
-    //};
-
-    //this.setPetrolCountDirect = function (pcnt) {
-    //    var petrolcount = pcnt;
-    //    Service.state.PetrolCount = petrolcount;
-    //    Service.saveState("SetPetrol");
-    //};
 
     this.clear = function () {
 
@@ -141,48 +123,7 @@ var ActionsView = function (store) {
     this.initialize();
 }
 
-//var ActionsViewMethods =
-//    {
 
-//        setTacho: function () {
-//            var tachonew = $("#TachoCurrent").val();
-//            Service.state.TachometerPrevious = Service.state.Tachometer;
-//            Service.state.Tachometer = tachonew;
-//            Service.saveState("SetTacho");
-//            app.buttonClickEffect("#btnsetTacho");
-//            Service.state.TachometerDateStored = Date.now();
-//        },
-
-//        setPetrol: function () {
-//            var petrolnew = $("#PetrolCurrent").val();
-//            Service.state.PetrolPrevius = Service.state.Petrol;
-//            Service.state.Petrol = petrolnew;
-//            Service.saveState("EventTank");
-//            app.buttonClickEffect("#btnsetPetrol");
-//        },
-
-//        setPetrolCount: function () {
-//            var petrolcount = $('input[name=radiopc]:checked', '#PetrolCount').val();
-//            Service.state.PetrolCount = petrolcount;
-//            Service.saveState("SetPetrol");
-            
-//        },
-
-//        setPetrolCountDirect: function (pcnt) {
-//            //remove all 
-//            $('button[id^="btnsetPetrolCount"]').removeClass("selected");
-//            //selected
-//            var typ = pcnt.toString();;
-//            if (typ.length == 2) typ = "0" + typ;
-//            $("#btnsetPetrolCount" + typ).addClass("selected");
-
-//            var petrolcount = pcnt;
-//            Service.state.PetrolCount = petrolcount;
-//            Service.saveState("SetPetrol");
-//            app.buttonClickEffect("#btnsetPetrolCount" + typ);
-//            Service.state.PetrolDateStored = Date.now();
-//        }
-//    }
 
 ActionsView.template = Handlebars.compile($("#actions-tpl").html());
 ActionsView.formTemplate = Handlebars.compile($("#actionsForm-template").html());

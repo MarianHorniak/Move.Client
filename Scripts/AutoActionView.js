@@ -23,7 +23,7 @@
 //        var self = this;
 //        app.waiting();
 //        $("#autoactionForm").html(AutoActionView.formTemplate(data));
-//        Map.geocode({ 'latLng': new google.maps.LatLng(PositionService.lat, PositionService.lng) }, function (a) {
+//        Map.geocode(PositionService.lat, PositionService.lng, function (a) {
 //            $("#AutoOrderTimeToRealize").val(Globals.constants.OrderDetail_Defauls_timeToRealize);
 //            $("#AutoOrderEndCity").val(a.City);
 //            $("#autoactionForm").show();

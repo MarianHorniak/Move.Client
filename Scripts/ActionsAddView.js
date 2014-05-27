@@ -82,6 +82,8 @@ var ActionsAddViewMethods =
             Service.saveState("SetTacho");
             app.buttonClickEffect("#btnsetTacho");
             Service.state.TachometerDateStored = Date.now();
+            //prechod na JP
+            app.route("jp");
         },
 
         setPetrol: function () {

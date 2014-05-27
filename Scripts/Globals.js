@@ -37,7 +37,7 @@
         ReceiverRole : "Dispatcher",
 
         //Media
-        Media_Volume:0.5, 
+        Media_Volume:1, //0.5, 
 
         //DataEvent
         SendDataEventsTimeout: 10000,

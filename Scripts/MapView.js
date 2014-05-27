@@ -13,7 +13,6 @@ var MapView = function (store) {
     };
 
     this.onShow = function () {
-        //Map.getData();
         Map.showPosition();
     }
 
@@ -33,106 +32,82 @@ var Map = {
     geocoder: null,
     apiIsOk: false,
     initialize: function (el) {
-
-
-        Map.mapDiv = $('<div class="scrollBottom" id="mapDiv"/>').appendTo(el);
+        Map.mapDiv = $('<div id="mapDiv"/>').appendTo(el);
         Map.mapOut = $('<div id="mapOut"/>').appendTo(el);
-
-        //var header = $('<div class="header"></div>').appendTo(el); //<button data-route="jp" class="icon ico_back">&nbsp;</button>
-
-        if (Map.mess) {
+        if (Map.mess)
             Map.message(Map.mess, Map.messError);
-        }
         Map.mapDiv.css("display", "block");
-        Map.map = new google.maps.Map(Map.mapDiv[0], { zoom: 15, disableDefaultUI: true, mapTypeId: google.maps.MapTypeId.ROADMAP });
-        google.maps.event.trigger(Map.map, "resize");
-    },
-    getData: function () {
-        for (var i = 0; i < Map.markers.length; i++) {
-            Map.markers[i].setMap(null);
-        }
-        Map.markers = [];
-        console.log("get map view data");
-        //var self = this;
-        //var s = Service.getState();
-        //Service.postData("datamobile", { Id: "viewWebClientTransporters" },
-        //    function (result) {
-        //        Map.mapOut2.html(Translator.Translate("Počet") + ": " + result.Items.length);
-        //        self.datatransporters = result;
-        //        console.log("get map view data " + result.Items.length);
-        //        $.each(self.datatransporters.Items, function () {
-        //            var item = this;
-        //            var m = new google.maps.Marker({
-        //                //icon: { url: "img/cabs.png" },
-        //                position: new google.maps.LatLng(item.Latitude, item.Longitude),
-        //                clickable: false,
-        //                map: Map.map
-        //            });
-        //            Map.markers.push(m);
-        //        });
-        //    }
-        // );
-
     },
     apiOK: function () {
         Map.apiIsOk = true;
         Map.geocoder = new google.maps.Geocoder();
+
+        //aj nemame adresu, tak si ju vypytame !
+        if (!PositionService.address) {
+            PositionService.refreshAddress();
+        }
+    },
+    testApi: function(callback){
+        if (!Map.apiIsOk)
+            google.load("maps", "3", {
+                other_params: 'sensor=false', callback: function () {
+                    Map.apiOK();
+                    callback();
+                }
+            });
+        else
+            callback();
     },
     showPosition: function () {
+        Map.testApi(function () { Map.showPositionInternal();  });
+    },
+    showPositionInternal: function () {
         Map.message("Hľadám pozíciu ...");
         try {
+
             navigator.geolocation.getCurrentPosition(Map.success, Map.error, { enableHighAccuracy: true }); //, { frequency: 2000 }
         }
         catch (err) {
             Map.message(err.message, true);
         }
     },
+
     success: function (position) {
-        var self = this;
+        
         Map.date = new Date().toTimeString();
         Map.message("Pozícia " + Map.date);
         var d = Translator.Translate('Lat') + ': ' + position.coords.latitude + '<br />' +
         Translator.Translate('Lon') + ': ' + position.coords.longitude + '<br />' +
-        Translator.Translate('Rýchlosť') + ': ' + (position.coords.speed ? position.coords.speed * 3.6 : 0) + " km/h" + '<br />' +
+        Translator.Translate('Rýchlosť') + ': ' + (position.coords.speed ? position.coords.speed * 3.6 : 0).toFixed(2) + " km/h" + '<br />' +
         Translator.Translate('Presnosť') + ': ' + position.coords.accuracy + " m" + '<br />';
 
         var ddop = "";
-        Map.geocode({ 'latLng': new google.maps.LatLng(position.coords.latitude, position.coords.longitude) }, function (a) {
-            ddop = Translator.Translate('Addresa') + ': ' + a.City + ' ' + a.Address;
+        if (Map.apiIsOk) {
+            Map.geocode(position.coords.latitude, position.coords.longitude, function (a) {
+                ddop = Translator.Translate('Addresa') + ': ' + a.City + ' ' + a.Address;
+                Map.mapOut.html(d + ddop);
+                Map.setMap(position);
+            });
+        }
+        else {
             Map.mapOut.html(d + ddop);
-            Map.setMap(position);
-            PositionService.lat = position.coords.latitude;
-            PositionService.lng = position.coords.longitude;
-            PositionService.speed = position.coords.speed;
-        });
-        //'Altitude: ' + position.coords.altitude + '<br />' +
-        //'Accuracy: ' + position.coords.accuracy + '<br />' +
-        //'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '<br />' +
-        //'Heading: ' + position.coords.heading + '<br />' +
-        //'Speed: ' + Math.ceil(position.coords.speed * 3.6) + ' km/h<br />';// +
-        //'Timestamp: ' + new Date(position.timestamp) + '<br />';
-        //Map.mapOut.html(d + ddop);
-        //Map.setMap(position);
-        //PositionService.lat = position.coords.latitude;
-        //PositionService.lng = position.coords.longitude;
+        }
     },
     error: function (err) {
         Map.message("Error: " + err.message, true);
     },
     message: function (t, err) {
-        //if (Map.mapMessage) {
-        //    Map.mapMessage.html(t);
-        //    Map.mapMessage.css("color", err ? "red" : "black");
-        //}
-        //else {
-        //    Map.mess = t;
-        //    Map.messError = err;
-        //}
-        app.info(t);
+        //app.info(t);
+        Map.mapOut.html(t);
     },
     setMap: function (position) {
         try {
             if (Map.apiIsOk) {
+
+                if (!Map.map) {
+                    Map.map = new google.maps.Map(Map.mapDiv[0], { zoom: 15, disableDefaultUI: true, mapTypeId: google.maps.MapTypeId.ROADMAP });
+                    google.maps.event.trigger(Map.map, "resize");
+                }
 
                 console.log("point set");
                 Map.point = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -153,16 +128,19 @@ var Map = {
             }
         }
         catch (err) {
-            Map.message(err.message, true);
+            Map.message(err, true);
         }
     },
-    geocode: function (props, postback) {
-        var self = this, a = {}, lat, lng;
-        if (self.geocoder)
-            self.geocoder.geocode(props, function (results, status) {
+    geocode: function (lat, lng, postback) {
+        Map.testApi(function () { Map.geocodeInternal(lat, lng, postback); });
+    },
+    geocodeInternal: function (lat, lng, postback) {
+        var a = {};
+        if (Map.geocoder)
+            Map.geocoder.geocode({ 'latLng': new google.maps.LatLng(lat, lng) }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     if (results[0]) {
-                        a = self.placeToAddress(results[0]);
+                        a = Map.placeToAddress(results[0]);
                         lat = a.Latitude;
                         lng = a.Longitude;
                     }
