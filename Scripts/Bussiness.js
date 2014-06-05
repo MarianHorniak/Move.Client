@@ -151,23 +151,26 @@
 
         var jp = Service.currentJP();
         if (!jp) return;
-        //kontrola, ci jazdime a pritom mame STOP status 
-        var speed = PositionService.speed;
-        if (!speed) return;
 
-        if (speed > 0 && jp.CarStatus=="Stop")
-        {
+        //MHP zatial nepouzit
 
-            var content = Translator.Translate("Zdá sa, že sa pohybujete. Nastavte prosím status jazda.") + "<br/><button id=\"btnSetStart\"  data-route=\"actions\" style=\"background-color:black;\" class=\"icon ico_submit\">&nbsp;</button>";
-            app.showNewsComplete(Translator.Translate("Status jazda"), MediaInternal.getNewsSoundFile("SetStatusRun"), "", 10000, content);
-            return;
-        }
-        if ((speed > 60 && jp.RoadStatus == "Town") || (speed > 100 && jp.RoadStatus == "OutofTown")) {
-            //davame alert aj so zvukom !
-            var content = Translator.Translate("Vaša rýchlosť nezodpovedá typu cesty. Prosím skontrolujte a prípadne prepnite typ cesty.") + "<br/><button id=\"btnSetRoadStatus\"  data-route=\"actions\" style=\"background-color:black;\" class=\"icon ico_submit\">&nbsp;</button>";
-            app.showNewsComplete(Translator.Translate("Typ cesty"), MediaInternal.getNewsSoundFile("SetStatusRoadStatus"), "", 10000, content);
-            return;
-        }
+        ////kontrola, ci jazdime a pritom mame STOP status 
+        //var speed = PositionService.speed;
+        //if (!speed) return;
+
+        //if (speed > 0 && jp.CarStatus=="Stop")
+        //{
+
+        //    var content = Translator.Translate("Zdá sa, že sa pohybujete. Nastavte prosím status jazda.") + "<br/><button id=\"btnSetStart\"  data-route=\"actions\" style=\"background-color:black;\" class=\"icon ico_submit\">&nbsp;</button>";
+        //    app.showNewsComplete(Translator.Translate("Status jazda"), MediaInternal.getNewsSoundFile("SetStatusRun"), "", 10000, content);
+        //    return;
+        //}
+        //if ((speed > 60 && jp.RoadStatus == "Town") || (speed > 100 && jp.RoadStatus == "OutofTown")) {
+        //    //davame alert aj so zvukom !
+        //    var content = Translator.Translate("Vaša rýchlosť nezodpovedá typu cesty. Prosím skontrolujte a prípadne prepnite typ cesty.") + "<br/><button id=\"btnSetRoadStatus\"  data-route=\"actions\" style=\"background-color:black;\" class=\"icon ico_submit\">&nbsp;</button>";
+        //    app.showNewsComplete(Translator.Translate("Typ cesty"), MediaInternal.getNewsSoundFile("SetStatusRoadStatus"), "", 10000, content);
+        //    return;
+        //}
 
     },
 
@@ -176,6 +179,7 @@
         var jp = Service.currentJP();
         //vynulujeme hodnoty
         if (jp) {
+            jp.Description = ''; 
             jp.NumValue1 = 0;
             jp.NumValue2 = 0;
             jp.TextValue1 = '';
@@ -244,11 +248,13 @@
                 Service.state.Distance = 0;
                 break;
             case "JPRoadStart": //zaciatok kroku, ale mimo kroku !!!! 
-                Service.state.isOtherStepActivated = 1;
+                if (jp)
+                    jp.isOtherStepActivated = 1;
                 app.setJPKSpecial();
                 break;
             case "JPRoadEnd": //zaciatok kroku, ale mimo kroku !!!! 
-                Service.state.isOtherStepActivated = 0;
+                if (jp)
+                    jp.isOtherStepActivated = 0;
                 app.setJPKSpecial();
                 break;
             case "SetPetrol":

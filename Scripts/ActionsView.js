@@ -43,11 +43,11 @@ var ActionsView = function (store) {
 
             //f.html(ActionsView.formTemplate(data));
             $.each(Bussiness.travelStatusActions, function () { this.parameter = "TravelStatus"; });
-            $.each(Bussiness.carStatusActions, function () { this.parameter = "CarStatus"; });
+            //$.each(Bussiness.carStatusActions, function () { this.parameter = "CarStatus"; });
             $.each(Bussiness.roadStatusActions, function () { this.parameter = "RoadStatus"; });
 
             $("#TravelStatusButtons").html(ActionsView.formButtonsTemplate(Bussiness.travelStatusActions));
-            $("#CarStatusButtons").html(ActionsView.formButtonsTemplate(Bussiness.carStatusActions));
+            //$("#CarStatusButtons").html(ActionsView.formButtonsTemplate(Bussiness.carStatusActions));
             $("#RoadStatusButtons").html(ActionsView.formButtonsTemplate(Bussiness.roadStatusActions));
 
             f.on(app.clickEvent, '[data-value]', function (event) {

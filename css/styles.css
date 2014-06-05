@@ -62,7 +62,7 @@ button.disabled {
 #travelStatusInfo {
     position:absolute;
     top:0;
-    right:100px;
+    right:50px;
     width: 50px;
     height: 50px;
 }
@@ -85,7 +85,7 @@ button.disabled {
 #carStatusInfo {
     position:absolute;
     top:0;
-    right:50px;
+    right:100px;
     width: 50px;
     height: 50px;
 }

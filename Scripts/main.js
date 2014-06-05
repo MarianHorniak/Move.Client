@@ -246,6 +246,7 @@
                 case "jp": page = new JpView(); this.homePage = page; break;
                 case "actions": page = new ActionsView(); break;
                 case "purchase": page = new PurchaseView(); break;
+                case "note": page = new NoteView(); break;
                 case "tank": page = new TankView(); break;
                 case "actionsadd": page = new ActionsAddView(); break;
                 case "selectjp": page = new SelectJpView(); break;
@@ -291,11 +292,14 @@
         });
     },
     setJPKSpecialDetail: function () {
+
         var elrs = $("#JPRoadStart");
         var elre = $("#JPRoadEnd");
         elrs.show();
         elre.hide();
-        if (Service.state.isOtherStepActivated==1) {
+        var jp = Service.currentJP();
+
+        if (jp && jp.isOtherStepActivated==1) {
             elre.show();
             elrs.hide();
         }
@@ -322,7 +326,7 @@
         eljpklist.show();
 
         //ak mame zacaty JPK mimo plan ?
-        if (Service.state.isOtherStepActivated==1) {
+        if (jp && jp.Status == "Active" && jp.isOtherStepActivated==1) {
             eljpklist.hide();
             eljpk.show();
             app.setJPKSpecialDetail();

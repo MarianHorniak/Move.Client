@@ -13,7 +13,7 @@
         IdDriveOrder: undefined, // vybrany jp
         IdDestination: undefined, //vybrany JPK 
 
-        isOtherStepActivated:0, //ci sa nerobi krok mimo oficialnych JPK - destinations
+        //isOtherStepActivated:0, //ci sa nerobi krok mimo oficialnych JPK - destinations
 
         TachometerPrevious: 0,
         Tachometer: 0,
@@ -240,6 +240,7 @@
                 NumValue2: jp.NumValue2,
                 TextValue1: jp.TextValue1,
                 TextValue2: jp.TextValue2,
+                Description: jp.Description ? jp.Description : "",
                 Tachometer: Service.state.Tachometer ? Service.state.Tachometer : 0,
                 TachometerCount: Service.state.TachometerCount ? Service.state.TachometerCount : 0,
                 Distance: Service.state.Distance ? Service.state.Distance : 0,
@@ -247,6 +248,10 @@
                 ClientRequestId : app.createGuid(),
                 Latitude: PositionService.lat,
                 Longitude: PositionService.lng,
+                Accuracy: PositionService.Accuracy,
+                Heading: PositionService.Heading, //? PositionService.Heading:0,
+                Altitude : PositionService.Altitude, //?PositionService.Altitude:0,
+                AltitudeAccuracy : PositionService.AltitudeAccuracy,
                 Velocity: PositionService.speed ? PositionService.speed : 0
             };
 
@@ -268,7 +273,7 @@
         if (Service.state.Events && Service.state.Events.length > 0) {
             var dataEvent = Service.state.Events[0];
             //aj nemame adresu, tak si ju vypytame !
-            if (!dataEvent.Address) {
+            if (!dataEvent.Address && dataEvent.ActionName != "EventGEO") {
                 try {
                     Map.geocode(dataEvent.Latitude, dataEvent.Longitude, function (a) {
                         if (a) {

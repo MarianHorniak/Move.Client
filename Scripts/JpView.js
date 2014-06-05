@@ -95,6 +95,9 @@ var JpView = function () {
         $('.jp-header').show();
         $('.jpk-list').show();
 
+        //este musime nastavit, ci nie je krok aktivny a pod.
+        app.setJPKSpecial();
+
         if (self.iscroll)
             self.iscroll.refresh();
         else

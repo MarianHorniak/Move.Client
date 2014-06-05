@@ -2,8 +2,8 @@
 <widget xmlns       = "http://www.w3.org/ns/widgets"
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "sk.datastream.moveclient"
-        versionCode = "100"
-        version     = "1.0.0">
+        versionCode = "102"
+        version     = "1.0.2">
  
     <name>Move Client</name>
   

@@ -5,8 +5,12 @@ var PositionService = {
     speed: 0,
     _lat: 0,
     _lng: 0,
-    _speed: 0,
+    //_speed: 0,
     poolID: undefined,
+    Accuracy: undefined,
+    Heading: undefined,
+    Altitude: undefined,
+    AltitudeAccuracy: undefined,
     city: undefined,
     address:undefined,
     watchID: undefined,
@@ -20,6 +24,11 @@ var PositionService = {
             PositionService.watchID = navigator.geolocation.watchPosition(function (position) {
                 PositionService.lat = position.coords.latitude;
                 PositionService.lng = position.coords.longitude;
+                PositionService.Accuracy = position.coords.accuracy;
+                PositionService.Heading = position.coords.heading;
+                PositionService.Altitude = position.coords.altitude;
+                PositionService.AltitudeAccuracy = position.coords.altitudeaccuracy;
+
                 PositionService.speed = position.coords.speed ? position.coords.speed * 3.6 : 0;
                 app.info(Translator.Translate("Presnosť pozície") + ": " + position.coords.accuracy + " m");
 

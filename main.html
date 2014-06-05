@@ -14,8 +14,8 @@
     <div id="jpInfoAdd">...</div>
 
     <div id="travelStatusInfo"></div>
-    <div id="carStatusInfo"></div>
-    <div id="roadStatusInfo"></div>
+    <!--<div id="carStatusInfo"></div>-->
+    <div id="roadStatusInfo"></div> 
 
 </div>
         <!-- LOG -->
@@ -45,6 +45,7 @@
     <button id="btntank" data-route="tank" class="icon textnoicon">Tankovanie</button>
     <button id="btnactions" data-route="actions" class="icon textnoicon">Jazda</button>
     <button id="btnpurchase" data-route="purchase" class="icon textnoicon">Nákup</button>
+    <button id="btnNote" data-route="note" class="icon textnoicon">Poznámka</button>
     <button id="btnmap" data-route="map" class="icon ico_map">&nbsp;</button>
 </div>
 </div>
@@ -111,7 +112,7 @@
 
 <script id="actionsForm-template" type="text/x-handlebars-template">
  <div id="TravelStatus"><label>Typ jazdy</label><div id="TravelStatusButtons"></div></div>
- <div id="CarStatus"><label>Stav jazdy</label> <div id="CarStatusButtons"></div></div>
+ <!--<div id="CarStatus"><label>Stav jazdy</label> <div id="CarStatusButtons"></div></div>-->
  <div id="RoadStatus"><label>Typ cesty</label> <div id="RoadStatusButtons"></div></div>
 </script>
 
@@ -169,6 +170,17 @@
       <!--<span style="white-space:nowrap">Popis <input class="inputActionValue"  id="PurchaseType" /> </span>-->
       <!--<span style="white-space:nowrap">€      <input class="inputActionValue" type="number"  id="PurchaseMoney" value="0"/> </span>-->
       <button class="icon ico_submitActions" id="btnPurchase">&nbsp;</button>
+  </div>
+</script>
+
+<!-- Note=poznamka -->
+    <script id="note-tpl" type="text/x-handlebars-template">
+    <div class="actionsForm" id="noteForm"></div>
+</script>
+<script id="noteForm-template" type="text/x-handlebars-template">
+<div id="Note"> 
+     <div> <label>Poznámka</label>   <input type="text" placeholder="Poznámka" name="description" id="NoteText" />  </div>
+      <button class="icon ico_submitActions" id="btnSetNote">&nbsp;</button>
   </div>
 </script>
 
@@ -283,5 +295,6 @@
 <script src="Scripts/Diagnostic.js"></script>
 <script src="Scripts/PurchaseView.js"></script>
 <script src="Scripts/TankView.js"></script>
+<script src="Scripts/NoteView.js"></script>
 </body>
 </html>
