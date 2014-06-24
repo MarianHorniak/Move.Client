@@ -49,7 +49,11 @@
                 break;
             case "JPKPause":
                 break;
-            case "EventGEO": break;
+            case "EventGEO":
+                //neposielat GEO, ak nie je aktivovany JP 
+                if (!jp) ret = false;
+                if (jp && jp.Status != "Active") ret = false;
+                break;
             case "EventBreak": break;
             case "EventChangeCarStatus": break;
             case "EventChangeRoadStatus": break;
@@ -60,7 +64,11 @@
                     jp.NumValue2 = Service.state.PetrolMoney;
                 }
                 break;
-            case "SetTacho": break;
+            case "SetTacho":
+                if (jp) {
+                    jp.NumValue1 = Service.state.Tachometer;
+                }
+                break;
             case "SetPetrol":
                 if(jp)
                     jp.NumValue1 = Service.state.PetrolCount;

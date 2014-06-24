@@ -27,6 +27,8 @@
         distanceCoef_Terrain1: 1.9,
         distanceCoef_Terrain2: 2.1,
 
+        //velocity round:
+        velocityMin:5,
 
 
 

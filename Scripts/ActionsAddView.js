@@ -78,7 +78,7 @@ var ActionsAddViewMethods =
         setTacho: function () {
             var tachonew = $("#TachoCurrent").val();
             Service.state.TachometerPrevious = Service.state.Tachometer;
-            Service.state.Tachometer = Bussiness.getDecimal(tachonew,3);
+            Service.state.Tachometer = Bussiness.getDecimal(tachonew, 3);
             Service.saveState("SetTacho");
             app.buttonClickEffect("#btnsetTacho");
             Service.state.TachometerDateStored = Date.now();

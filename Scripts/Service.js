@@ -225,7 +225,7 @@
                 PK: 0,
                 ActionName: actionName,
 
-                IdRequirement: jp.IdRequirement,
+                //IdRequirement: jp.IdRequirement,
                 IdDriveOrder: jp.PK,
                 IdDestination: jpkStepID,
                 IdDriver: Service.state.IdDriver ? Service.state.IdDriver:0,
