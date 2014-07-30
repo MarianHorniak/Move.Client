@@ -26,7 +26,8 @@
         PetrolDateStored : undefined, //kedy bolo posledne cerapanie 
         PetrolCount: undefined,
         PetrolMoney: undefined,
-        
+        TankCardNumber: undefined, //cislo tankovacej karty
+
         //rychlost ? 
         velocity: 0,
         velocityPrevious: 0,
@@ -59,7 +60,7 @@
         Service.login(callback);
     },
     testOnline: function (callback) {
-        Service.getData("login?id=a", null, function () { Service.online = true; app.info("Aplikácia je online"); app.setHeader(); if (callback) callback(); }, function () { Service.online = false; app.info("Aplikácia pracuje offline"); app.setHeader(); if (callback) callback(); });
+        Service.getData("Login?id=a", null, function () { Service.online = true; app.info("Aplikácia je online"); app.setHeader(); if (callback) callback(); }, function () { Service.online = false; app.info("Aplikácia pracuje offline"); app.setHeader(); if (callback) callback(); });
     },
     initializeBussiness: function (callback) {
         if (Service.online) {
@@ -82,7 +83,7 @@
         PositionService.stopWatch();
         if (this.state.url && this.state.name && this.state.password) {
             if (Service.online) {
-                this.postData("login", { UserName: this.state.name, Password: this.state.password, RememberMe: true, TransporterId: this.state.transporterId },
+                this.postData("Login", { UserName: this.state.name, Password: this.state.password, RememberMe: true, TransporterId: this.state.transporterId },
                 function (d) {
                     Service.isAuthenticated = true;
                     Service.state.IdDriver = d.PK;
@@ -119,7 +120,7 @@
             var s = Service.getState();
             //notify local 
             NotificationLocal.Notify("login", s, null, null);
-            Service.postData("login", {
+            Service.postData("Login", {
                 Latitude: PositionService.lat,
                 Longitude: PositionService.lng,
                 Longout: true

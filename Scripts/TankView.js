@@ -28,6 +28,8 @@ var TankView = function (store) {
         app.hideNews();
         app.submenuHide();
         
+        //vypneme timer
+        Map.StopRefreshing();
 
         var self = this, data = {}, jp = Service.currentJP();
         var f = $("#tankForm");
@@ -59,10 +61,12 @@ var TankViewMethods =
         setPetrol: function () {
             var petrolnew = $("#PetrolCurrent").val();
             var petrolmoney = $("#PetrolMoney").val();
+            var TankCardNumber = $("#TankCardNumber").val();
 
             Service.state.PetrolPrevius = Service.state.Petrol;
             Service.state.Petrol = petrolnew;
             Service.state.PetrolMoney = petrolmoney;
+            Service.state.TankCardNumber = TankCardNumber;
 
             Service.saveState("EventTank");
             //app.buttonClickEffect("#btnsetPetrol");

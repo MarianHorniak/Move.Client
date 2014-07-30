@@ -41,6 +41,22 @@
                 }
                 app.home();
             });
+
+            //prejdeme JP ak ak je niektory aktivny, tak hned ho dame do detailu ako current
+            for (var i = 0, l = data.length; i < l; i++) 
+            {
+                if (data[i].Status == "Active")
+                {
+                    var val = data[i].IDDriveOrder;
+                    if (val && Service.state.IdDriveOrder != val) {
+                        Service.state.IdDriveOrder = val;
+                        //Bussiness.afterSelectJP();
+                        i = 10000;
+                        app.home();
+                    }
+
+                }
+            }
         }
         else
         {

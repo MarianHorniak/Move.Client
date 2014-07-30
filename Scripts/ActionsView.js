@@ -94,6 +94,13 @@ var ActionsView = function (store) {
         if (jp.TravelStatus)
             $("#TravelStatus" + jp.TravelStatus).addClass("selected");
 
+        if (jp.TravelStatus == "Sukromna") {
+            $("#RoadStatus").hide();
+        }
+        else {
+            $("#RoadStatus").show();
+        }
+
         if (jp.enabledActions) {
             $.each(jp.enabledActions, function () {
                 $("#" + this).removeClass("disabled");

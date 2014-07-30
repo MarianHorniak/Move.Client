@@ -123,8 +123,10 @@
         $("#jpLog").html(t);
     },
     log: function (t) {
-        if ($(".waitingDiv").is(":visible"))
+        if ($(".waitingDiv").is(":visible")) {
             $(".waitingDiv").html(t);
+        }
+    
     },
     waiting: function (show) {
         if (show == false)
@@ -260,6 +262,17 @@
             $('body').append(page.el);
             page.render();
         }
+
+        //na page zavolat close
+        if (this.currentPage)
+        {
+            if (this.currentPage.close)
+            {
+                this.currentPage.close();
+            }
+
+        }
+
         this.currentPageName = p;
         this.setFooter();
         this.slidePage(page);

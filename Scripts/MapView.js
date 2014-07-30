@@ -1,8 +1,11 @@
 var MapView = function (store) {
 
     this.index = 4;
+    
     this.initialize = function () {
         this.el = $('<div/>');
+        var self = this;
+
     };
 
     this.render = function () {
@@ -16,6 +19,13 @@ var MapView = function (store) {
         Map.showPosition();
     }
 
+    
+    this.close = function ()
+    {
+        console.log("Page close");
+        Map.StopRefreshing();
+    }
+
     this.initialize();
 }
 
@@ -23,6 +33,7 @@ var Map = {
     date: null,
     marker: null,
     markers: [],
+    timer:null,
     map: null,
     datatransporters: null,
     mapOut: null,
@@ -38,6 +49,22 @@ var Map = {
             Map.message(Map.mess, Map.messError);
         Map.mapDiv.css("display", "block");
     },
+
+    StopRefreshing: function()
+    {
+        if(!Map.timer) return; 
+        clearInterval(Map.timer);
+        Map.timer = null;
+    },
+
+    Refresh: function () {
+
+        var elmap = $("map-canvas");
+        console.log("Refreshing map");
+        app.log("Refreshing map");
+        Map.showPositionInternal();
+    },
+
     apiOK: function () {
         Map.apiIsOk = true;
         Map.geocoder = new google.maps.Geocoder();
@@ -59,6 +86,10 @@ var Map = {
             callback();
     },
     showPosition: function () {
+        //refresh 
+        if (!Map.timer) {
+            Map.timer = setInterval(function () { Map.Refresh(); }, Globals.MapRefreshSeconds*1000);
+        };
         Map.testApi(function () { Map.showPositionInternal();  });
     },
     showPositionInternal: function () {

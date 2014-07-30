@@ -86,13 +86,22 @@ var PositionService = {
     },
     callService: function () {
         if (Service.isAuthenticated) {
-            if (PositionService._lat != PositionService.lat && PositionService._lng != PositionService.lng) {
+            //poziciu zapisujeme VZDY
+            //      if (PositionService._lat != PositionService.lat && PositionService._lng != PositionService.lng) {
                 //zistime adresu !
                 PositionService.refreshAddress(function () { PositionService.positionChanged(); });
-            }
+            //     }
             }
     },
     positionChanged: function () {
+
+
+        //poziciu zapisujem iba ka je aktivny JP 
+        var jp = Service.currentJP();
+        if (!jp) return;
+        if (jp.Status != "Active") return;
+
+
                 PositionService._lat = PositionService.lat;
                 PositionService._lng = PositionService.lng;
 

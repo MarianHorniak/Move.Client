@@ -62,6 +62,7 @@
                 if (jp) {
                     jp.NumValue1 = Service.state.Petrol;
                     jp.NumValue2 = Service.state.PetrolMoney;
+                    jp.TextValue1 = Service.state.TankCardNumber;
                 }
                 break;
             case "SetTacho":

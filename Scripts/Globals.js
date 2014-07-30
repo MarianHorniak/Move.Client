@@ -57,6 +57,8 @@
         //tachometer - aky musi byt stary, aby sme ho neziadali pri povinnych akciahc ? 
         TachoValidSeconds : 300, 
 
+        MapRefreshSeconds : 15,
+
         getDevice: function () {
 
             if (Service.Device) return Service.Device;
@@ -64,7 +66,6 @@
 
             var dev = '';
             try {
-
                 var devname = device.name;
                 var devphonegap = device.phonegap;
                 var devplatform = device.platform;

@@ -24,11 +24,10 @@ var JpView = function () {
         $('.jpk-list').html("");
 
         if (!jp) {
-
+            $('#btnselectjp').show();
             app.route("selectjp");
             return;
         }
-
 
 
         jp.Active = jp.Status == "Active";
@@ -38,6 +37,11 @@ var JpView = function () {
 
         $('.jpk-list').hide();
         $('.jp-header').hide();
+
+        //ak je aktivny JP, tak sleect nema vyznam
+        if (jp.Active)
+            $('#btnselectjp').hide();
+
         app.waiting();
                 
         $('.jp-header').html(JpView.jpTemplate(jp));

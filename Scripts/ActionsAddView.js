@@ -89,10 +89,12 @@ var ActionsAddViewMethods =
         setPetrol: function () {
             var petrolnew = $("#PetrolCurrent").val();
             var petrolmoney = $("#PetrolMoney").val();
+            var TankCardNumber = $("#TankCardNumber").val();
 
             Service.state.PetrolPrevius = Service.state.Petrol;
             Service.state.Petrol = petrolnew;
             Service.state.PetrolMoney = petrolmoney;
+            Service.state.TankCardNumber = TankCardNumber;
 
             Service.saveState("EventTank");
             app.buttonClickEffect("#btnsetPetrol");
