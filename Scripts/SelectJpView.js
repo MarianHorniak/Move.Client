@@ -32,7 +32,7 @@
         if (data && data.length > 0) {
             
             f.html(SelectJpView.templateForm(data));
-
+            f.off(app.clickEvent);
             f.on(app.clickEvent, '[data-value]', function (event) {
                 var val = $(this).attr("data-value");
                 if (Service.state.IdDriveOrder != val) {

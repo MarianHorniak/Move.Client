@@ -11,6 +11,7 @@ var NoteView = function (store) {
         this.el.html(NoteView.template());
         var f = $("#noteForm");
         f.html(NoteView.formTemplate({}));
+        $('#btnSetNote').off(app.clickEvent);
         $('#btnSetNote').on(app.clickEvent, function () { NoteViewMethods.setNote() });
         return this;
     };

@@ -50,6 +50,8 @@ var ActionsView = function (store) {
             //$("#CarStatusButtons").html(ActionsView.formButtonsTemplate(Bussiness.carStatusActions));
             $("#RoadStatusButtons").html(ActionsView.formButtonsTemplate(Bussiness.roadStatusActions));
 
+            f.off(app.clickEvent);
+
             f.on(app.clickEvent, '[data-value]', function (event) {
                 if ($(this).hasClass("disabled"))
                     return;

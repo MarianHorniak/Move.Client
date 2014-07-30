@@ -166,7 +166,9 @@
     registerEvents: function () {
         app.log("app.registerEvents");
         var self = this;
+        $('body').off('touchmove');
         $('body').on('touchmove', function (event) { event.preventDefault(); });
+        $('body').off(app.clickEvent);
         $('body').on(app.clickEvent, '[data-route]', function (event) { app.route($(this).attr("data-route")); });
         $('body').on(app.clickEvent, '#btnNewsClose', function (event) { app.hideNews(); });
         $('body').on(app.clickEvent, '#btnSubmenu', function (event) { app.submenu(); });
@@ -477,6 +479,7 @@ $.event.special.tap = {
           $self = $(self);
 
         // Bind touch start
+        $self.off('touchstart');
         $self.on('touchstart', function (startEvent) {
             // Save the target element of the start event
             var target = startEvent.target,
@@ -518,6 +521,7 @@ $.event.special.tap = {
             timeout = setTimeout(removeTapHandler, $.event.special.tap.timeThreshold);
 
             // When a touch starts, bind a touch end and touch move handler
+            $self.off('touchmove');
             $self.on('touchmove', moveHandler).on('touchend', tapHandler);
         });
     }

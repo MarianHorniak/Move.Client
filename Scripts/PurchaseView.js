@@ -11,6 +11,7 @@ var PurchaseView = function (store) {
         this.el.html(PurchaseView.template());
         var f = $("#purchaseForm");
         f.html(PurchaseView.formTemplate({}));
+        $('#btnPurchase').off(app.clickEvent);
         $('#btnPurchase').on(app.clickEvent, function () { PurchaseViewMethods.setPurchase() });
         return this;
     };
