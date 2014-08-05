@@ -1,4 +1,4 @@
-var ActionsAddView = function (store) {
+﻿var ActionsAddView = function (store) {
     this.index = 2;
     this.initialize = function() {
         this.el = $('<div/>');
@@ -10,10 +10,10 @@ var ActionsAddView = function (store) {
 
         $('#btnsetTacho').off(app.clickEvent, function () { ActionsAddViewMethods.setTacho() });
         $('#btnsetPetrol').off(app.clickEvent, function () { ActionsAddViewMethods.setPetrol() });
-        $('#btnsetPetrolCount025').off(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(25) });
-        $('#btnsetPetrolCount050').off(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(50) });
-        $('#btnsetPetrolCount075').off(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(75) });
-        $('#btnsetPetrolCount100').off(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(100) });
+        //$('#btnsetPetrolCount025').off(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(25) });
+        //$('#btnsetPetrolCount050').off(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(50) });
+        //$('#btnsetPetrolCount075').off(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(75) });
+        //$('#btnsetPetrolCount100').off(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(100) });
 
         this.el.html(ActionsAddView.template());
         var f = $("#actionsaddForm");
@@ -21,10 +21,10 @@ var ActionsAddView = function (store) {
 
         $('#btnsetTacho').on(app.clickEvent, function () { ActionsAddViewMethods.setTacho() });
         $('#btnsetPetrol').on(app.clickEvent, function () { ActionsAddViewMethods.setPetrol() });
-        $('#btnsetPetrolCount025').on(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(25) });
-        $('#btnsetPetrolCount050').on(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(50) });
-        $('#btnsetPetrolCount075').on(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(75) });
-        $('#btnsetPetrolCount100').on(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(100) });
+        //$('#btnsetPetrolCount025').on(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(25) });
+        //$('#btnsetPetrolCount050').on(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(50) });
+        //$('#btnsetPetrolCount075').on(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(75) });
+        //$('#btnsetPetrolCount100').on(app.clickEvent, function () { ActionsAddViewMethods.setPetrolCountDirect(100) });
 
         return this;
     };
@@ -38,6 +38,17 @@ var ActionsAddView = function (store) {
 
         var self = this, data = {}, jp = Service.currentJP();
         var f = $("#actionsaddForm");
+
+        //nastavit hodnoty
+        var TachoCount = $("#TachoCount");
+        if (TachoCount) TachoCount.val(Service.state.TachometerCount);
+
+        var DateLastSetTacho = $("#DateLastSetTacho");
+        if (DateLastSetTacho) {
+            var d = new Date(Service.state.TachometerDateStored);
+            if (d) DateLastSetTacho.val(d.toLocaleDateString() + " " + d.toLocaleTimeString());
+        }
+
 
         app.waiting(false);
         f.show();
@@ -77,50 +88,50 @@ var ActionsAddViewMethods =
 
         setTacho: function () {
             var tachonew = $("#TachoCurrent").val();
+            var tachDec = Bussiness.getDecimal(tachonew, 3);
+            if (isNaN(tachDec))
+                tachDec = 0;
+            if (tachDec <= 0 )
+            {
+                app.showAlert("Hodnota nie je správna", "Tachometer");
+                return;
+            }
             Service.state.TachometerPrevious = Service.state.Tachometer;
-            Service.state.Tachometer = Bussiness.getDecimal(tachonew, 3);
+            Service.state.Tachometer = tachDec;
             Service.saveState("SetTacho");
             app.buttonClickEffect("#btnsetTacho");
             Service.state.TachometerDateStored = Date.now();
+            //refresh headera
+            app.setHeader();
             //prechod na JP
             app.route("jp");
         },
 
-        setPetrol: function () {
-            var petrolnew = $("#PetrolCurrent").val();
-            var petrolmoney = $("#PetrolMoney").val();
-            var TankCardNumber = $("#TankCardNumber").val();
 
-            Service.state.PetrolPrevius = Service.state.Petrol;
-            Service.state.Petrol = petrolnew;
-            Service.state.PetrolMoney = petrolmoney;
-            Service.state.TankCardNumber = TankCardNumber;
 
-            Service.saveState("EventTank");
-            app.buttonClickEffect("#btnsetPetrol");
-        },
 
-        setPetrolCount: function () {
-            var petrolcount = $('input[name=radiopc]:checked', '#PetrolCount').val();
-            Service.state.PetrolCount = petrolcount;
-            Service.saveState("SetPetrol");
+
+        //setPetrolCount: function () {
+        //    var petrolcount = $('input[name=radiopc]:checked', '#PetrolCount').val();
+        //    Service.state.PetrolCount = petrolcount;
+        //    Service.saveState("SetPetrol");
             
-        },
+        //},
 
-        setPetrolCountDirect: function (pcnt) {
-            //remove all 
-            $('button[id^="btnsetPetrolCount"]').removeClass("selected");
-            //selected
-            var typ = pcnt.toString();;
-            if (typ.length == 2) typ = "0" + typ;
-            $("#btnsetPetrolCount" + typ).addClass("selected");
+        //setPetrolCountDirect: function (pcnt) {
+        //    //remove all 
+        //    $('button[id^="btnsetPetrolCount"]').removeClass("selected");
+        //    //selected
+        //    var typ = pcnt.toString();;
+        //    if (typ.length == 2) typ = "0" + typ;
+        //    $("#btnsetPetrolCount" + typ).addClass("selected");
 
-            var petrolcount = pcnt;
-            Service.state.PetrolCount = petrolcount;
-            Service.saveState("SetPetrol");
-            app.buttonClickEffect("#btnsetPetrolCount" + typ);
-            Service.state.PetrolDateStored = Date.now();
-        }
+        //    var petrolcount = pcnt;
+        //    Service.state.PetrolCount = petrolcount;
+        //    Service.saveState("SetPetrol");
+        //    app.buttonClickEffect("#btnsetPetrolCount" + typ);
+        //    Service.state.PetrolDateStored = Date.now();
+        //}
     }
 
 ActionsAddView.template = Handlebars.compile($("#actionsadd-tpl").html());

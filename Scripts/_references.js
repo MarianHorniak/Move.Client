@@ -24,6 +24,7 @@
 /// <reference path="PurchaseView.js" />
 /// <reference path="TankView.js" />
 /// <reference path="NoteView.js" />
+/// <reference path="ActionsFuelStatusView.js" />
 
 
 

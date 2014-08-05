@@ -140,6 +140,7 @@
                 app.showConfirm("Chcete sa odhlásiť?", "Ukončenie aplikácie", function () {
                     Service.logout(function () {
                         app.showConfirm("Ukončiť aplikáciu?", "Ukončenie aplikácie", function () {
+                            Service.saveState("Logout");
                             app.log("app.exitApp");
                             navigator.app.exitApp();
                         }, callback);
@@ -149,6 +150,7 @@
             else {
                 app.showConfirm("Chcete sa odhlásiť?", "Ukončenie aplikácie", function () {
                     Service.logout(function () {
+                        Service.saveState("Logout");
                         app.showAlert("Boli ste odhlásení");
                         callback();
                     });
@@ -217,9 +219,16 @@
     },
     submenuHide: function () {
         $('#btnactionsadd').removeClass("selected");
+        $('#btnactionfuelstatus').removeClass("selected");
         $('#btnactions').removeClass("selected");
         $('#btnpurchase').removeClass("selected");
         $('#btntank').removeClass("selected");
+        $('#btnNote').removeClass("selected");
+        $('#btnMap').removeClass("selected");
+        $('#btnInfo').removeClass("selected");
+        $('#btnSet').removeClass("selected");
+
+
 
         $('#divsubmenu').hide(100);
     },
@@ -253,6 +262,7 @@
                 case "note": page = new NoteView(); break;
                 case "tank": page = new TankView(); break;
                 case "actionsadd": page = new ActionsAddView(); break;
+                case "actionsfuelstatus": page = new ActionsFuelStatusView(); break;
                 case "selectjp": page = new SelectJpView(); break;
                 case "map": page = new MapView(); break;
                 case "state": page = new SettingsView(); break;
@@ -394,12 +404,29 @@
             $("#travelStatusInfo").addClass(jp.TravelStatus);
             //$('#jpInfo').html(Service.online ? 'on' : 'off');//.val('MoVe : '+jp.Car_Description+' '+jp.JP_Description);
         }
-        var addinfo = $('#jpInfoAdd');
-        if (!addinfo) return;
-        if (addinfo.length != 1) return;
-        var contentaddinfo = (PositionService.speed ? PositionService.speed : 0).toFixed(2) + " " + Globals.velocityUnit+"  ";
-        //contentaddinfo += Service.state.TachometerCount ? Service.state.TachometerCount + " " + Globals.distanceUnit : " ? " + " " + Globals.distanceUnit
-        addinfo.html(contentaddinfo);
+        //var addinfo = $('#jpInfoAdd');
+        //if (!addinfo) return;
+        //if (addinfo.length != 1) return;
+        //var contentaddinfo = (PositionService.speed ? PositionService.speed : 0).toFixed(2) + " " + Globals.velocityUnit+"  ";
+        ////contentaddinfo += Service.state.TachometerCount ? Service.state.TachometerCount + " " + Globals.distanceUnit : " ? " + " " + Globals.distanceUnit
+        //addinfo.html(contentaddinfo);
+        var currentSpeed = $('#currentSpeed');
+        var currentSpeedInfo = 0;
+        if (currentSpeed)
+        {
+            currentSpeedInfo = (PositionService.speed ? PositionService.speed : 0).toFixed(0);
+            currentSpeed.val(currentSpeedInfo);
+        }
+
+        var currentTacho = $('#currentTacho');
+        var currentTachoInfo = 0;
+        if (currentTacho) {
+            currentTachoInfo = (Service.state.TachometerCount ? Service.state.TachometerCount : 0).toFixed(0);
+            currentTacho.val(currentTachoInfo);
+        }
+
+
+
     },
     setOnline: function () {
         $('#jpInfo').html((Service.online ? 'on' : 'off') + " " + (Service.state && Service.state.Events ? Service.state.Events.length : ""));

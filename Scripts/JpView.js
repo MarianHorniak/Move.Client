@@ -99,6 +99,13 @@ var JpView = function () {
         $('.jp-header').show();
         $('.jpk-list').show();
 
+        //prvy krat do  JPview = kvazi login
+        if (Globals.isJPCurrent1Shown == 0)
+        {
+            Service.saveState("JP1View");
+            Globals.isJPCurrent1Shown = 1;
+        }
+
         //este musime nastavit, ci nie je krok aktivny a pod.
         app.setJPKSpecial();
 

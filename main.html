@@ -11,7 +11,7 @@
 <!-- HEADER -->
 <div id="jpHeader">
     <div id="jpInfo"></div>
-    <div id="jpInfoAdd">...</div>
+    <div id="jpInfoAdd"><label id="currentSpeed" class="NumberHeader">0</label>&nbsp;&nbsp;<label id="currentTacho" class="NumberHeader">000000</label></div>
 
     <div id="travelStatusInfo"></div>
     <!--<div id="carStatusInfo"></div>-->
@@ -34,19 +34,44 @@
 <!--menu--> 
 <div id="menu">
 <div class='footer' id="footermenu">
-    <button title="Submenu" id="btnSubmenu"  class="icon ico_tools">&nbsp;</button>&nbsp;
+
+  <div class='jpk-special'> <!-- style="display:none"> -->
+      <!--<label>Mimo plán</label>-->
+      <button id="JPRoadStart" data-value="Start" class="icon ico_roadstart">&nbsp;</button>
+      <button id="JPRoadEnd" data-value="End" class="icon ico_roadend">&nbsp;</button>
+  </div>
+
+    <button title="Submenu" id="btnSubmenu"  class="icon ico_submenu">&nbsp;</button>&nbsp;
     <button id="btnjp" data-route="jp" class="icon ico_jp">&nbsp;</button>
     <button id="btnselectjp" data-route="selectjp" class="icon ico_submenu">&nbsp;</button>
     <button id="btnstate" data-route="state" class="icon ico_settings" style="display:none">&nbsp;</button>
     <button id="btnlogin" data-route="login" class="icon ico_end">&nbsp;</button>&nbsp;
 </div>
 <div class='submenu' id="divsubmenu" style="display:none;z-index:10000;">
-    <button id="btnactionsadd" data-route="actionsadd" class="icon textnoicon">Nastavenia</button>
-    <button id="btntank" data-route="tank" class="icon textnoicon">Tankovanie</button>
-    <button id="btnactions" data-route="actions" class="icon textnoicon">Jazda</button>
-    <button id="btnpurchase" data-route="purchase" class="icon textnoicon">Nákup</button>
-    <button id="btnNote" data-route="note" class="icon textnoicon">Poznámka</button>
-    <button id="btnmap" data-route="map" class="icon ico_map">&nbsp;</button>
+    <table>
+        <tr>
+            <td><button id="btnactions" data-route="actions" class="icon inmenu">Režim</button></td>
+            <td><button id="btnactionsadd" data-route="actionsadd" class="icon inmenu">Tacho</button></td>
+        </tr>
+        <tr>
+           <td><button id="btnactionfuelstatus" data-route="actionsfuelstatus" class="icon inmenu">Palivo</button></td>
+            <td><button id="btntank" data-route="tank" class="icon inmenu">Tankovanie</button></td>
+            
+        </tr>
+        <tr>
+            <td><button id="btnpurchase" data-route="purchase" class="icon inmenu">Nákup</button></td>
+            <td><button id="btnNote" data-route="note" class="icon inmenu">Poznámka</button></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button id="btnmap" data-route="map" class="icon ico_map">&nbsp;</button>
+                            <button id="btnSet" data-route="set" class="icon ico_settings" style="display:none">&nbsp;</button>
+                            <button id="btnInfo" data-route="info" class="icon ico_info" style="display:none">&nbsp;</button>
+
+            </td>
+
+        </tr>
+
+        </table>
 </div>
 </div>
 
@@ -57,14 +82,10 @@
 <script id="jp-tpl" type="text/x-handlebars-template">
 <div>
   <div class='jp-header'></div>
-    <div class='jpklScroll'>
-  <div class='jpk-list'></div>
-        </div>
-  <div class='jpk-special' style="display:none"> 
-      <label>Mimo plán</label>
-      <button id="JPRoadStart" data-value="Start" class="icon ico_activate">&nbsp;</button>
-      <button id="JPRoadEnd" data-value="End" class="icon ico_finish">&nbsp;</button>
+  <div class='jpklScroll'>
+          <div class='jpk-list'></div>
   </div>
+
 </div>
 </script>
 
@@ -96,7 +117,7 @@
         <button data-action="JPKActive" data-value="Active" data-pk="{{this.PK}}" class="icon ico_activate">&nbsp;</button>
     {{/if}}
 
-<strong>{{this.Sort}} {{this.DestDescription}}</strong> <br/>
+<strong><label class="Number">{{this.Sort}} </label> &nbsp; {{this.DestDescription}}</strong> <br/>
         {{this.DestCity}} {{this.DestAddress}}
 </div>
 {{/.}}
@@ -129,13 +150,25 @@
 </script>
 
 <script id="actionsaddForm-template" type="text/x-handlebars-template">
-<div id="Tacho"><label>Stav tacho</label> 
+<div id="Tacho">
       <!--<input class="inputActionValue" type="number" id="TachoPrevious" value="0" disabled />-->
       <!--<input class="inputActionValue" type="number" id="TachoCurrentCount" value="112" disabled />-->
       <!--<input class="inputActionValue" type="number"  id="TachoCurrent" value="0"/> km-->
-      <input placeholder="Stav tacho [km]" type="number"  id="TachoCurrent" value="0"/>
+      <div><label>Výpočet [km]</label> <input placeholder="Výpočet [km]"  id="TachoCount"  class="ReadOnly" readonly="true" /></div>
+      <div><label>Zadané</label> <input  placeholder="Zadané" id="DateLastSetTacho" class="ReadOnly" readonly="true"/></div>
+      <div><label>Stav tacho [km]</label> <input placeholder="Stav tacho [km]" type="number"  id="TachoCurrent" value="0"/></div>
       <button class="icon ico_submitActions" id="btnsetTacho">&nbsp;</button>
   </div>
+
+</script>
+
+    
+<!-- ActionsFuelStatus -->
+<script id="actionsfuelstatus-tpl" type="text/x-handlebars-template">
+    <div class="actionsForm" id="actionsfuelstatusForm"></div>
+</script>
+
+<script id="actionsfuelstatusForm-template" type="text/x-handlebars-template">
   <div id="PetrolCount"><label>Stav paliva</label> 
       <button class="icon textnoicon" id="btnsetPetrolCount025">1/4</button>
        <button class="icon textnoicon" id="btnsetPetrolCount050">1/2</button>
@@ -143,6 +176,7 @@
       <button class="icon textnoicon" id="btnsetPetrolCount100">Plná</button>
   </div>
 </script>
+
 
 <!-- Tank -->
 <script id="tank-tpl" type="text/x-handlebars-template">
@@ -297,5 +331,6 @@
 <script src="Scripts/PurchaseView.js"></script>
 <script src="Scripts/TankView.js"></script>
 <script src="Scripts/NoteView.js"></script>
+<script src="Scripts/ActionsFuelStatusView.js"></script>
 </body>
 </html>

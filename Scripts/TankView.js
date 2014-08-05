@@ -1,4 +1,4 @@
-var TankView = function (store) {
+﻿var TankView = function (store) {
     this.index = 2;
     this.initialize = function() {
         this.el = $('<div/>');
@@ -63,9 +63,22 @@ var TankViewMethods =
             var petrolmoney = $("#PetrolMoney").val();
             var TankCardNumber = $("#TankCardNumber").val();
 
+            
+            var petrolnewdec = Bussiness.getDecimal(petrolnew, 3);
+            if (isNaN(petrolnewdec))
+                petrolnewdec = 0;
+            var petrolmoneydec = Bussiness.getDecimal(petrolmoney, 3);
+            if (isNaN(petrolmoneydec))
+                petrolmoneydec = 0;
+
+            if (petrolnewdec <= 0 || petrolmoneydec <= 0) {
+                app.showAlert("Hodnota nie je správna", "Tankovanie");
+                return;
+            }
+
             Service.state.PetrolPrevius = Service.state.Petrol;
-            Service.state.Petrol = petrolnew;
-            Service.state.PetrolMoney = petrolmoney;
+            Service.state.Petrol = petrolnewdec;
+            Service.state.PetrolMoney = petrolmoneydec;
             Service.state.TankCardNumber = TankCardNumber;
 
             Service.saveState("EventTank");

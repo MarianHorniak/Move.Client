@@ -59,6 +59,9 @@
 
         MapRefreshSeconds : 15,
 
+        //pouzije sa prvy krat, ked sa ide do aplikacie
+        isJPCurrent1Shown : 0,
+
         getDevice: function () {
 
             if (Service.Device) return Service.Device;

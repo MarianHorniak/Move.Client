@@ -1,4 +1,4 @@
-var PurchaseView = function (store) {
+﻿var PurchaseView = function (store) {
     this.index = 2;
     this.initialize = function() {
         this.el = $('<div/>');
@@ -48,6 +48,15 @@ var PurchaseViewMethods =
         setPurchase: function () {
             var jp = Service.currentJP();
             var PurchaseMoney = $("#PurchaseMoney").val();
+
+            var PurchaseMoneydec = Bussiness.getDecimal(PurchaseMoney, 3);
+            if (isNaN(PurchaseMoney))
+                PurchaseMoney = 0;
+            if (PurchaseMoney <= 0) {
+                app.showAlert("Hodnota nie je správna", "Nákup");
+                return;
+            }
+
             var PurchaseType = $("#PurchaseType").val();
             jp.NumValue1 = PurchaseMoney;
             jp.TextValue1 = PurchaseType;
