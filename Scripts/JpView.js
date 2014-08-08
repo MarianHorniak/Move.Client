@@ -102,7 +102,7 @@ var JpView = function () {
         //prvy krat do  JPview = kvazi login
         if (Globals.isJPCurrent1Shown == 0)
         {
-            Service.saveState("JP1View");
+            //Service.saveState("JP1View");
             Globals.isJPCurrent1Shown = 1;
         }
 

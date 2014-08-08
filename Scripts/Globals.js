@@ -64,27 +64,32 @@
 
         getDevice: function () {
 
-            if (Service.Device) return Service.Device;
-            //nie je este zadefinovane 
+            
+            //nie je device
+            if (!app.isDevice) return "not device";
 
-            var dev = '';
+            var dev = 'no value';
             try {
-                var devname = device.name;
-                var devphonegap = device.phonegap;
-                var devplatform = device.platform;
-                var devuuid = device.uuid;
-                var devver = device.version;
+                //var devname = device.name;
+                //var devphonegap = device.phonegap;
+                try { dev = "platform:" + device.platform + " "; } catch (err) { dev = "platform: "; };
+                try { dev = dev + "uuid:" + device.devuuid+" "; } catch (err) { dev = dev + "uuid:"; };
+                try { dev = dev + "uid:" + device.uuid; } catch (err) { dev = dev + "uid:"; };
+
+                //var devplatform = device.platform;
+                //var devuuid = device.uuid;
+                //var devver = device.version;
                 //if (devname) dev += devname + "|1|";
                 //if (devphonegap) dev += devphonegap + "|2|";
-                if (devplatform) dev += devplatform + " ";
-                if (devuuid) dev += devuuid + " ";
+                //if (devplatform) dev += devplatform + " ";
+                //if (devuuid) dev += devuuid + " ";
                 //if (devver) dev += devver + "|5|";
             }
             catch (err) {
                 dev = 'not defined';
             }
 
-            Service.Device = dev;
+            //Service.Device = dev;
             return dev;
 
         },
