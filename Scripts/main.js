@@ -394,6 +394,7 @@
     },
     setHeader: function () {
         app.setOnline();
+        $("#roadStatusInfo").show();
         $("#carStatusInfo").removeClass();
         $("#roadStatusInfo").removeClass();
         $("#travelStatusInfo").removeClass();
@@ -402,6 +403,11 @@
             $("#carStatusInfo").addClass(jp.CarStatus);
             $("#roadStatusInfo").addClass(jp.RoadStatus);
             $("#travelStatusInfo").addClass(jp.TravelStatus);
+
+            //ak je sukromna, tak teren nezobrazovat
+            if (jp.TravelStatus == "Sukromna") $("#roadStatusInfo").hide();
+
+
             //$('#jpInfo').html(Service.online ? 'on' : 'off');//.val('MoVe : '+jp.Car_Description+' '+jp.JP_Description);
         }
         //var addinfo = $('#jpInfoAdd');
@@ -415,14 +421,14 @@
         if (currentSpeed)
         {
             currentSpeedInfo = (PositionService.speed ? PositionService.speed : 0).toFixed(0);
-            currentSpeed.val(currentSpeedInfo);
+            currentSpeed.text(currentSpeedInfo);
         }
 
         var currentTacho = $('#currentTacho');
         var currentTachoInfo = 0;
         if (currentTacho) {
             currentTachoInfo = (Service.state.TachometerCount ? Service.state.TachometerCount : 0).toFixed(0);
-            currentTacho.val(currentTachoInfo);
+            currentTacho.text(currentTachoInfo);
         }
 
 

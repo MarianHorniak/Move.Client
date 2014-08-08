@@ -30,7 +30,6 @@ var LoginView = function (messages) {
         Service.login(function () {
             if (Service.isAuthenticated) {
                $("#footermenu").show();
-               
                app.home();
                }
             else

@@ -74,14 +74,14 @@
                 var devplatform = device.platform;
                 var devuuid = device.uuid;
                 var devver = device.version;
-                if (devname) dev += devname + "|1|";
-                if (devphonegap) dev += devphonegap + "|2|";
-                if (devplatform) dev += devplatform + "|3|";
-                if (devuuid) dev += devuuid + "|4|";
-                if (devver) dev += devver + "|5|";
+                //if (devname) dev += devname + "|1|";
+                //if (devphonegap) dev += devphonegap + "|2|";
+                if (devplatform) dev += devplatform + " ";
+                if (devuuid) dev += devuuid + " ";
+                //if (devver) dev += devver + "|5|";
             }
             catch (err) {
-                dev = 'error detected';
+                dev = 'not defined';
             }
 
             Service.Device = dev;

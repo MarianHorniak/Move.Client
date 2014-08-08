@@ -87,6 +87,7 @@
                 function (d) {
                     Service.isAuthenticated = true;
                     Service.state.IdDriver = d.PK;
+                    Service.saveDataEvent("Login");
                     Service.authorize(callback);
                 }, function (d) {
                     if (d && d.ErrorMessage)

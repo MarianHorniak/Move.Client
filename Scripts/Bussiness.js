@@ -222,7 +222,7 @@
                 app.setFooter();
                 //idem do vyberu jp
                 app.route("selectjp");
-                this.mustSetTacho(action);
+                //this.mustSetTacho(action);
                 break;
             case "JPKActive":
                 var jpk = Service.currentJPK(jp);
