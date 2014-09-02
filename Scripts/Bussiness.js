@@ -57,7 +57,8 @@
             case "EventBreak": break;
             case "EventChangeCarStatus": break;
             case "EventChangeRoadStatus": break;
-            case "EventChangeTravelStatus": break;
+            case "EventChangeTravelStatus":
+                break;
             case "EventTank":
                 if (jp) {
                     jp.NumValue1 = Service.state.Petrol;

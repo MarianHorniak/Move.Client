@@ -20,12 +20,12 @@
         distanceUnit: "km",
 
         //distance constants; roadStatusActions: Town OutofTown Highway Terrain1  "Terrain2
-        distanceCoef_Default: 1.5,
-        distanceCoef_Town: 1.7,
-        distanceCoef_OutofTown: 1.3,
-        distanceCoef_Highway: 1.1,
-        distanceCoef_Terrain1: 1.9,
-        distanceCoef_Terrain2: 2.1,
+        distanceCoef_Default: 1,
+        distanceCoef_Town: 1,
+        distanceCoef_OutofTown: 1,
+        distanceCoef_Highway: 1,
+        distanceCoef_Terrain1: 1.1,
+        distanceCoef_Terrain2: 1.2,
 
         //velocity round:
         velocityMin:5,
@@ -61,6 +61,24 @@
 
         //pouzije sa prvy krat, ked sa ide do aplikacie
         isJPCurrent1Shown : 0,
+
+        //vygeneroivane UUID
+        deviceuuidgenerated : '',
+
+        //dame vygenerovane GUID, lebo na device.uuid sa neda spoliehat
+        getDeviceUUID: function () {
+
+            if (Globals.deviceuuidgenerated == '') {
+                var s = window.localStorage.getItem("deviceuuidgenerated");
+                if (!s) {
+                    s = app.createGuid();
+                    window.localStorage.setItem("deviceuuidgenerated", s);
+                }
+                Globals.deviceuuidgenerated = s;
+            }
+            return Globals.deviceuuidgenerated;
+        },
+
 
         getDevice: function () {
 

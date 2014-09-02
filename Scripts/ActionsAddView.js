@@ -96,6 +96,11 @@ var ActionsAddViewMethods =
                 app.showAlert("Hodnota nie je správna", "Tachometer");
                 return;
             }
+            if (tachDec < Service.state.Tachometer) {
+                app.showAlert("Hodnota je menšia ako predchádzajúci stav", "Tachometer");
+                return;
+            }
+
             Service.state.TachometerPrevious = Service.state.Tachometer;
             Service.state.Tachometer = tachDec;
             Service.saveState("SetTacho");

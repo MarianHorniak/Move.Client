@@ -99,6 +99,10 @@ var JpView = function () {
         $('.jp-header').show();
         $('.jpk-list').show();
 
+        //zobrazit header
+        app.setHeader();
+        
+
         //prvy krat do  JPview = kvazi login
         if (Globals.isJPCurrent1Shown == 0)
         {
