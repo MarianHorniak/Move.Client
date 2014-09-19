@@ -90,7 +90,7 @@
                 function (d) {
                     Service.isAuthenticated = true;
                     Service.state.IdDriver = d.PK;
-                    PositionMethods.findLatLong1Time();
+                    //PositionMethods.findLatLong1Time();
                     Service.saveDataEvent("Login");
                     Service.authorize(callback);
                 }, function (d) {

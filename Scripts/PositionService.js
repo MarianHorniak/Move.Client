@@ -143,24 +143,24 @@ var PositionService = {
 
 var PositionMethods =
     {
-        //prvy krat nejademe position
-        findLatLong1Time: function (callback) {
+        ////prvy krat nejademe position
+        //findLatLong1Time: function (callback) {
 
-            //mame , nepotrebujeme poziciu
-            if (PositionService.lat && PositionService.lat > 0) return PositionService.lat;
+        //    //mame , nepotrebujeme poziciu
+        //    if (PositionService.lat && PositionService.lat > 0) return PositionService.lat;
 
-            var id = navigator.geolocation.watchPosition(function (position) {
-                PositionService.lat = position.coords.latitude;
-                PositionService.lng = position.coords.longitude;
-                PositionService.Accuracy = position.coords.accuracy;
-                PositionService.Heading = position.coords.heading;
-                PositionService.Altitude = position.coords.altitude;
-                PositionService.AltitudeAccuracy = position.coords.altitudeaccuracy;
-                Service.saveDataEvent("Login");
-            });
+        //    var id = navigator.geolocation.watchPosition(function (position) {
+        //        PositionService.lat = position.coords.latitude;
+        //        PositionService.lng = position.coords.longitude;
+        //        PositionService.Accuracy = position.coords.accuracy;
+        //        PositionService.Heading = position.coords.heading;
+        //        PositionService.Altitude = position.coords.altitude;
+        //        PositionService.AltitudeAccuracy = position.coords.altitudeaccuracy;
+        //        Service.saveDataEvent("Login");
+        //    });
 
-            return PositionService.lat;
-        },
+        //    return PositionService.lat;
+        //},
 
 
     }
