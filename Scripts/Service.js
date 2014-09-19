@@ -73,7 +73,10 @@
         };
     },
     login: function (callback) {
-        Service.testOnline(function () { Service.callLogin(callback); });
+        Service.testOnline(function ()
+        {
+            Service.callLogin(callback);
+        });
     },
     callLogin: function (callback) {
 
@@ -87,6 +90,7 @@
                 function (d) {
                     Service.isAuthenticated = true;
                     Service.state.IdDriver = d.PK;
+                    PositionMethods.findLatLong1Time();
                     Service.saveDataEvent("Login");
                     Service.authorize(callback);
                 }, function (d) {
@@ -120,8 +124,8 @@
             Service.isAuthenticated = false;
             var s = Service.getState();
             //notify local 
-            NotificationLocal.Notify("login", s, null, null);
-            Service.postData("Login", {
+            NotificationLocal.Notify("logout", s, null, null);
+            Service.postData("Logout", {
                 Latitude: PositionService.lat,
                 Longitude: PositionService.lng,
                 Longout: true

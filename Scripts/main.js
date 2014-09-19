@@ -465,7 +465,6 @@
         var self = this;
         this.pages = {};
         this.registerEvents();
-
         Service.initialize(function () {
             self.home();
         });
