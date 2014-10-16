@@ -216,7 +216,9 @@
                 break;
             case "JPFinish":
                 //zahodi sa jp
-                Service.deleteCurrentJP();
+
+                //MHP 10.10.2014 test - nemazme HO !!! moze sa pokracovat !
+                //Service.deleteCurrentJP();
                 //zahodim stavy
                 Service.initializeState();
                 app.setJPKSpecial();

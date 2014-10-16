@@ -31,7 +31,8 @@ var JpView = function () {
 
 
         jp.Active = jp.Status == "Active";
-        jp.NoFinish = jp.Status != "Finish";
+        //MHP 10.10.2014 reactivate 
+        jp.NoFinish = jp.Status != "Finish" || jp.Status == "Finish";
         jp.DateFromFormated = Service.formatJsonDate(this.DateFrom);
         jp.DateToFormated = Service.formatJsonDate(this.DateTo);
 
@@ -55,11 +56,12 @@ var JpView = function () {
             
             if (jp.Status == "Active" && currentJpk && this.PK == currentJpk.PK) {
                 this.Active = this.Status == "Active";
-                this.Activable = this.Status == "Paused" || this.Status == "NonActive";
+                //MHP 10.10.2014 zmena, aj finish sa moze reaktvovat
+                this.Activable = this.Status == "Paused" || this.Status == "NonActive" || this.Status == "Finish";
             }
             else {
                 this.Active = false;
-                this.Activable = false;
+                //MHP Reactivate this.Activable = false;
             }
             this.DestDateFormated = Service.formatJsonDate(this.DestDate);
         });

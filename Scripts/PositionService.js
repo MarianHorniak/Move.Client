@@ -144,10 +144,10 @@ var PositionService = {
 var PositionMethods =
     {
         ////prvy krat nejademe position
-        //findLatLong1Time: function (callback) {
+        //findLatLong1Time: function () {
 
         //    //mame , nepotrebujeme poziciu
-        //    if (PositionService.lat && PositionService.lat > 0) return PositionService.lat;
+        //    if (PositionService.lat && PositionService.lat > 0) return;
 
         //    var id = navigator.geolocation.watchPosition(function (position) {
         //        PositionService.lat = position.coords.latitude;
@@ -159,7 +159,6 @@ var PositionMethods =
         //        Service.saveDataEvent("Login");
         //    });
 
-        //    return PositionService.lat;
         //},
 
 
